@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import ProjectVideoMedia from '@/components/ProjectVideoMedia.vue'
 import { projects } from '@/data/projects'
-import { youtubeEmbedSrc } from '@/utils/youtube'
 
 const base = import.meta.env.BASE_URL
 
@@ -50,19 +50,11 @@ function hasMedia(project: (typeof projects)[number]) {
               'bento__wide-inner--text-only': project.layout === 'row2-compact',
             }"
           >
-            <div
+            <ProjectVideoMedia
               v-if="project.youtubeId"
-              class="bento__media bento__media--video"
-            >
-              <iframe
-                :src="youtubeEmbedSrc(project.youtubeId)"
-                :title="`Video de ${project.name}`"
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin"
-                allowfullscreen
-              />
-            </div>
+              :video-id="project.youtubeId"
+              :project-name="project.name"
+            />
             <div v-else-if="project.image" class="bento__media">
               <img
                 :src="imageSrc(project.image)"
@@ -232,7 +224,8 @@ function hasMedia(project: (typeof projects)[number]) {
     max-height: 220px;
   }
 
-  .bento__item--row2-primary .bento__media {
+  .bento__item--lead :deep(.bento__media--video),
+  .bento__item--row2-primary :deep(.bento__media--video) {
     flex-shrink: 0;
     height: min(300px, 36vh);
     min-height: 200px;
@@ -263,7 +256,7 @@ function hasMedia(project: (typeof projects)[number]) {
 }
 
 @media (min-width: 640px) and (max-width: 959px) {
-  .bento__item--row2-primary .bento__media {
+  .bento__item--row2-primary :deep(.bento__media--video) {
     height: 200px;
     min-height: 200px;
     max-height: 200px;
@@ -313,18 +306,6 @@ function hasMedia(project: (typeof projects)[number]) {
 .bento__item--row2-compact .chip {
   font-size: 0.7rem;
   padding: 0.15rem 0.45rem;
-}
-
-.bento__media--video {
-  overflow: hidden;
-}
-
-.bento__media--video iframe {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  pointer-events: none;
 }
 
 .bento__media img {

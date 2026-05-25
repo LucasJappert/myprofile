@@ -1,3 +1,7 @@
+export function youtubePosterSrc(videoId: string) {
+  return `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
+}
+
 /** Embed en loop, silenciado; playlist=id necesario para que loop funcione */
 export function youtubeEmbedSrc(videoId: string) {
   const params = new URLSearchParams({
