@@ -7,23 +7,43 @@ import { assetUrl } from '@/utils/assetUrl'
   <section id="inicio" class="hero section">
     <div class="hero__mesh" aria-hidden="true" />
     <div class="container hero__grid">
-      <div class="hero__content">
-        <p v-if="profile.currentEmployer" class="hero__employer">
-          <span class="hero__employer-company">{{ profile.currentEmployer.company }}</span>
-          <span class="hero__employer-sep" aria-hidden="true">·</span>
-          <span class="hero__employer-sector">{{ profile.currentEmployer.sector }}</span>
-        </p>
+      <div class="hero__lead">
+        <div v-if="profile.currentEmployer || profile.credentialHighlight" class="hero__topline">
+          <p v-if="profile.currentEmployer" class="hero__employer">
+            <span class="hero__employer-company">{{ profile.currentEmployer.company }}</span>
+            <span class="hero__employer-sep" aria-hidden="true">·</span>
+            <span class="hero__employer-sector">{{ profile.currentEmployer.sector }}</span>
+          </p>
+          <a
+            v-if="profile.credentialHighlight"
+            :href="profile.credentialHighlight.href"
+            class="hero__credential"
+          >
+            <span class="hero__credential-dot" aria-hidden="true" />
+            <span class="hero__credential-long">{{ profile.credentialHighlight.label }}</span>
+            <span class="hero__credential-short">{{ profile.credentialHighlight.shortLabel }}</span>
+          </a>
+        </div>
         <h1 class="hero__name">{{ profile.name }}</h1>
         <p class="hero__role">{{ profile.role }}</p>
-        <a
-          v-if="profile.credentialHighlight"
-          :href="profile.credentialHighlight.href"
-          class="hero__credential"
-        >
-          <span class="hero__credential-dot" aria-hidden="true" />
-          <span class="hero__credential-long">{{ profile.credentialHighlight.label }}</span>
-          <span class="hero__credential-short">{{ profile.credentialHighlight.shortLabel }}</span>
-        </a>
+      </div>
+
+      <div class="hero__visual">
+        <figure class="hero__figure">
+          <div class="hero__frame hero__frame--art">
+            <img
+              :src="assetUrl(profile.avatar)"
+              :alt="profile.avatarAlt"
+              width="400"
+              height="500"
+              fetchpriority="high"
+            />
+          </div>
+          <figcaption class="hero__caption">Ilustración personal</figcaption>
+        </figure>
+      </div>
+
+      <div class="hero__trail">
         <p class="hero__tagline">{{ profile.tagline }}</p>
         <p class="hero__location">{{ profile.location }}</p>
         <div class="hero__actions">
@@ -48,20 +68,6 @@ import { assetUrl } from '@/utils/assetUrl'
           <span class="hero__scroll-hint-icon" aria-hidden="true">↓</span>
         </a>
       </div>
-      <div class="hero__visual">
-        <figure class="hero__figure">
-          <div class="hero__frame hero__frame--art">
-            <img
-              :src="assetUrl(profile.avatar)"
-              :alt="profile.avatarAlt"
-              width="400"
-              height="500"
-              fetchpriority="high"
-            />
-          </div>
-          <figcaption class="hero__caption">Ilustración personal</figcaption>
-        </figure>
-      </div>
     </div>
   </section>
 </template>
@@ -69,7 +75,7 @@ import { assetUrl } from '@/utils/assetUrl'
 <style scoped>
 .hero {
   position: relative;
-  padding-top: calc(var(--nav-h) + 2rem);
+  padding-top: calc(var(--nav-h) + 1.5rem);
   padding-bottom: 2rem;
   overflow: hidden;
   min-height: auto;
@@ -101,29 +107,26 @@ import { assetUrl } from '@/utils/assetUrl'
 .hero__grid {
   position: relative;
   display: grid;
-  gap: 2.5rem;
+  gap: 1.25rem;
   align-items: center;
 }
 
-@media (min-width: 900px) {
-  .hero {
-    min-height: clamp(30rem, 76dvh, 40rem);
-    padding-bottom: 1.5rem;
-  }
-
-  .hero__grid {
-    grid-template-columns: 1.05fr 0.95fr;
-    gap: 2rem;
-    align-items: center;
-  }
+.hero__topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 0.65rem;
+  flex-wrap: wrap;
 }
 
 .hero__employer {
-  margin: 0 0 0.5rem;
+  margin: 0;
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   font-weight: 500;
   letter-spacing: 0.02em;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .hero__employer-company {
@@ -146,9 +149,9 @@ import { assetUrl } from '@/utils/assetUrl'
 .hero__credential {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  margin: 0.65rem 0 0;
-  padding: 0.35rem 0.75rem 0.35rem 0.55rem;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.3rem 0.65rem 0.3rem 0.5rem;
   font-size: var(--text-xs);
   font-weight: 600;
   color: var(--verde);
@@ -156,6 +159,7 @@ import { assetUrl } from '@/utils/assetUrl'
   border-radius: 999px;
   border: 1px solid rgba(34, 232, 132, 0.35);
   background: rgba(34, 232, 132, 0.08);
+  flex-shrink: 0;
   transition:
     border-color 0.2s ease,
     background 0.2s ease,
@@ -192,8 +196,8 @@ import { assetUrl } from '@/utils/assetUrl'
 }
 
 .hero__name {
-  margin: 0;
-  font-size: clamp(2.25rem, 7vw, 3.5rem);
+  margin: 0.35rem 0 0;
+  font-size: clamp(2rem, 7vw, 3.5rem);
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.1;
@@ -204,20 +208,15 @@ import { assetUrl } from '@/utils/assetUrl'
 }
 
 .hero__role {
-  margin: 0.5rem 0 0;
-  font-size: 1.15rem;
+  margin: 0.4rem 0 0;
+  font-size: 1.05rem;
   font-weight: 600;
   color: var(--text);
-}
-
-@media (min-width: 900px) {
-  .hero__role {
-    font-size: 1.25rem;
-  }
+  line-height: 1.35;
 }
 
 .hero__tagline {
-  margin: 0.65rem 0 0;
+  margin: 0;
   max-width: 38ch;
   color: var(--text-muted);
   font-size: var(--text-base);
@@ -234,13 +233,13 @@ import { assetUrl } from '@/utils/assetUrl'
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
-  margin-top: 1.15rem;
+  margin-top: 1rem;
 }
 
 .hero__social {
   display: flex;
   gap: 1rem;
-  margin-top: 0.85rem;
+  margin-top: 0.75rem;
   font-size: var(--text-sm);
   font-weight: 500;
 }
@@ -312,7 +311,7 @@ import { assetUrl } from '@/utils/assetUrl'
   display: block;
   width: 100%;
   height: 100%;
-  min-height: 220px;
+  min-height: 200px;
   border-radius: calc(var(--radius-lg) - 1px);
   background: radial-gradient(ellipse at 50% 15%, #1a2744 0%, #0a0e18 50%, #05060d 100%);
   aspect-ratio: 4 / 5;
@@ -321,7 +320,7 @@ import { assetUrl } from '@/utils/assetUrl'
 }
 
 .hero__caption {
-  margin-top: 0.65rem;
+  margin-top: 0.5rem;
   text-align: center;
   font-size: var(--text-xs);
   color: var(--text-muted);
@@ -329,38 +328,110 @@ import { assetUrl } from '@/utils/assetUrl'
 }
 
 .hero__visual {
-  max-width: min(100%, 380px);
+  max-width: min(100%, 300px);
   margin-inline: auto;
 }
 
-@media (min-width: 900px) {
+/* Mobile: imagen tras rol; menos ruido visual */
+@media (max-width: 899px) {
+  .hero {
+    padding-top: calc(var(--nav-h) + 1rem);
+    padding-bottom: 2.5rem;
+  }
+
+  .hero__grid {
+    gap: 1rem;
+  }
+
+  .hero__name {
+    font-size: clamp(1.85rem, 8.5vw, 2.5rem);
+  }
+
+  .hero__role {
+    font-size: 1rem;
+  }
+
+  .hero__tagline {
+    font-size: var(--text-sm);
+    line-height: 1.45;
+  }
+
+  .hero__location,
+  .hero__scroll-hint,
+  .hero__caption {
+    display: none;
+  }
+
   .hero__visual {
+    max-width: min(88vw, 280px);
+  }
+
+  .hero__frame img {
+    min-height: 180px;
+    aspect-ratio: 5 / 6;
+  }
+
+  .hero__actions {
+    margin-top: 0.85rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .hero {
+    min-height: clamp(30rem, 76dvh, 40rem);
+    padding-top: calc(var(--nav-h) + 2rem);
+    padding-bottom: 1.5rem;
+  }
+
+  .hero__grid {
+    grid-template-columns: 1.05fr 0.95fr;
+    grid-template-rows: auto auto;
+    gap: 0.65rem 2rem;
+    align-items: start;
+  }
+
+  .hero__lead {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .hero__trail {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .hero__visual {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    align-self: center;
     margin-inline: auto 0;
     max-width: 340px;
   }
 
+  .hero__topline {
+    margin-bottom: 0.15rem;
+  }
+
+  .hero__name {
+    margin-top: 0.5rem;
+    font-size: clamp(2.25rem, 7vw, 3.5rem);
+  }
+
+  .hero__role {
+    margin-top: 0.5rem;
+    font-size: 1.25rem;
+  }
+
+  .hero__tagline {
+    margin-top: 0.65rem;
+  }
+
+  .hero__credential {
+    margin-top: 0;
+  }
+
   .hero__frame img {
     min-height: 240px;
-  }
-}
-
-@media (max-width: 899px) {
-  .hero {
-    min-height: auto;
-    padding-bottom: 3rem;
-  }
-
-  .hero__content {
-    order: 1;
-  }
-
-  .hero__visual {
-    order: 2;
-    max-width: 260px;
-  }
-
-  .hero__frame img {
-    min-height: 220px;
   }
 }
 </style>
