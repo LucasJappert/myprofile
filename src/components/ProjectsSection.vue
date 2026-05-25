@@ -21,7 +21,7 @@ function imageSrc(path: string) {
         <article
           v-for="(project, index) in projects"
           :key="project.name"
-          class="card bento__item"
+          class="card card--hover bento__item"
           :class="{ 'bento__item--featured': project.featured }"
         >
           <div v-if="project.image" class="bento__media">

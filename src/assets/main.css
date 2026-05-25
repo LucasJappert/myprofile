@@ -138,9 +138,43 @@ img {
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.card:hover {
+.card--hover:hover {
   border-color: rgba(46, 232, 184, 0.28);
   box-shadow: 0 8px 28px rgba(0, 232, 255, 0.08);
+}
+
+.surface--plain {
+  padding: 0 0 0 1.25rem;
+  border-left: 3px solid rgba(46, 232, 184, 0.45);
+}
+
+.surface--muted {
+  background: rgba(10, 12, 22, 0.65);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+}
+
+.surface--tile {
+  background: rgba(10, 12, 22, 0.5);
+  border: 1px solid rgba(0, 232, 255, 0.1);
+  border-radius: var(--radius);
+  padding: 1rem 1.15rem;
+}
+
+.surface--accent {
+  background: linear-gradient(
+    145deg,
+    rgba(0, 232, 255, 0.06),
+    rgba(34, 232, 132, 0.05)
+  );
+  border: 1px solid rgba(46, 232, 184, 0.25);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.5rem;
+}
+
+.section--alt {
+  background: rgba(8, 10, 18, 0.35);
 }
 
 .btn {

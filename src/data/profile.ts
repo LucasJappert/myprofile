@@ -5,6 +5,9 @@ export const profile = {
   tagline:
     '15+ años construyendo plataformas agrotech, APIs e IA aplicada en producción.',
   email: 'lucasnicolasjappert@gmail.com',
+  avatar: 'profile-image.jpeg',
+  avatarAlt:
+    'Ilustración caricaturesca de Lucas con su pareja y tres gatos, bajo un cielo nocturno con cometa, luna y estrellas',
   cvUrl: `${import.meta.env.BASE_URL}Profile.pdf`,
   links: [
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/lucasjappert/', icon: 'linkedin' },

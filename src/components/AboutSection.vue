@@ -3,10 +3,10 @@ import { profile } from '@/data/profile'
 </script>
 
 <template>
-  <section id="perfil" class="section">
+  <section id="perfil" class="section section--alt">
     <div class="container">
       <h2 class="section-title"><span>Sobre mí</span></h2>
-      <div class="about card">
+      <div class="about surface--plain">
         <p v-for="(paragraph, i) in profile.about" :key="i">{{ paragraph }}</p>
       </div>
       <div class="interests">
@@ -39,6 +39,6 @@ import { profile } from '@/data/profile'
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 1.25rem;
+  margin-top: 1.5rem;
 }
 </style>

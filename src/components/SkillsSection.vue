@@ -7,7 +7,7 @@ import { skillGroups } from '@/data/skills'
     <div class="container">
       <h2 class="section-title"><span>Competencias</span></h2>
       <div class="skills-grid">
-        <article v-for="group in skillGroups" :key="group.title" class="card skills-card">
+        <article v-for="group in skillGroups" :key="group.title" class="skills-card surface--tile">
           <h3>{{ group.title }}</h3>
           <div class="skills-card__tags">
             <span v-for="item in group.items" :key="item" class="chip">{{ item }}</span>
@@ -21,7 +21,7 @@ import { skillGroups } from '@/data/skills'
 <style scoped>
 .skills-grid {
   display: grid;
-  gap: 1rem;
+  gap: 0.85rem;
   grid-template-columns: 1fr;
 }
 

@@ -6,7 +6,7 @@ import { profile } from '@/data/profile'
   <section id="contacto" class="section contact">
     <div class="container">
       <h2 class="section-title"><span>Contacto</span></h2>
-      <div class="contact__card card">
+      <div class="contact__card surface--accent">
         <p>¿Proyecto interesante o rol con impacto técnico? Escribime.</p>
         <a :href="`mailto:${profile.email}`" class="contact__email">{{ profile.email }}</a>
         <div class="contact__actions">
@@ -37,6 +37,8 @@ import { profile } from '@/data/profile'
 .contact__card p {
   margin: 0 0 1rem;
   color: var(--text-muted);
+  font-size: var(--text-base);
+  line-height: 1.65;
 }
 
 .contact__email {

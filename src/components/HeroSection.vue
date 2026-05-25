@@ -33,9 +33,18 @@ const base = import.meta.env.BASE_URL
         </div>
       </div>
       <div class="hero__visual">
-        <div class="hero__frame">
-          <img :src="`${base}profile.png`" alt="Foto de perfil de Lucas Jappert" width="320" height="320" />
-        </div>
+        <figure class="hero__figure">
+          <div class="hero__frame hero__frame--art">
+            <img
+              :src="`${base}${profile.avatar}`"
+              :alt="profile.avatarAlt"
+              width="400"
+              height="500"
+              fetchpriority="high"
+            />
+          </div>
+          <figcaption class="hero__caption">Ilustración personal</figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -47,7 +56,7 @@ const base = import.meta.env.BASE_URL
   padding-top: calc(var(--nav-h) + 3rem);
   padding-bottom: 4rem;
   overflow: hidden;
-  min-height: min(100dvh, 900px);
+  min-height: min(100dvh, 920px);
   display: flex;
   align-items: center;
 }
@@ -56,9 +65,10 @@ const base = import.meta.env.BASE_URL
   position: absolute;
   inset: -20% -10%;
   background:
-    radial-gradient(ellipse 60% 50% at 20% 30%, rgba(0, 232, 255, 0.2), transparent 55%),
-    radial-gradient(ellipse 50% 45% at 80% 60%, rgba(34, 232, 132, 0.12), transparent 50%),
-    radial-gradient(ellipse 40% 40% at 50% 80%, rgba(46, 232, 184, 0.14), transparent 45%);
+    radial-gradient(ellipse 55% 45% at 18% 28%, rgba(0, 232, 255, 0.22), transparent 55%),
+    radial-gradient(ellipse 45% 40% at 82% 55%, rgba(34, 232, 132, 0.14), transparent 50%),
+    radial-gradient(ellipse 35% 35% at 72% 22%, rgba(46, 232, 184, 0.12), transparent 45%),
+    radial-gradient(ellipse 30% 25% at 50% 12%, rgba(255, 255, 255, 0.04), transparent 40%);
   pointer-events: none;
   animation: mesh-drift 18s ease-in-out infinite alternate;
 }
@@ -81,7 +91,7 @@ const base = import.meta.env.BASE_URL
 
 @media (min-width: 900px) {
   .hero__grid {
-    grid-template-columns: 1.1fr 0.9fr;
+    grid-template-columns: 1.05fr 0.95fr;
     gap: 3rem;
   }
 }
@@ -140,6 +150,10 @@ const base = import.meta.env.BASE_URL
   font-weight: 500;
 }
 
+.hero__figure {
+  margin: 0;
+}
+
 .hero__frame {
   position: relative;
   border-radius: var(--radius-lg);
@@ -148,23 +162,54 @@ const base = import.meta.env.BASE_URL
   box-shadow: var(--shadow-glow);
 }
 
+.hero__frame--art {
+  padding: 4px;
+  background: linear-gradient(
+    160deg,
+    rgba(0, 232, 255, 0.85),
+    rgba(46, 232, 184, 0.7) 45%,
+    rgba(34, 232, 132, 0.85)
+  );
+}
+
 .hero__frame img {
   display: block;
   width: 100%;
-  border-radius: calc(var(--radius-lg) - 3px);
-  background: var(--bg-surface);
-  aspect-ratio: 1;
-  object-fit: cover;
+  border-radius: calc(var(--radius-lg) - 4px);
+  background: radial-gradient(ellipse at 50% 20%, #1a2744 0%, #0a0e18 55%, #05060d 100%);
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  object-position: center center;
+}
+
+.hero__caption {
+  margin-top: 0.65rem;
+  text-align: center;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  font-style: italic;
 }
 
 .hero__visual {
-  max-width: 320px;
+  max-width: min(100%, 380px);
   margin-inline: auto;
 }
 
 @media (min-width: 900px) {
   .hero__visual {
     margin-inline: auto 0;
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 899px) {
+  .hero__content {
+    order: 1;
+  }
+
+  .hero__visual {
+    order: 2;
+    max-width: 320px;
   }
 }
 </style>

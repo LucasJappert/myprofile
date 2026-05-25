@@ -40,9 +40,9 @@ Impacto fuerte en percepción profesional, usabilidad o accesibilidad. Conviene 
 
 ### 1. Ritmo visual — evitar “todas las secciones son la misma card”
 
-- [ ] Variar layouts por sección (hero full-bleed; experiencia sin card contenedora redundante; etc.)
-- [ ] Reducir bordes/glow repetidos en cada bloque
-- [ ] Definir 2–3 patrones de superficie (plana, card, destacado) y usarlos de forma consistente
+- [x] Variar layouts por sección (about plain, skills tiles, educación lista, contacto accent)
+- [x] Hover solo en cards de proyectos (`card--hover`)
+- [x] Patrones `surface--plain`, `surface--muted`, `surface--tile`, `surface--accent`
 
 **Archivos probables:** `src/components/*Section.vue`, `src/assets/main.css`
 
@@ -91,9 +91,9 @@ Impacto fuerte en percepción profesional, usabilidad o accesibilidad. Conviene 
 
 ### 6. Foto de perfil vs. estética neón
 
-- [ ] Decidir tratamiento: recorte, fondo oscuro, duotone celeste/rosa, o reemplazo por avatar/ilustración
-- [ ] Ajustar marco del hero (sombra, proporción, `object-position`)
-- [ ] Optimizar peso de imagen (WebP/AVIF en `public/`)
+- [x] Ilustración `profile-image.jpeg` (caricatura, cielo nocturno — encaja con paleta celeste/verde)
+- [x] Marco hero 4:5, `object-fit: contain`, fondo nocturno en frame
+- [ ] Optimizar peso (WebP/AVIF) — opcional UX-3
 
 **Archivos probables:** `public/profile.png`, `src/components/HeroSection.vue`
 
@@ -101,10 +101,10 @@ Impacto fuerte en percepción profesional, usabilidad o accesibilidad. Conviene 
 
 ### 7. Proyectos con evidencia visual
 
-- [ ] Añadir thumbnail o captura por proyecto destacado
-- [ ] Badge “En producción” / “Open source” donde aplique
-- [ ] Mejorar jerarquía en cards (título → descripción → stack → link)
-- [ ] Reutilizar imágenes de `legacy/images/portfolios/` si sirven, o nuevas capturas
+- [x] Thumbnails (Nova/AoE desde legacy; sprint-it, Moo Raiders, online-notes del usuario)
+- [x] Badges En producción / Open source
+- [x] Jerarquía imagen → título → descripción → stack → link
+- [x] cams/onvix sin imagen (OK)
 
 **Archivos probables:** `src/data/projects.ts`, `src/components/ProjectsSection.vue`, `public/projects/`
 
@@ -250,10 +250,12 @@ Nice-to-have e innovación; después de alta y media.
 - [x] Ítems **2**, **3**, **4**, **5**, **8** parcial, **10** parcial
 - [x] Nav activo (subrayado), drawer Escape + focus trap, experiencia anterior colapsable
 
-### Sprint UX-2 — Visual y proyectos (2–3 sesiones)
+### Sprint UX-2 — Visual y proyectos ✅ CERRADO
 
-- [ ] Ítems **1**, **6**, **7** (ritmo visual, foto, thumbnails)
-- [x] Ítem **9** parcial (títulos de sección en celeste sólido; gradiente en hero/CTA)
+- [x] Ítem **1** — superficies variadas (plain / muted / tile / accent), secciones alternas
+- [x] Ítem **6** — `profile-image.jpeg` (ilustración, object-fit contain, caption)
+- [x] Ítem **7** — thumbnails + badges en proyectos
+- [x] Ítem **9** parcial (gradiente reservado a hero, nombre y CTA)
 
 ### Sprint UX-3 — Pulido y marca (1–2 sesiones)
 
@@ -274,6 +276,7 @@ Nice-to-have e innovación; después de alta y media.
 | 2026-05-25  | Sprint UX-1 A+C | Competencias, contraste, focus, hero CTA, Agroideas `<details>` |
 | 2026-05-25  | Sprint UX-1 B   | Scroll-spy, drawer móvil, tipografías, APIX, bullets visibles |
 | 2026-05-25  | Sprint UX-1 cierre | Paleta verde, nav activo, a11y drawer, exp. anterior, footer ES |
+| 2026-05-25  | Sprint UX-2 | Thumbnails, Moo Raiders, profile-image.jpeg, ritmo visual |
 
 ---
 

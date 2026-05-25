@@ -21,7 +21,7 @@ function jobKey(job: ExperienceItem) {
           <div class="timeline__marker" aria-hidden="true">
             <span>{{ index + 1 }}</span>
           </div>
-          <article class="card timeline__card">
+          <article class="timeline__card surface--muted" :class="{ 'timeline__card--featured': job.featured }">
             <header class="timeline__header">
               <div>
                 <h3>{{ job.role }}</h3>
@@ -51,7 +51,7 @@ function jobKey(job: ExperienceItem) {
             <div class="timeline__marker timeline__marker--muted" aria-hidden="true">
               <span>{{ index + 1 }}</span>
             </div>
-            <article class="card timeline__card">
+            <article class="timeline__card surface--muted" :class="{ 'timeline__card--featured': job.featured }">
               <header class="timeline__header">
                 <div>
                   <h3>{{ job.role }}</h3>
@@ -121,7 +121,7 @@ function jobKey(job: ExperienceItem) {
   border: 1px solid rgba(46, 232, 184, 0.35);
 }
 
-.timeline__item--featured .timeline__card {
+.timeline__card--featured {
   border-color: rgba(46, 232, 184, 0.38);
   box-shadow: var(--shadow-glow);
 }
