@@ -2,7 +2,7 @@ export const profile = {
   name: 'Lucas Jappert',
   role: 'Responsable de Sistemas · Full Stack Developer',
   location: 'Rafaela, Santa Fe, Argentina',
-  tagline: '15+ años en agrotech, APIs e IA aplicada en producción.',
+  tagline: 'Liderazgo de sistemas en agrotech · full stack e IA en producción.',
   /** Enlace breve al logro Google (sección Formación) */
   credentialHighlight: {
     label: '1.er puesto · Google PWA Hackathon',
@@ -19,9 +19,9 @@ export const profile = {
     { label: 'GitHub', href: 'https://github.com/LucasJappert', icon: 'github' },
   ],
   about: [
-    'Desarrollador de software con más de 15 años de experiencia, especializado en TypeScript, Python, Node.js y Vue.js. Lidero el área de sistemas en Agroideas S.A., donde diseño y mantengo una plataforma agrotech multi-producto y coordino al equipo con prácticas ágiles.',
-    'Combino arquitectura full stack, integración con ERP legacy, tiempo real (WebSockets), PWA, observabilidad e IA aplicada (LLMs vía OpenRouter y OrcaRouter, visión, TTS). Uso desarrollo asistido por IA con Cursor y OpenCode, y documentación para agentes en los repos (AGENTS.md, docs/, .cursor/rules/).',
-    'En paralelo desarrollo productos propios: MMORPG 2D, herramientas para streamers, juegos en Godot 4 y proyectos de visión por computadora.',
+    'Llevo más de 15 años construyendo software que llega a producción. Hoy dirijo el área de sistemas en Agroideas S.A.: defino arquitectura, priorizo el backlog y acompaño al equipo en un ecosistema agrotech multi-producto — APIs, intranet, PWA, integración con ERP legacy y despliegue en Azure con CI/CD y revisión por pares.',
+    'Mi fuerte está en traducir dominio complejo en producto: TypeScript, Python y Vue.js en frontend y backend, tiempo real (WebSockets), observabilidad e IA aplicada en servicios reales (LLMs, visión y automatización de contenido). Combino entrega disciplinada con un flujo moderno de desarrollo asistido por IA, siempre con convenciones claras para que el equipo escale sin depender de una sola persona.',
+    'En paralelo mantengo proyectos propios — MMORPG 2D, herramientas para streamers, juegos en Godot 4 y visión por computadora — como espacio para probar ideas, aprender y seguir construyendo fuera del horario laboral.',
   ],
   interests: [
     { label: 'Programación', icon: 'code' },

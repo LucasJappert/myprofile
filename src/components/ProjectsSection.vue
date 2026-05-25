@@ -199,9 +199,10 @@ function hasMedia(project: (typeof projects)[number]) {
   height: 100%;
 }
 
+/* Altura según contenido; el tope lo ponemos en el bloque media, no en el texto */
 .bento__item--lead,
 .bento__item--support {
-  max-height: 500px;
+  max-height: none;
 }
 
 .bento__media {
@@ -214,6 +215,18 @@ function hasMedia(project: (typeof projects)[number]) {
 }
 
 @media (min-width: 960px) {
+  .bento__item--lead .bento__wide-inner--stack,
+  .bento__item--support .bento__wide-inner--stack {
+    flex: 0 1 auto;
+    height: auto;
+  }
+
+  .bento__item--lead .bento__body,
+  .bento__item--support .bento__body {
+    flex: 0 0 auto;
+    overflow: visible;
+  }
+
   .bento__item--lead .bento__media {
     height: min(280px, 42vh);
     max-height: 280px;
@@ -384,9 +397,9 @@ function hasMedia(project: (typeof projects)[number]) {
   padding: 1.1rem 1.35rem 1.35rem;
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
-  overflow: auto;
+  overflow: visible;
 }
 
 .bento__header {

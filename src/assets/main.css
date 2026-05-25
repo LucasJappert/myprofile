@@ -143,6 +143,7 @@ img {
   font-size: clamp(1.75rem, 4.5vw, 2.25rem);
   font-weight: 700;
   letter-spacing: -0.02em;
+  scroll-margin-top: calc(var(--nav-h) + 0.5rem);
 }
 
 .section-title span {
