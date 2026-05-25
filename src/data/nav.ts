@@ -15,7 +15,17 @@ export const navLinks: NavLink[] = [
   { id: 'contacto', label: 'Contacto', shortLabel: 'Contacto', icon: '✉' },
 ]
 
-/** Ítems fijos en la barra inferior móvil */
+/** Accesos rápidos móvil (Inicio = marca LJ en el header) */
+export const mobileQuickLinks = navLinks.filter((l) =>
+  ['experiencia', 'proyectos', 'stack', 'contacto'].includes(l.id),
+)
+
+/** Solo en el panel «Más» (evita duplicar tabs del header) */
+export const mobileDrawerLinks = navLinks.filter(
+  (l) => !mobileQuickLinks.some((q) => q.id === l.id) && l.id !== 'inicio',
+)
+
+/** @deprecated Usar mobileQuickLinks; se mantiene por compatibilidad en docs */
 export const mobileBarLinks = navLinks.filter((l) =>
   ['inicio', 'experiencia', 'proyectos', 'stack', 'contacto'].includes(l.id),
 )

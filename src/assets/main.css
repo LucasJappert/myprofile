@@ -44,6 +44,12 @@
   --text-lg: 1.25rem;
 }
 
+@media (max-width: 767px) {
+  :root {
+    --nav-h: 3.65rem;
+  }
+}
+
 *,
 *::before,
 *::after {
