@@ -71,18 +71,19 @@ import { projects } from '@/data/projects'
 
 .bento__item h3 {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: 1.125rem;
 }
 
 .bento__item time {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   color: var(--rosa);
 }
 
 .bento__item p {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
+  line-height: 1.65;
   color: var(--text-muted);
 }
 
@@ -96,7 +97,7 @@ import { projects } from '@/data/projects'
 .bento__link {
   display: inline-block;
   margin-top: 1rem;
-  font-size: 0.88rem;
+  font-size: var(--text-sm);
   font-weight: 600;
 }
 

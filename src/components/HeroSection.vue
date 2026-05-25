@@ -89,7 +89,7 @@ const base = import.meta.env.BASE_URL
 .hero__eyebrow {
   margin: 0 0 0.5rem;
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   color: var(--celeste);
 }
 
@@ -107,21 +107,21 @@ const base = import.meta.env.BASE_URL
 
 .hero__role {
   margin: 0.75rem 0 0;
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: var(--text);
 }
 
 .hero__tagline {
   margin: 1rem 0 0;
-  max-width: 36ch;
+  max-width: 38ch;
   color: var(--text-muted);
-  font-size: 1.05rem;
+  font-size: var(--text-base);
 }
 
 .hero__location {
   margin: 0.5rem 0 0;
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   color: var(--text-muted);
 }
 
@@ -136,7 +136,7 @@ const base = import.meta.env.BASE_URL
   display: flex;
   gap: 1.25rem;
   margin-top: 1.5rem;
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   font-weight: 500;
 }
 

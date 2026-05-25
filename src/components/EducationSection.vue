@@ -36,7 +36,7 @@ import { complementary, education } from '@/data/education'
 <style scoped>
 .subsection {
   margin: 0 0 1rem;
-  font-size: 1rem;
+  font-size: var(--text-base);
   font-weight: 600;
   color: var(--violeta);
 }
@@ -62,19 +62,19 @@ import { complementary, education } from '@/data/education'
 }
 
 .edu-item strong {
-  font-size: 0.95rem;
+  font-size: var(--text-base);
 }
 
 .edu-item__period {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: var(--text-xs);
   color: var(--rosa);
 }
 
 .edu-item__inst {
   display: block;
   margin-top: 0.35rem;
-  font-size: 0.88rem;
+  font-size: var(--text-sm);
   color: var(--text-muted);
 }
 

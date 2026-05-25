@@ -22,7 +22,7 @@ const year = new Date().getFullYear()
 .footer__inner {
   position: relative;
   text-align: center;
-  font-size: 0.85rem;
+  font-size: var(--text-sm);
   color: var(--text-muted);
 }
 

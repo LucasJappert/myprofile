@@ -9,12 +9,16 @@ import SkillsSection from '@/components/SkillsSection.vue'
 import EducationSection from '@/components/EducationSection.vue'
 import ContactSection from '@/components/ContactSection.vue'
 import SiteFooter from '@/components/SiteFooter.vue'
+import { navLinks } from '@/data/nav'
+import { useScrollSpy } from '@/composables/useScrollSpy'
+
+const activeId = useScrollSpy(navLinks.map((l) => l.id))
 </script>
 
 <template>
   <div class="app">
     <div class="app__bg" aria-hidden="true" />
-    <SiteNav />
+    <SiteNav :active-id="activeId" />
     <main>
       <HeroSection />
       <AboutSection />
@@ -25,7 +29,7 @@ import SiteFooter from '@/components/SiteFooter.vue'
       <ContactSection />
     </main>
     <SiteFooter />
-    <MobileNav />
+    <MobileNav :active-id="activeId" />
   </div>
 </template>
 

@@ -39,7 +39,7 @@ import { skillGroups } from '@/data/skills'
 
 .skills-card h3 {
   margin: 0 0 0.75rem;
-  font-size: 0.95rem;
+  font-size: var(--text-base);
   color: var(--celeste);
 }
 
@@ -50,7 +50,7 @@ import { skillGroups } from '@/data/skills'
 }
 
 .skills-card__tags .chip {
-  font-size: 0.72rem;
-  padding: 0.28rem 0.55rem;
+  font-size: var(--text-xs);
+  padding: 0.32rem 0.6rem;
 }
 </style>

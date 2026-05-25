@@ -42,7 +42,7 @@ import { profile } from '@/data/profile'
 .contact__email {
   display: block;
   font-family: var(--font-mono);
-  font-size: 1rem;
+  font-size: 1.0625rem;
   margin-bottom: 1.5rem;
   word-break: break-all;
 }

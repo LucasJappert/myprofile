@@ -27,6 +27,8 @@ import { profile } from '@/data/profile'
 .about p {
   margin: 0 0 1rem;
   color: var(--text-muted);
+  font-size: var(--text-base);
+  line-height: 1.75;
 }
 
 .about p:last-child {

@@ -50,8 +50,8 @@ Impacto fuerte en percepción profesional, usabilidad o accesibilidad. Conviene 
 
 ### 2. Densidad de texto en Experiencia
 
-- [x] Acortar vista por defecto del bloque Agroideas (resumen + 3 bullets clave)
-- [x] Agregar expansión “Ver detalle” / `<details>` para el resto de bullets
+- [x] Bullets de Agroideas visibles (6 ítems, sin colapsar — preferencia del autor)
+- [x] Texto APIX corregido (sin “Maizplus”)
 - [ ] Opcional: agrupar roles antiguos bajo “Experiencia anterior” colapsable
 
 **Archivos probables:** `src/data/experience.ts`, `src/components/ExperienceSection.vue`
@@ -71,9 +71,9 @@ Impacto fuerte en percepción profesional, usabilidad o accesibilidad. Conviene 
 
 ### 4. Navegación móvil completa
 
-- [ ] Incluir acceso a Perfil y Educación (drawer, menú “Más”, o ampliar barra inferior)
-- [ ] Implementar scroll-spy: resaltar sección activa en nav
-- [ ] Asegurar área táctil mínima 44×44px en ítems de navegación
+- [x] Incluir acceso a Perfil y Educación (drawer vía botón “Más” + menú hamburguesa)
+- [x] Implementar scroll-spy: resaltar sección activa en nav
+- [x] Asegurar área táctil mínima 44×44px en ítems de navegación
 
 **Archivos probables:** `src/components/SiteNav.vue`, `src/components/MobileNav.vue`, lógica en `App.vue`
 
@@ -116,8 +116,8 @@ Pulido profesional; mejora percepción sin rehacer la estructura.
 
 ### 8. Jerarquía tipográfica
 
-- [ ] Definir escala tipográfica (H1 hero, H2 sección, H3 card, body, small)
-- [ ] Aumentar `line-height` en párrafos largos (1.65–1.75)
+- [x] Definir escala tipográfica (`--text-base`, `--text-sm`, `--text-xs`)
+- [x] Aumentar tamaños globales y `line-height` en párrafos largos
 - [ ] Reducir peso visual de metadatos (fechas, ubicación)
 
 **Archivos probables:** `src/assets/main.css`, componentes de sección
@@ -246,9 +246,8 @@ Nice-to-have e innovación; después de alta y media.
 
 ### Sprint UX-1 — Fundamentos (1–2 sesiones)
 
-- [x] Ítems **3**, **5** parcial + **10** (hero) — hecho en `dev`
-- [ ] Ítem **4** (nav móvil completa, scroll-spy)
-- [x] Ítem **2** parcial (colapsar Agroideas)
+- [x] Ítems **3**, **4**, **5** parcial + **8** parcial + **10** (hero)
+- [x] Ítem **2** (Agroideas bullets visibles, APIX)
 
 ### Sprint UX-2 — Visual y proyectos (2–3 sesiones)
 
@@ -272,6 +271,7 @@ Nice-to-have e innovación; después de alta y media.
 |-------------|---------------|----------------|
 | 2026-05-25  | Plan creado   | Basado en auditoría chat + screenshot local |
 | 2026-05-25  | Sprint UX-1 A+C | Competencias, contraste, focus, hero CTA, Agroideas `<details>` |
+| 2026-05-25  | Sprint UX-1 B   | Scroll-spy, drawer móvil, tipografías, APIX, bullets visibles |
 
 ---
 

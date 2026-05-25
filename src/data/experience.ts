@@ -4,10 +4,7 @@ export interface ExperienceItem {
   period: string
   location?: string
   summary: string
-  /** Bullets visibles por defecto */
   highlights?: string[]
-  /** Bullets adicionales dentro de "Ver detalle" */
-  moreHighlights?: string[]
   featured?: boolean
 }
 
@@ -24,9 +21,7 @@ export const experience: ExperienceItem[] = [
       'Scrum Master del equipo; sprint-it en producción para gestión ágil.',
       'api-core (FastAPI): IA con OpenRouter/OrcaRouter, clima, noticias agro, métricas.',
       'Intranet Agroideas-In: Node/TS, Socket.IO, Vue 3, PWA, Web Push.',
-    ],
-    moreHighlights: [
-      'APIX / Maizplus: agricultura de precisión, mapas, reportes agronómicos.',
+      'APIX: agricultura de precisión, mapas, reportes agronómicos.',
       'Azure DevOps: PRs, Pipelines CI/CD, Docker multi-stage.',
       'Flujo diario con Cursor, OpenCode y documentación para agentes.',
     ],
