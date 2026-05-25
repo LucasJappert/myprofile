@@ -31,6 +31,12 @@ import { experience } from '@/data/experience'
             <ul v-if="job.highlights?.length" class="timeline__highlights">
               <li v-for="h in job.highlights" :key="h">{{ h }}</li>
             </ul>
+            <details v-if="job.moreHighlights?.length" class="timeline__details">
+              <summary>Ver detalle</summary>
+              <ul class="timeline__highlights">
+                <li v-for="h in job.moreHighlights" :key="h">{{ h }}</li>
+              </ul>
+            </details>
           </article>
         </li>
       </ol>
@@ -115,6 +121,7 @@ import { experience } from '@/data/experience'
   margin: 0;
   color: var(--text-muted);
   font-size: 0.95rem;
+  line-height: 1.7;
 }
 
 .timeline__highlights {
@@ -122,10 +129,52 @@ import { experience } from '@/data/experience'
   padding-left: 1.2rem;
   color: var(--text-muted);
   font-size: 0.9rem;
+  line-height: 1.65;
 }
 
 .timeline__highlights li {
   margin-bottom: 0.35rem;
+}
+
+.timeline__details {
+  margin-top: 0.75rem;
+}
+
+.timeline__details summary {
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--celeste);
+  list-style: none;
+  user-select: none;
+}
+
+.timeline__details summary::-webkit-details-marker {
+  display: none;
+}
+
+.timeline__details summary::before {
+  content: '▸ ';
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.timeline__details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.timeline__details summary:hover {
+  color: var(--rosa);
+}
+
+.timeline__details summary:focus-visible {
+  outline: 2px solid var(--celeste);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.timeline__details .timeline__highlights {
+  margin-top: 0.65rem;
 }
 
 @media (max-width: 600px) {

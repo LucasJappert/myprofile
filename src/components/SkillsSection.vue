@@ -3,7 +3,7 @@ import { skillGroups } from '@/data/skills'
 </script>
 
 <template>
-  <section id="skills" class="section">
+  <section id="competencias" class="section">
     <div class="container">
       <h2 class="section-title"><span>Competencias</span></h2>
       <div class="skills-grid">

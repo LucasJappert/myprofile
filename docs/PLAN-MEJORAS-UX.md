@@ -13,11 +13,11 @@ Referencia: auditoría post-MVP (screenshot localhost + código en `src/`)
 
 | Prioridad | Total ítems | Hechos |
 |-----------|-------------|--------|
-| Alta      | 7           | 0      |
-| Media     | 7           | 0      |
+| Alta      | 7           | 0 (3 en progreso) |
+| Media     | 7           | 0 (1 en progreso) |
 | Baja      | 5           | 0      |
-| Móvil     | 4           | 0      |
-| **Total** | **23**      | **0**  |
+| Móvil     | 4           | 1      |
+| **Total** | **23**      | **~8 sub-ítems** |
 
 ---
 
@@ -50,8 +50,8 @@ Impacto fuerte en percepción profesional, usabilidad o accesibilidad. Conviene 
 
 ### 2. Densidad de texto en Experiencia
 
-- [ ] Acortar vista por defecto del bloque Agroideas (resumen + 3 bullets clave)
-- [ ] Agregar expansión “Ver detalle” / `<details>` para el resto de bullets
+- [x] Acortar vista por defecto del bloque Agroideas (resumen + 3 bullets clave)
+- [x] Agregar expansión “Ver detalle” / `<details>` para el resto de bullets
 - [ ] Opcional: agrupar roles antiguos bajo “Experiencia anterior” colapsable
 
 **Archivos probables:** `src/data/experience.ts`, `src/components/ExperienceSection.vue`
@@ -60,9 +60,9 @@ Impacto fuerte en percepción profesional, usabilidad o accesibilidad. Conviene 
 
 ### 3. Contraste y accesibilidad (WCAG)
 
-- [ ] Subir luminosidad de `--text-muted` (objetivo ≥ 4.5:1 sobre fondo para texto body)
+- [x] Subir luminosidad de `--text-muted` (objetivo ≥ 4.5:1 sobre fondo para texto body)
 - [ ] Revisar contraste de chips celeste/rosa sobre `--bg-card`
-- [ ] Añadir `:focus-visible` claro en links, botones y nav (outline 2px celeste)
+- [x] Añadir `:focus-visible` claro en links, botones y nav (outline 2px celeste)
 - [ ] Validar con Lighthouse Accessibility o axe DevTools
 
 **Archivos probables:** `src/assets/main.css`, componentes con `.btn` y `.chip`
@@ -81,7 +81,7 @@ Impacto fuerte en percepción profesional, usabilidad o accesibilidad. Conviene 
 
 ### 5. Consistencia de idioma (español)
 
-- [ ] Cambiar “Skills” → “Competencias” o “Habilidades” en nav, `id` de sección y título
+- [x] Cambiar “Skills” → “Competencias” o “Habilidades” en nav, `id` de sección y título
 - [ ] Revisar labels sueltos en inglés (footer, botones, aria-labels)
 - [ ] Alinear copy del hero con rol público deseado (`profile.ts`)
 
@@ -136,7 +136,7 @@ Pulido profesional; mejora percepción sin rehacer la estructura.
 
 ### 10. CTAs y jerarquía de acciones
 
-- [ ] Hero: primario “Descargar CV”, secundario “Ver proyectos” o LinkedIn
+- [x] Hero: primario “Descargar CV”, secundario “Ver proyectos” o LinkedIn
 - [ ] Diferenciar visualmente primario / secundario / ghost en todo el sitio
 - [ ] Evitar duplicar mismos CTAs sin motivo (hero vs contacto: OK si contacto suma email + redes)
 
@@ -235,7 +235,7 @@ Nice-to-have e innovación; después de alta y media.
 
 Ítems específicos de viewport pequeño; pueden hacerse dentro de los puntos anteriores.
 
-- [ ] Colapsar Agroideas por defecto en `< 768px`
+- [x] Colapsar Agroideas por defecto en `< 768px` (vía `<details>` cerrado)
 - [ ] Validar `padding-bottom` del `main` con barra inferior + `safe-area-inset`
 - [ ] Hero móvil: texto primero o foto más compacta (orden en grid)
 - [ ] Probar en iOS Safari (100dvh, barra de URL, scroll)
@@ -246,8 +246,9 @@ Nice-to-have e innovación; después de alta y media.
 
 ### Sprint UX-1 — Fundamentos (1–2 sesiones)
 
-- [ ] Ítems **3**, **4**, **5** (accesibilidad, nav móvil, español)
-- [ ] Ítem **2** parcial (colapsar Agroideas)
+- [x] Ítems **3**, **5** parcial + **10** (hero) — hecho en `dev`
+- [ ] Ítem **4** (nav móvil completa, scroll-spy)
+- [x] Ítem **2** parcial (colapsar Agroideas)
 
 ### Sprint UX-2 — Visual y proyectos (2–3 sesiones)
 
@@ -270,7 +271,7 @@ Nice-to-have e innovación; después de alta y media.
 | Fecha       | Sprint / ítem | Commit / notas |
 |-------------|---------------|----------------|
 | 2026-05-25  | Plan creado   | Basado en auditoría chat + screenshot local |
-|             |               |                |
+| 2026-05-25  | Sprint UX-1 A+C | Competencias, contraste, focus, hero CTA, Agroideas `<details>` |
 
 ---
 

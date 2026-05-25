@@ -10,7 +10,7 @@
   --bg-surface: #0c0e18;
   --bg-card: rgba(14, 16, 28, 0.72);
   --text: #eef2ff;
-  --text-muted: #94a3b8;
+  --text-muted: #b8c5d9;
   --border: rgba(0, 232, 255, 0.18);
   --gradient-brand: linear-gradient(
     135deg,
@@ -59,7 +59,7 @@ body {
   margin: 0;
   font-family: var(--font-sans);
   font-size: 1rem;
-  line-height: 1.65;
+  line-height: 1.7;
   color: var(--text);
   background: var(--bg-deep);
   -webkit-font-smoothing: antialiased;
@@ -77,6 +77,16 @@ a {
 
 a:hover {
   color: var(--rosa);
+}
+
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--celeste);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 img {
@@ -140,6 +150,11 @@ img {
   cursor: pointer;
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--celeste);
+  outline-offset: 3px;
 }
 
 .btn:active {

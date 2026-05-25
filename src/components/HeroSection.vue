@@ -18,7 +18,7 @@ const base = import.meta.env.BASE_URL
           <a :href="profile.cvUrl" class="btn btn-primary" target="_blank" rel="noopener">
             Descargar CV
           </a>
-          <a href="#contacto" class="btn btn-ghost">Contacto</a>
+          <a href="#proyectos" class="btn btn-ghost">Ver proyectos</a>
         </div>
         <div class="hero__social">
           <a

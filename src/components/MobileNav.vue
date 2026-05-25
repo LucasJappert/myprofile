@@ -3,7 +3,7 @@ const links = [
   { id: 'inicio', label: 'Inicio', icon: '⌂' },
   { id: 'experiencia', label: 'Exp.', icon: '◆' },
   { id: 'proyectos', label: 'Proy.', icon: '▣' },
-  { id: 'skills', label: 'Skills', icon: '◇' },
+  { id: 'competencias', label: 'Comp.', icon: '◇' },
   { id: 'contacto', label: 'Contacto', icon: '✉' },
 ]
 </script>
@@ -36,15 +36,24 @@ const links = [
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 0.15rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
   font-size: 0.65rem;
   font-weight: 500;
   color: var(--text-muted);
-  padding: 0.25rem;
+  padding: 0.35rem 0.25rem;
 }
 
 .mobile-nav a:hover {
   color: var(--celeste);
+}
+
+.mobile-nav a:focus-visible {
+  outline: 2px solid var(--celeste);
+  outline-offset: 2px;
+  border-radius: 6px;
 }
 
 .mobile-nav__icon {

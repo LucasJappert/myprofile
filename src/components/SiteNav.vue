@@ -4,7 +4,7 @@ const links = [
   { id: 'perfil', label: 'Perfil' },
   { id: 'experiencia', label: 'Experiencia' },
   { id: 'proyectos', label: 'Proyectos' },
-  { id: 'skills', label: 'Skills' },
+  { id: 'competencias', label: 'Competencias' },
   { id: 'educacion', label: 'Educación' },
   { id: 'contacto', label: 'Contacto' },
 ]
@@ -64,6 +64,13 @@ const links = [
 
 .nav__links a:hover {
   color: var(--celeste);
+}
+
+.nav__brand:focus-visible,
+.nav__links a:focus-visible {
+  outline: 2px solid var(--celeste);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 @media (min-width: 768px) {
