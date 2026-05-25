@@ -173,15 +173,15 @@ function jobKey(job: ExperienceItem) {
   margin: 0;
   color: var(--text-muted);
   font-size: var(--text-base);
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 .timeline__highlights {
   margin: 1rem 0 0;
   padding-left: 1.2rem;
   color: var(--text-muted);
-  font-size: var(--text-sm);
-  line-height: 1.7;
+  font-size: var(--text-base);
+  line-height: 1.75;
 }
 
 .timeline__highlights li {

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { profile } from '@/data/profile'
-
-const base = import.meta.env.BASE_URL
+import { assetUrl } from '@/utils/assetUrl'
 </script>
 
 <template>
@@ -9,7 +8,11 @@ const base = import.meta.env.BASE_URL
     <div class="hero__mesh" aria-hidden="true" />
     <div class="container hero__grid">
       <div class="hero__content">
-        <p class="hero__eyebrow">Hola, soy</p>
+        <p v-if="profile.currentEmployer" class="hero__employer">
+          <span class="hero__employer-company">{{ profile.currentEmployer.company }}</span>
+          <span class="hero__employer-sep" aria-hidden="true">·</span>
+          <span class="hero__employer-sector">{{ profile.currentEmployer.sector }}</span>
+        </p>
         <h1 class="hero__name">{{ profile.name }}</h1>
         <p class="hero__role">{{ profile.role }}</p>
         <a
@@ -40,12 +43,16 @@ const base = import.meta.env.BASE_URL
             {{ link.label }}
           </a>
         </div>
+        <a href="#perfil" class="hero__scroll-hint">
+          <span class="hero__scroll-hint-label">Sobre mí</span>
+          <span class="hero__scroll-hint-icon" aria-hidden="true">↓</span>
+        </a>
       </div>
       <div class="hero__visual">
         <figure class="hero__figure">
           <div class="hero__frame hero__frame--art">
             <img
-              :src="`${base}${profile.avatar}`"
+              :src="assetUrl(profile.avatar)"
               :alt="profile.avatarAlt"
               width="400"
               height="500"
@@ -62,10 +69,10 @@ const base = import.meta.env.BASE_URL
 <style scoped>
 .hero {
   position: relative;
-  padding-top: calc(var(--nav-h) + 3rem);
-  padding-bottom: 4rem;
+  padding-top: calc(var(--nav-h) + 2rem);
+  padding-bottom: 2rem;
   overflow: hidden;
-  min-height: min(100dvh, 920px);
+  min-height: auto;
   display: flex;
   align-items: center;
 }
@@ -99,17 +106,41 @@ const base = import.meta.env.BASE_URL
 }
 
 @media (min-width: 900px) {
+  .hero {
+    min-height: clamp(30rem, 76dvh, 40rem);
+    padding-bottom: 1.5rem;
+  }
+
   .hero__grid {
     grid-template-columns: 1.05fr 0.95fr;
-    gap: 3rem;
+    gap: 2rem;
+    align-items: center;
   }
 }
 
-.hero__eyebrow {
+.hero__employer {
   margin: 0 0 0.5rem;
   font-family: var(--font-mono);
   font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.hero__employer-company {
   color: var(--celeste);
+  font-weight: 600;
+}
+
+.hero__employer-sep {
+  margin: 0 0.35rem;
+  color: var(--text-muted);
+}
+
+.hero__employer-sector {
+  color: var(--agua);
+  text-transform: uppercase;
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
 }
 
 .hero__credential {
@@ -173,21 +204,28 @@ const base = import.meta.env.BASE_URL
 }
 
 .hero__role {
-  margin: 0.75rem 0 0;
-  font-size: 1.25rem;
+  margin: 0.5rem 0 0;
+  font-size: 1.15rem;
   font-weight: 600;
   color: var(--text);
 }
 
+@media (min-width: 900px) {
+  .hero__role {
+    font-size: 1.25rem;
+  }
+}
+
 .hero__tagline {
-  margin: 1rem 0 0;
+  margin: 0.65rem 0 0;
   max-width: 38ch;
   color: var(--text-muted);
   font-size: var(--text-base);
+  line-height: 1.55;
 }
 
 .hero__location {
-  margin: 0.5rem 0 0;
+  margin: 0.35rem 0 0;
   font-size: var(--text-sm);
   color: var(--text-muted);
 }
@@ -195,16 +233,56 @@ const base = import.meta.env.BASE_URL
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 1.75rem;
+  gap: 0.65rem;
+  margin-top: 1.15rem;
 }
 
 .hero__social {
   display: flex;
-  gap: 1.25rem;
-  margin-top: 1.5rem;
+  gap: 1rem;
+  margin-top: 0.85rem;
   font-size: var(--text-sm);
   font-weight: 500;
+}
+
+.hero__scroll-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--agua);
+  text-decoration: none;
+  opacity: 0.85;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.hero__scroll-hint:hover {
+  color: var(--celeste);
+  opacity: 1;
+}
+
+.hero__scroll-hint-icon {
+  font-size: 1rem;
+  line-height: 1;
+  animation: hint-bob 2s ease-in-out infinite;
+}
+
+@keyframes hint-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__scroll-hint-icon {
+    animation: none;
+  }
 }
 
 .hero__figure {
@@ -220,7 +298,7 @@ const base = import.meta.env.BASE_URL
 }
 
 .hero__frame--art {
-  padding: 4px;
+  padding: 2px;
   overflow: hidden;
   background: linear-gradient(
     160deg,
@@ -234,8 +312,8 @@ const base = import.meta.env.BASE_URL
   display: block;
   width: 100%;
   height: 100%;
-  min-height: 280px;
-  border-radius: calc(var(--radius-lg) - 4px);
+  min-height: 220px;
+  border-radius: calc(var(--radius-lg) - 1px);
   background: radial-gradient(ellipse at 50% 15%, #1a2744 0%, #0a0e18 50%, #05060d 100%);
   aspect-ratio: 4 / 5;
   object-fit: cover;
@@ -258,7 +336,11 @@ const base = import.meta.env.BASE_URL
 @media (min-width: 900px) {
   .hero__visual {
     margin-inline: auto 0;
-    max-width: 400px;
+    max-width: 340px;
+  }
+
+  .hero__frame img {
+    min-height: 240px;
   }
 }
 

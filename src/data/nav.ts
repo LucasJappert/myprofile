@@ -10,14 +10,14 @@ export const navLinks: NavLink[] = [
   { id: 'perfil', label: 'Perfil', shortLabel: 'Perfil', icon: '◎' },
   { id: 'experiencia', label: 'Experiencia', shortLabel: 'Exp.', icon: '◆' },
   { id: 'proyectos', label: 'Proyectos', shortLabel: 'Proy.', icon: '▣' },
-  { id: 'competencias', label: 'Competencias', shortLabel: 'Comp.', icon: '◇' },
+  { id: 'stack', label: 'Stack técnico', shortLabel: 'Stack', icon: '◇' },
   { id: 'educacion', label: 'Educación', shortLabel: 'Educ.', icon: '▤' },
   { id: 'contacto', label: 'Contacto', shortLabel: 'Contacto', icon: '✉' },
 ]
 
 /** Ítems fijos en la barra inferior móvil */
 export const mobileBarLinks = navLinks.filter((l) =>
-  ['inicio', 'experiencia', 'proyectos', 'competencias', 'contacto'].includes(l.id),
+  ['inicio', 'experiencia', 'proyectos', 'stack', 'contacto'].includes(l.id),
 )
 
 /** Enlace extra en drawer (ancla dentro de Formación) */

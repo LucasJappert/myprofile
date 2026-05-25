@@ -3,9 +3,9 @@ import { skillGroups } from '@/data/skills'
 </script>
 
 <template>
-  <section id="competencias" class="section reveal">
+  <section id="stack" class="section reveal">
     <div class="container">
-      <h2 class="section-title"><span>Competencias</span></h2>
+      <h2 class="section-title"><span>Stack técnico</span></h2>
       <div class="skills-grid">
         <article
           v-for="group in skillGroups"
@@ -70,7 +70,7 @@ import { skillGroups } from '@/data/skills'
 }
 
 .skills-card__tags .chip {
-  font-size: var(--text-xs);
-  padding: 0.32rem 0.6rem;
+  font-size: var(--text-sm);
+  padding: 0.35rem 0.65rem;
 }
 </style>
