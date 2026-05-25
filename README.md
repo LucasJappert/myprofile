@@ -20,9 +20,9 @@ npm run preview
 
 ## Deploy
 
-Al hacer push a `main`, el workflow `.github/workflows/deploy.yml` publica `dist/` en GitHub Pages.
+Al hacer merge a `main`, el workflow `.github/workflows/deploy.yml` publica `dist/` en GitHub Pages.
 
-En **Settings → Pages**, el origen debe ser **GitHub Actions**.
+En **Settings → Pages**, el origen debe ser **GitHub Actions** (no “Deploy from a branch”).
 
 ## Estructura
 
