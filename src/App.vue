@@ -9,6 +9,7 @@ import EducationSection from '@/components/EducationSection.vue'
 import ContactSection from '@/components/ContactSection.vue'
 import SiteFooter from '@/components/SiteFooter.vue'
 import ScrollProgressBar from '@/components/ScrollProgressBar.vue'
+import ScrollToTopButton from '@/components/ScrollToTopButton.vue'
 import { navLinks } from '@/data/nav'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useScrollSpy } from '@/composables/useScrollSpy'
@@ -21,6 +22,7 @@ useScrollReveal()
   <div class="app">
     <div class="app__bg" aria-hidden="true" />
     <ScrollProgressBar />
+    <ScrollToTopButton />
     <SiteNav :active-id="activeId" />
     <main>
       <HeroSection />

@@ -5,6 +5,12 @@ import { experienceEarlier, experienceIntro, experiencePrimary } from '@/data/ex
 function jobKey(job: ExperienceItem) {
   return `${job.company}-${job.period}`
 }
+
+function periodBeforePresent(period: string) {
+  const marker = 'Presente'
+  if (!period.endsWith(marker)) return period
+  return period.slice(0, -marker.length).trimEnd()
+}
 </script>
 
 <template>
@@ -17,19 +23,26 @@ function jobKey(job: ExperienceItem) {
           v-for="(job, index) in experiencePrimary"
           :key="jobKey(job)"
           class="timeline__item"
-          :class="{ 'timeline__item--featured': job.featured }"
+          :class="{ 'timeline__item--current': job.current }"
         >
-          <article class="timeline__card surface--muted" :class="{ 'timeline__card--featured': job.featured }">
+          <article class="timeline__card surface--muted" :class="{ 'timeline__card--current': job.current }">
             <div class="timeline__marker" aria-hidden="true">
               <span>{{ index + 1 }}</span>
             </div>
             <header class="timeline__header">
               <div>
-                <h3>{{ job.role }}</h3>
+                <div class="timeline__title-row">
+                  <h3>{{ job.role }}</h3>
+                  <span v-if="job.current" class="chip chip--verde timeline__current-badge">Rol actual</span>
+                </div>
                 <p class="timeline__company">{{ job.company }}</p>
               </div>
               <div class="timeline__meta">
-                <time>{{ job.period }}</time>
+                <time v-if="job.current && job.period.endsWith('Presente')">
+                  {{ periodBeforePresent(job.period) }}
+                  <span class="timeline__present">Presente</span>
+                </time>
+                <time v-else>{{ job.period }}</time>
                 <span v-if="job.location">{{ job.location }}</span>
               </div>
             </header>
@@ -54,7 +67,7 @@ function jobKey(job: ExperienceItem) {
             :key="jobKey(job)"
             class="timeline__item"
           >
-            <article class="timeline__card surface--muted" :class="{ 'timeline__card--featured': job.featured }">
+            <article class="timeline__card surface--muted">
               <div class="timeline__marker timeline__marker--muted" aria-hidden="true">
                 <span>{{ index + 1 }}</span>
               </div>
@@ -141,9 +154,40 @@ function jobKey(job: ExperienceItem) {
   border: 1px solid rgba(46, 232, 184, 0.35);
 }
 
-.timeline__card--featured {
+.timeline__card--current {
   border-color: rgba(46, 232, 184, 0.38);
   box-shadow: var(--shadow-glow);
+}
+
+.timeline__card--current::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.75rem;
+  bottom: 0.75rem;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--gradient-brand);
+}
+
+.timeline__title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.65rem;
+}
+
+.timeline__title-row h3 {
+  margin: 0;
+}
+
+.timeline__current-badge {
+  flex-shrink: 0;
+}
+
+.timeline__present {
+  font-weight: 600;
+  color: var(--verde);
 }
 
 .timeline__header {
@@ -159,7 +203,6 @@ function jobKey(job: ExperienceItem) {
   margin: 0;
   font-size: 1.2rem;
 }
-
 .timeline__company {
   margin: 0.2rem 0 0;
   font-weight: 600;

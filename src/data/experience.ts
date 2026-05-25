@@ -6,6 +6,8 @@ export interface ExperienceItem {
   summary: string
   highlights?: string[]
   featured?: boolean
+  /** Rol en curso — badge y énfasis visual en la timeline */
+  current?: boolean
 }
 
 export const experienceIntro =
@@ -18,7 +20,7 @@ export const experiencePrimary: ExperienceItem[] = [
     role: 'Responsable de Sistemas',
     period: 'Oct 2021 – Presente',
     location: 'Rafaela, Santa Fe',
-    featured: true,
+    current: true,
     summary:
       'Liderazgo del ecosistema digital: APIs, frontends, integraciones ERP, IA y despliegue en Azure/Docker.',
     highlights: [
