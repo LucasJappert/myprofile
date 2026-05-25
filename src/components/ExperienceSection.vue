@@ -19,10 +19,10 @@ function jobKey(job: ExperienceItem) {
           class="timeline__item"
           :class="{ 'timeline__item--featured': job.featured }"
         >
-          <div class="timeline__marker" aria-hidden="true">
-            <span>{{ index + 1 }}</span>
-          </div>
           <article class="timeline__card surface--muted" :class="{ 'timeline__card--featured': job.featured }">
+            <div class="timeline__marker" aria-hidden="true">
+              <span>{{ index + 1 }}</span>
+            </div>
             <header class="timeline__header">
               <div>
                 <h3>{{ job.role }}</h3>
@@ -42,17 +42,22 @@ function jobKey(job: ExperienceItem) {
       </ol>
 
       <details v-if="experienceEarlier.length" class="timeline__earlier">
-        <summary>Experiencia anterior ({{ experienceEarlier.length }} roles)</summary>
+        <summary class="timeline__earlier-summary">
+          <span class="timeline__earlier-icon" aria-hidden="true" />
+          <span class="timeline__earlier-label">
+            Experiencia anterior ({{ experienceEarlier.length }} roles)
+          </span>
+        </summary>
         <ol class="timeline timeline--nested">
           <li
             v-for="(job, index) in experienceEarlier"
             :key="jobKey(job)"
             class="timeline__item"
           >
-            <div class="timeline__marker timeline__marker--muted" aria-hidden="true">
-              <span>{{ index + 1 }}</span>
-            </div>
             <article class="timeline__card surface--muted" :class="{ 'timeline__card--featured': job.featured }">
+              <div class="timeline__marker timeline__marker--muted" aria-hidden="true">
+                <span>{{ index + 1 }}</span>
+              </div>
               <header class="timeline__header">
                 <div>
                   <h3>{{ job.role }}</h3>
@@ -98,16 +103,22 @@ function jobKey(job: ExperienceItem) {
 }
 
 .timeline__item {
-  display: grid;
-  grid-template-columns: 2.5rem 1fr;
-  gap: 1rem;
+  display: block;
+}
+
+.timeline__card {
+  position: relative;
 }
 
 .timeline__marker {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  z-index: 1;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  padding-top: 1.25rem;
+  pointer-events: none;
 }
 
 .timeline__marker span {
@@ -141,6 +152,7 @@ function jobKey(job: ExperienceItem) {
   justify-content: space-between;
   gap: 0.5rem 1rem;
   margin-bottom: 0.75rem;
+  padding-right: 2.75rem;
 }
 
 .timeline__header h3 {
@@ -189,47 +201,95 @@ function jobKey(job: ExperienceItem) {
 }
 
 .timeline__earlier {
-  margin-top: 2rem;
+  margin-top: 1.25rem;
 }
 
-.timeline__earlier summary {
+.timeline__earlier-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   cursor: pointer;
+  list-style: none;
+  user-select: none;
+  padding: 0.85rem 1rem;
   font-size: var(--text-base);
   font-weight: 600;
   color: var(--agua);
-  list-style: none;
-  user-select: none;
-  padding: 0.5rem 0;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(46, 232, 184, 0.28);
+  background: rgba(46, 232, 184, 0.06);
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
-.timeline__earlier summary::-webkit-details-marker {
+.timeline__earlier-summary::-webkit-details-marker {
   display: none;
 }
 
-.timeline__earlier summary::before {
-  content: '▸ ';
-  display: inline-block;
+.timeline__earlier-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: rgba(46, 232, 184, 0.14);
+  color: var(--verde);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.timeline__earlier-icon::before {
+  content: '';
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg) translate(-1px, 1px);
   transition: transform 0.2s ease;
 }
 
-.timeline__earlier[open] summary::before {
-  transform: rotate(90deg);
+.timeline__earlier[open] .timeline__earlier-icon {
+  background: rgba(0, 232, 255, 0.12);
+  color: var(--celeste);
 }
 
-.timeline__earlier summary:hover {
+.timeline__earlier[open] .timeline__earlier-icon::before {
+  transform: rotate(45deg) translate(0, -1px);
+}
+
+.timeline__earlier-label {
+  line-height: 1.35;
+}
+
+.timeline__earlier-summary:hover {
   color: var(--verde);
+  border-color: rgba(34, 232, 132, 0.4);
+  background: rgba(34, 232, 132, 0.1);
 }
 
-.timeline__earlier summary:focus-visible {
+.timeline__earlier-summary:focus-visible {
   outline: 2px solid var(--celeste);
-  outline-offset: 3px;
-  border-radius: 4px;
+  outline-offset: 2px;
+}
+
+.timeline__earlier[open] .timeline__earlier-summary {
+  margin-bottom: 0.25rem;
+  border-color: rgba(0, 232, 255, 0.35);
+  background: rgba(0, 232, 255, 0.06);
 }
 
 @media (max-width: 600px) {
   .timeline__meta {
     text-align: left;
     width: 100%;
+    padding-right: 0;
+  }
+
+  .timeline__header {
+    padding-right: 2.5rem;
   }
 }
 </style>

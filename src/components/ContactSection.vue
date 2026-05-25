@@ -27,18 +27,22 @@ async function copyEmail() {
           </button>
         </div>
         <div class="contact__actions">
-          <a :href="`mailto:${profile.email}`" class="btn btn-primary">Enviar email</a>
-          <a :href="profile.cvUrl" class="btn btn-ghost" target="_blank" rel="noopener">Descargar CV (PDF)</a>
-          <a
-            v-for="link in profile.links"
-            :key="link.href"
-            :href="link.href"
-            class="btn btn-ghost"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {{ link.label }}
-          </a>
+          <a :href="`mailto:${profile.email}`" class="btn btn-primary contact__cta">Enviar email</a>
+          <div class="contact__secondary">
+            <a :href="profile.cvUrl" class="btn btn-ghost" target="_blank" rel="noopener">
+              CV (PDF)
+            </a>
+            <a
+              v-for="link in profile.links"
+              :key="link.href"
+              :href="link.href"
+              class="btn btn-ghost"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {{ link.label }}
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -83,8 +87,35 @@ async function copyEmail() {
 
 .contact__actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  justify-content: center;
+  flex-direction: column;
+  gap: 0.65rem;
+  align-items: stretch;
+}
+
+.contact__cta {
+  width: 100%;
+}
+
+.contact__secondary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.contact__secondary .btn {
+  width: 100%;
+  padding: 0.65rem 0.5rem;
+  font-size: var(--text-xs);
+  white-space: nowrap;
+}
+
+@media (max-width: 380px) {
+  .contact__secondary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .contact__secondary .btn:first-child {
+    grid-column: 1 / -1;
+  }
 }
 </style>
