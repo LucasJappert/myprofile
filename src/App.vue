@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import SiteNav from '@/components/SiteNav.vue'
-import MobileNav from '@/components/MobileNav.vue'
 import HeroSection from '@/components/HeroSection.vue'
 import AboutSection from '@/components/AboutSection.vue'
 import ExperienceSection from '@/components/ExperienceSection.vue'
@@ -33,7 +32,6 @@ useScrollReveal()
       <ContactSection />
     </main>
     <SiteFooter />
-    <MobileNav :active-id="activeId" />
   </div>
 </template>
 
@@ -57,15 +55,5 @@ useScrollReveal()
   inset: 0;
   background: var(--gradient-soft);
   opacity: 0.6;
-}
-
-main {
-  padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
-}
-
-@media (min-width: 768px) {
-  main {
-    padding-bottom: 0;
-  }
 }
 </style>
