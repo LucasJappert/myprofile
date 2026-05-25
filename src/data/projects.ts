@@ -6,14 +6,14 @@ export interface Project {
 	href?: string;
 	/** Ruta bajo public/, ej. projects/nova-rpg.jpg */
 	image?: string;
-	badge?: 'production' | 'opensource' | 'youtube';
+	badge?: 'production' | 'opensource' | 'youtube' | 'itchio';
 	/** Enlace del chip (ej. canal de YouTube) */
 	badgeHref?: string;
 	/** ID de video de YouTube para embed en la tarjeta (en lugar de image) */
 	youtubeId?: string;
 	featured?: boolean;
-	/** lead/support = fila 1 (70/30); trio = fila 2 (3 cols); wide = ancho completo */
-	layout?: 'lead' | 'support' | 'trio' | 'wide' | 'default';
+	/** lead/support = fila 1; row2-primary/compact = fila 2 (50/50); wide = ancho completo */
+	layout?: 'lead' | 'support' | 'row2-primary' | 'row2-compact' | 'wide' | 'default';
 }
 
 export const projects: Project[] = [
@@ -47,10 +47,11 @@ export const projects: Project[] = [
 		description:
 			'Wave defense cooperativo multijugador (inspirado en Moo Moo): héroes, items y servidor autoritativo.',
 		href: 'https://github.com/LucasJappert/moomoo-lan-party',
-		image: 'projects/moo-raiders.png',
-		badge: 'opensource',
+		youtubeId: 'tlN-feT4x44',
+		badge: 'itchio',
+		badgeHref: 'https://lucasjappert.itch.io/mooraiders',
 		featured: true,
-		layout: 'trio',
+		layout: 'row2-primary',
 	},
 	{
 		name: 'online-notes',
@@ -58,16 +59,15 @@ export const projects: Project[] = [
 		stack: ['Vue 3', 'Netlify'],
 		description: 'Notas rápidas en la nube.',
 		href: 'https://speedy-notes.netlify.app',
-		image: 'projects/online-notes.png',
 		badge: 'production',
-		layout: 'trio',
+		layout: 'row2-compact',
 	},
 	{
 		name: 'cams / onvix',
 		period: 'Visión',
 		stack: ['FastAPI', 'OpenCV', 'YOLOv8', 'Vue 3'],
 		description: 'Monitoreo IP/ONVIF, detección de personas, notificaciones.',
-		layout: 'trio',
+		layout: 'row2-compact',
 	},
 	{
 		name: 'new-aoe-overlay',

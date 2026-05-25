@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { projects } from '@/data/projects'
+import { youtubeEmbedSrc } from '@/utils/youtube'
 
 const base = import.meta.env.BASE_URL
 
@@ -7,38 +8,29 @@ const badgeLabels = {
   production: 'En producción',
   opensource: 'Open source',
   youtube: 'Canal YouTube',
+  itchio: 'itch.io',
 } as const
 
 function imageSrc(path: string) {
   return `${base}${path}`
 }
 
-/** Embed en loop, silenciado; playlist=id necesario para loop */
-function youtubeEmbedSrc(videoId: string) {
-  const params = new URLSearchParams({
-    autoplay: '1',
-    mute: '1',
-    loop: '1',
-    playlist: videoId,
-    controls: '0',
-    modestbranding: '1',
-    playsinline: '1',
-    rel: '0',
-  })
-  return `https://www.youtube-nocookie.com/embed/${videoId}?${params}`
-}
-
 function layoutClass(layout?: string) {
   if (layout === 'lead') return 'bento__item--lead'
   if (layout === 'support') return 'bento__item--support'
-  if (layout === 'trio') return 'bento__item--trio'
+  if (layout === 'row2-primary') return 'bento__item--row2-primary'
+  if (layout === 'row2-compact') return 'bento__item--row2-compact'
   if (layout === 'wide') return 'bento__item--wide'
   return ''
+}
+
+function hasMedia(project: (typeof projects)[number]) {
+  return Boolean(project.youtubeId || project.image)
 }
 </script>
 
 <template>
-  <section id="proyectos" class="section">
+  <section id="proyectos" class="section reveal">
     <div class="container">
       <h2 class="section-title"><span>Proyectos</span></h2>
       <div class="bento">
@@ -53,7 +45,10 @@ function layoutClass(layout?: string) {
         >
           <div
             class="bento__wide-inner"
-            :class="{ 'bento__wide-inner--stack': project.layout !== 'wide' }"
+            :class="{
+              'bento__wide-inner--stack': project.layout !== 'wide',
+              'bento__wide-inner--text-only': project.layout === 'row2-compact',
+            }"
           >
             <div
               v-if="project.youtubeId"
@@ -76,15 +71,7 @@ function layoutClass(layout?: string) {
                 :fetchpriority="index < 2 ? 'high' : 'auto'"
               />
             </div>
-            <div
-              v-else
-              class="bento__media bento__media--placeholder"
-              aria-hidden="true"
-            >
-              <span class="bento__placeholder-icon">◎</span>
-              <span class="bento__placeholder-label">Visión · IP/ONVIF</span>
-            </div>
-            <div class="bento__body">
+            <div class="bento__body" :class="{ 'bento__body--solo': !hasMedia(project) }">
               <header class="bento__header">
                 <div class="bento__title-row">
                   <h3>{{ project.name }}</h3>
@@ -141,6 +128,7 @@ function layoutClass(layout?: string) {
 @media (min-width: 640px) {
   .bento {
     grid-template-columns: repeat(2, 1fr);
+    align-items: stretch;
   }
 
   .bento__item--wide {
@@ -162,31 +150,52 @@ function layoutClass(layout?: string) {
     grid-column: 1 / -1;
   }
 
-  .bento__item--trio:nth-child(5) {
+  .bento__item--row2-primary {
     grid-column: 1 / -1;
+  }
+
+  .bento__item--row2-compact {
+    grid-column: span 1;
   }
 }
 
 @media (min-width: 960px) {
-  /* 30 cols: fila 1 = 21+9 (70/30), fila 2 = 10+10+10 (tercios) */
+  /* Fila 1: 21+9; fila 2: 15+15 (Moo 50% | compactos apilados 50%) */
   .bento {
     grid-template-columns: repeat(30, 1fr);
+    /* auto: altura según contenido (evita hueco enorme antes del overlay) */
+    grid-template-rows: auto;
+    align-items: stretch;
   }
 
   .bento__item--lead {
     grid-column: span 21;
+    grid-row: 1;
   }
 
   .bento__item--support {
     grid-column: span 9;
+    grid-row: 1;
   }
 
-  .bento__item--trio {
-    grid-column: span 10;
+  .bento__item--row2-primary {
+    grid-column: 1 / span 15;
+    grid-row: 2 / span 2;
+  }
+
+  .bento__item--row2-compact:nth-child(4) {
+    grid-column: 16 / -1;
+    grid-row: 2;
+  }
+
+  .bento__item--row2-compact:nth-child(5) {
+    grid-column: 16 / -1;
+    grid-row: 3;
   }
 
   .bento__item--wide {
     grid-column: 1 / -1;
+    grid-row: 4;
   }
 }
 
@@ -195,6 +204,7 @@ function layoutClass(layout?: string) {
   flex-direction: column;
   padding: 0;
   overflow: hidden;
+  height: 100%;
 }
 
 .bento__item--lead,
@@ -222,22 +232,51 @@ function layoutClass(layout?: string) {
     max-height: 220px;
   }
 
-  .bento__item--trio .bento__media {
-    height: 180px;
-    max-height: 180px;
+  .bento__item--row2-primary .bento__media {
+    flex-shrink: 0;
+    height: min(300px, 36vh);
+    min-height: 200px;
+    max-height: 300px;
   }
 
-  .bento__item--trio h3 {
-    font-size: 1rem;
+  .bento__item--row2-primary .bento__wide-inner--stack {
+    flex: 1;
+    min-height: 0;
   }
 
-  .bento__item--trio .bento__body {
-    padding: 0.95rem 1rem 1.15rem;
+  .bento__item--row2-compact .bento__body,
+  .bento__item--row2-primary .bento__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 
-  .bento__item--trio .chip {
-    font-size: 0.7rem;
-    padding: 0.15rem 0.45rem;
+  .bento__item--row2-compact .bento__stack,
+  .bento__item--row2-primary .bento__stack {
+    margin-top: auto;
+  }
+
+  .bento__item--row2-compact .bento__link,
+  .bento__item--row2-primary .bento__link {
+    margin-top: 0.65rem;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 959px) {
+  .bento__item--row2-primary .bento__media {
+    height: 200px;
+    min-height: 200px;
+    max-height: 200px;
+  }
+
+  .bento__item--row2-compact .bento__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bento__item--row2-compact .bento__stack {
+    margin-top: auto;
   }
 }
 
@@ -246,35 +285,34 @@ function layoutClass(layout?: string) {
   flex-direction: column;
   flex: 1;
   min-height: 0;
+  height: 100%;
 }
 
-.bento__media--placeholder {
+.bento__wide-inner--text-only {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-  background: linear-gradient(
-    160deg,
-    rgba(0, 232, 255, 0.08),
-    rgba(10, 12, 22, 0.9) 45%,
-    rgba(34, 232, 132, 0.06)
-  );
+  flex: 1;
+  min-height: 0;
+  height: 100%;
 }
 
-.bento__placeholder-icon {
-  font-size: 1.75rem;
-  color: var(--celeste);
-  opacity: 0.85;
+.bento__body--solo {
+  padding: 1rem 1.1rem 1.15rem;
+  border-top: none;
 }
 
-.bento__placeholder-label {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--agua);
+.bento__item--row2-compact h3 {
+  font-size: 1rem;
+}
+
+.bento__item--row2-compact p {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.bento__item--row2-compact .chip {
+  font-size: 0.7rem;
+  padding: 0.15rem 0.45rem;
 }
 
 .bento__media--video {
@@ -306,35 +344,59 @@ function layoutClass(layout?: string) {
   flex-direction: column;
 }
 
-@media (min-width: 960px) {
-  .bento__item--wide .bento__wide-inner {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-    align-items: stretch;
-  }
-
-  .bento__item--wide .bento__media {
-    height: auto;
-    max-height: none;
-    border-bottom: none;
-    border-right: 1px solid var(--border);
-  }
-
-  .bento__item--wide .bento__body {
-    justify-content: center;
-  }
-}
-
 .bento__item--wide .bento__media {
   height: auto;
   max-height: none;
 }
 
 .bento__item--wide .bento__media img {
+  display: block;
   width: 100%;
   height: auto;
-  object-fit: unset;
+  object-fit: contain;
   object-position: center center;
+}
+
+@media (min-width: 960px) {
+  .bento__item--wide .bento__wide-inner {
+    display: grid;
+    /* Imagen más ancha; panel de texto angosto (~30%) */
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
+    align-items: stretch;
+  }
+
+  .bento__item--wide .bento__media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 12rem;
+    height: auto;
+    max-height: none;
+    border-bottom: none;
+    border-right: 1px solid var(--border);
+  }
+
+  .bento__item--wide .bento__media img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .bento__item--wide .bento__body {
+    justify-content: center;
+    padding: 1rem 1.15rem;
+  }
+
+  .bento__item--wide .bento__stack {
+    gap: 0.3rem;
+  }
+
+  .bento__item--wide .bento__stack .chip {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+  }
 }
 
 .bento__body {
@@ -396,6 +458,20 @@ a.bento__badge--youtube:hover {
   color: #ffb4b4;
   background: rgba(255, 60, 60, 0.2);
   border-color: rgba(255, 120, 120, 0.5);
+}
+
+.bento__badge--itchio {
+  color: #f0a8ff;
+  background: rgba(250, 92, 255, 0.12);
+  border: 1px solid rgba(250, 92, 255, 0.35);
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+a.bento__badge--itchio:hover {
+  color: #f5c8ff;
+  background: rgba(250, 92, 255, 0.22);
+  border-color: rgba(250, 140, 255, 0.5);
 }
 
 .bento__item time {

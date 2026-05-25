@@ -10,7 +10,7 @@ async function copyEmail() {
 </script>
 
 <template>
-  <section id="contacto" class="section contact">
+  <section id="contacto" class="section contact reveal">
     <div class="container">
       <h2 class="section-title"><span>Contacto</span></h2>
       <div class="contact__card surface--accent">

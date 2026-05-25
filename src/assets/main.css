@@ -118,6 +118,26 @@ img {
   padding: 4.5rem 0;
 }
 
+.reveal {
+  opacity: 0;
+  transform: translateY(1.35rem);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .section-title {
   margin: 0 0 2rem;
   font-size: clamp(1.75rem, 4.5vw, 2.25rem);

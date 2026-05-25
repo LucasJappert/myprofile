@@ -22,7 +22,7 @@ function rankLabel(rank?: 1 | 2) {
 </script>
 
 <template>
-  <section id="educacion" class="section section--alt">
+  <section id="educacion" class="section section--alt reveal">
     <div class="container">
       <h2 class="section-title"><span>Formación</span></h2>
 

@@ -9,15 +9,19 @@ import SkillsSection from '@/components/SkillsSection.vue'
 import EducationSection from '@/components/EducationSection.vue'
 import ContactSection from '@/components/ContactSection.vue'
 import SiteFooter from '@/components/SiteFooter.vue'
+import ScrollProgressBar from '@/components/ScrollProgressBar.vue'
 import { navLinks } from '@/data/nav'
+import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useScrollSpy } from '@/composables/useScrollSpy'
 
 const activeId = useScrollSpy(navLinks.map((l) => l.id))
+useScrollReveal()
 </script>
 
 <template>
   <div class="app">
     <div class="app__bg" aria-hidden="true" />
+    <ScrollProgressBar />
     <SiteNav :active-id="activeId" />
     <main>
       <HeroSection />

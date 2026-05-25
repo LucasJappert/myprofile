@@ -8,7 +8,7 @@ function jobKey(job: ExperienceItem) {
 </script>
 
 <template>
-  <section id="experiencia" class="section">
+  <section id="experiencia" class="section reveal">
     <div class="container">
       <h2 class="section-title"><span>Experiencia</span></h2>
       <p class="experience__intro">{{ experienceIntro }}</p>

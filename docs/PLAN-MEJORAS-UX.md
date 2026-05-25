@@ -160,13 +160,13 @@ Referencia: auditoría post-MVP + screenshot localhost
 
 ### 15. Micro-interacciones
 
-- [ ] Scroll reveal suave (con `prefers-reduced-motion`)
+- [x] Scroll reveal suave (con `prefers-reduced-motion`) — `useScrollReveal`, clase `.reveal`
 - [ ] Hover sutil en timeline
 - [ ] Transición al expandir experiencia anterior
 
 ### 16. Indicador de progreso de scroll
 
-- [ ] Barra superior según `scrollY`
+- [x] Barra superior según `scrollY` — `ScrollProgressBar.vue`
 
 ### 17. Modo claro (opcional)
 
@@ -213,9 +213,10 @@ Referencia: auditoría post-MVP + screenshot localhost
 
 **Commit previo relacionado (parcial UX-3):** `90cffa3` — bento + Google destacado inicial
 
-### Sprint UX-4 — Extra (opcional)
+### Sprint UX-4 — Extra (parcial)
 
-- Ítems **15**–**19**, Lighthouse, OG, WebP
+- [x] Scroll reveal + barra de progreso (ítems **15**, **16**)
+- [ ] OG, WebP, micro-hover timeline, modo claro
 
 ---
 
