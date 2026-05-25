@@ -4,6 +4,9 @@ export interface Project {
   stack: string[]
   description: string
   href?: string
+  /** Ruta bajo public/, ej. projects/nova-rpg.jpg */
+  image?: string
+  badge?: 'production' | 'opensource'
   featured?: boolean
 }
 
@@ -14,6 +17,8 @@ export const projects: Project[] = [
     stack: ['VB.NET', 'C#', 'MonoGame', 'TCP'],
     description: 'MMORPG 2D cliente-servidor: clanes, dungeons, PvP, +10 años de evolución.',
     href: 'https://novarpgoficial.com',
+    image: 'projects/nova-rpg.jpg',
+    badge: 'production',
     featured: true,
   },
   {
@@ -22,14 +27,19 @@ export const projects: Project[] = [
     stack: ['Vue 3', 'TypeScript', 'Vite', 'Firebase', 'PWA'],
     description: 'Gestión ágil del equipo Agroideas: sprints, esfuerzo, notas TipTap, adjuntos.',
     href: 'https://github.com/LucasJappert/sprint-it',
+    image: 'projects/sprint-it.png',
+    badge: 'production',
     featured: true,
   },
   {
-    name: 'moomoo-lan-party',
+    name: 'Moo Raiders',
     period: 'Godot 4.4',
     stack: ['GDScript', 'ENet', 'LAN'],
-    description: 'Wave defense cooperativo multijugador con servidor autoritativo.',
+    description:
+      'Wave defense cooperativo multijugador (inspirado en Moo Moo): héroes, items y servidor autoritativo.',
     href: 'https://github.com/LucasJappert/moomoo-lan-party',
+    image: 'projects/moo-raiders.png',
+    badge: 'opensource',
     featured: true,
   },
   {
@@ -38,6 +48,8 @@ export const projects: Project[] = [
     stack: ['Vue 3', 'WebSocket'],
     description: 'Overlay AoE2 DE: ELO, civs, win probability en vivo.',
     href: 'https://lucasjappert.github.io/new-aoe-overlay-public/',
+    image: 'projects/aoe-overlay.jpg',
+    badge: 'opensource',
   },
   {
     name: 'cams / onvix',
@@ -51,5 +63,7 @@ export const projects: Project[] = [
     stack: ['Vue 3', 'Netlify'],
     description: 'Notas rápidas en la nube.',
     href: 'https://speedy-notes.netlify.app',
+    image: 'projects/online-notes.png',
+    badge: 'production',
   },
 ]
