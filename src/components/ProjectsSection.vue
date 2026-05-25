@@ -11,6 +11,14 @@ const badgeLabels = {
 function imageSrc(path: string) {
   return `${base}${path}`
 }
+
+function layoutClass(layout?: string) {
+  if (layout === 'lead') return 'bento__item--lead'
+  if (layout === 'support') return 'bento__item--support'
+  if (layout === 'trio') return 'bento__item--trio'
+  if (layout === 'wide') return 'bento__item--wide'
+  return ''
+}
 </script>
 
 <template>
@@ -22,7 +30,10 @@ function imageSrc(path: string) {
           v-for="(project, index) in projects"
           :key="project.name"
           class="card card--hover bento__item"
-          :class="{ 'bento__item--featured': project.featured }"
+          :class="[
+            { 'bento__item--featured': project.featured },
+            layoutClass(project.layout),
+          ]"
         >
           <div v-if="project.image" class="bento__media">
             <img
@@ -67,21 +78,58 @@ function imageSrc(path: string) {
   display: grid;
   gap: 1.25rem;
   grid-template-columns: 1fr;
+  align-items: start;
 }
 
 @media (min-width: 640px) {
   .bento {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .bento__item--wide {
+    grid-column: 1 / -1;
+  }
+
+  .bento__item--lead,
+  .bento__item--support {
+    grid-column: span 1;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 959px) {
+  .bento__item--lead {
+    grid-column: 1 / -1;
+  }
+
+  .bento__item--support {
+    grid-column: 1 / -1;
+  }
+
+  .bento__item--trio:nth-child(5) {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (min-width: 960px) {
+  /* 30 cols: fila 1 = 21+9 (70/30), fila 2 = 10+10+10 (tercios) */
   .bento {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(30, 1fr);
   }
 
-  .bento__item--featured:first-child {
-    grid-column: span 2;
+  .bento__item--lead {
+    grid-column: span 21;
+  }
+
+  .bento__item--support {
+    grid-column: span 9;
+  }
+
+  .bento__item--trio {
+    grid-column: span 10;
+  }
+
+  .bento__item--wide {
+    grid-column: 1 / -1;
   }
 }
 
@@ -92,11 +140,52 @@ function imageSrc(path: string) {
   overflow: hidden;
 }
 
+.bento__item--lead,
+.bento__item--support {
+  max-height: 500px;
+}
+
 .bento__media {
   position: relative;
-  aspect-ratio: 16 / 9;
+  flex-shrink: 0;
+  height: 200px;
+  max-height: 280px;
   background: var(--bg-deep);
   border-bottom: 1px solid var(--border);
+}
+
+@media (min-width: 960px) {
+  .bento__item--lead .bento__media {
+    height: min(280px, 42vh);
+    max-height: 280px;
+  }
+
+  .bento__item--support .bento__media {
+    height: min(220px, 36vh);
+    max-height: 220px;
+  }
+
+  .bento__item--trio .bento__media {
+    height: 180px;
+    max-height: 180px;
+  }
+
+  .bento__item--trio h3 {
+    font-size: 1rem;
+  }
+
+  .bento__item--trio .bento__body {
+    padding: 0.95rem 1rem 1.15rem;
+  }
+
+  .bento__item--trio .chip {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.45rem;
+  }
+}
+
+.bento__item--trio:not(:has(.bento__media)) .bento__body {
+  padding-top: 1.25rem;
 }
 
 .bento__media img {
@@ -107,11 +196,25 @@ function imageSrc(path: string) {
   display: block;
 }
 
+.bento__item--wide .bento__media {
+  height: auto;
+  max-height: none;
+}
+
+.bento__item--wide .bento__media img {
+  width: 100%;
+  height: auto;
+  object-fit: unset;
+  object-position: center center;
+}
+
 .bento__body {
-  padding: 1.25rem 1.5rem 1.5rem;
+  padding: 1.1rem 1.35rem 1.35rem;
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-height: 0;
+  overflow: auto;
 }
 
 .bento__header {
@@ -162,30 +265,25 @@ function imageSrc(path: string) {
 .bento__item p {
   margin: 0;
   font-size: var(--text-sm);
-  line-height: 1.65;
+  line-height: 1.55;
   color: var(--text-muted);
-  flex: 1;
 }
 
 .bento__stack {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
-  margin-top: 1rem;
+  margin-top: 0.75rem;
 }
 
 .bento__link {
   display: inline-block;
-  margin-top: 1rem;
+  margin-top: 0.75rem;
   font-size: var(--text-sm);
   font-weight: 600;
 }
 
 .bento__item--featured {
   border-color: rgba(0, 232, 255, 0.35);
-}
-
-.bento__item--featured .bento__media {
-  aspect-ratio: 16 / 8;
 }
 </style>

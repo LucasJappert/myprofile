@@ -4,6 +4,11 @@ export const profile = {
   location: 'Rafaela, Santa Fe, Argentina',
   tagline:
     '15+ años construyendo plataformas agrotech, APIs e IA aplicada en producción.',
+  /** Enlace breve al logro Google (sección Formación) */
+  credentialHighlight: {
+    label: '1.er puesto · Google PWA Hackathon',
+    href: '#educacion-google',
+  },
   email: 'lucasnicolasjappert@gmail.com',
   avatar: 'profile-image.jpeg',
   avatarAlt:

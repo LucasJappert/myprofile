@@ -9,7 +9,14 @@ const base = import.meta.env.BASE_URL
     <div class="hero__mesh" aria-hidden="true" />
     <div class="container hero__grid">
       <div class="hero__content">
-        <p class="hero__eyebrow">Hola, soy</p>
+        <a
+          v-if="profile.credentialHighlight"
+          :href="profile.credentialHighlight.href"
+          class="hero__credential"
+        >
+          <span class="hero__credential-dot" aria-hidden="true" />
+          {{ profile.credentialHighlight.label }}
+        </a>
         <h1 class="hero__name">{{ profile.name }}</h1>
         <p class="hero__role">{{ profile.role }}</p>
         <p class="hero__tagline">{{ profile.tagline }}</p>
@@ -96,11 +103,38 @@ const base = import.meta.env.BASE_URL
   }
 }
 
-.hero__eyebrow {
-  margin: 0 0 0.5rem;
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
+.hero__credential {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 0.85rem;
+  padding: 0.35rem 0.75rem 0.35rem 0.55rem;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--verde);
+  text-decoration: none;
+  border-radius: 999px;
+  border: 1px solid rgba(34, 232, 132, 0.35);
+  background: rgba(34, 232, 132, 0.08);
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.hero__credential:hover {
   color: var(--celeste);
+  border-color: rgba(0, 232, 255, 0.45);
+  background: rgba(0, 232, 255, 0.1);
+}
+
+.hero__credential-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--gradient-brand);
+  box-shadow: 0 0 8px rgba(34, 232, 132, 0.6);
 }
 
 .hero__name {
@@ -164,6 +198,7 @@ const base = import.meta.env.BASE_URL
 
 .hero__frame--art {
   padding: 4px;
+  overflow: hidden;
   background: linear-gradient(
     160deg,
     rgba(0, 232, 255, 0.85),
@@ -175,11 +210,13 @@ const base = import.meta.env.BASE_URL
 .hero__frame img {
   display: block;
   width: 100%;
+  height: 100%;
+  min-height: 280px;
   border-radius: calc(var(--radius-lg) - 4px);
-  background: radial-gradient(ellipse at 50% 20%, #1a2744 0%, #0a0e18 55%, #05060d 100%);
+  background: radial-gradient(ellipse at 50% 15%, #1a2744 0%, #0a0e18 50%, #05060d 100%);
   aspect-ratio: 4 / 5;
-  object-fit: contain;
-  object-position: center center;
+  object-fit: cover;
+  object-position: center 35%;
 }
 
 .hero__caption {
