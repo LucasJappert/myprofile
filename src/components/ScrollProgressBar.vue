@@ -20,7 +20,7 @@ const { progress } = useScrollProgress()
 <style scoped>
 .scroll-progress {
   position: fixed;
-  top: 0;
+  top: var(--nav-h);
   left: 0;
   right: 0;
   z-index: 110;
@@ -47,7 +47,6 @@ const { progress } = useScrollProgress()
 
 @media (min-width: 768px) {
   .scroll-progress {
-    top: var(--nav-h);
     height: 2px;
   }
 }
