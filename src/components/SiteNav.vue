@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick, onUnmounted, ref, watch } from 'vue'
-import { navLinks } from '@/data/nav'
+import { navHighlightLink, navLinks } from '@/data/nav'
 import { useMobileMenu } from '@/composables/useMobileMenu'
 
 defineProps<{
@@ -122,6 +122,15 @@ onUnmounted(() => {
           >
             <span class="nav-drawer__icon" aria-hidden="true">{{ link.icon }}</span>
             {{ link.label }}
+          </a>
+          <a
+            :href="navHighlightLink.href"
+            class="nav-drawer__link nav-drawer__link--highlight"
+            :class="{ 'is-active': activeId === navHighlightLink.activeSectionId }"
+            @click="closeMenu"
+          >
+            <span class="nav-drawer__icon" aria-hidden="true">{{ navHighlightLink.icon }}</span>
+            {{ navHighlightLink.label }}
           </a>
         </nav>
       </div>
@@ -351,5 +360,16 @@ onUnmounted(() => {
   font-size: 1.1rem;
   width: 1.5rem;
   text-align: center;
+}
+
+.nav-drawer__link--highlight {
+  margin-top: 0.35rem;
+  border-top: 1px solid rgba(0, 232, 255, 0.12);
+  padding-top: 1rem;
+  color: var(--verde);
+}
+
+.nav-drawer__link--highlight.is-active {
+  color: var(--celeste);
 }
 </style>

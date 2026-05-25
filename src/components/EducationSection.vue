@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {
   complementaryGrid,
-  education,
   featuredComplementary,
+  formalEducationGroups,
   type EducationItem,
 } from '@/data/education'
 
@@ -76,17 +76,24 @@ function rankLabel(rank?: 1 | 2) {
       </ul>
 
       <h3 class="subsection">Educación formal</h3>
-      <ul class="edu-list edu-list--compact">
-        <li
-          v-for="item in education"
-          :key="item.title + item.period"
-          class="edu-item edu-item--row"
-        >
-          <strong>{{ item.title }}</strong>
-          <span class="edu-item__period">{{ item.period }}</span>
-          <span class="edu-item__inst">{{ item.institution }}</span>
-        </li>
-      </ul>
+      <div
+        v-for="group in formalEducationGroups"
+        :key="group.category"
+        class="edu-formal-group"
+      >
+        <h4 class="edu-formal-group__label">{{ group.label }}</h4>
+        <ul class="edu-list edu-list--compact">
+          <li
+            v-for="item in group.items"
+            :key="item.title + item.period"
+            class="edu-item edu-item--row"
+          >
+            <strong>{{ item.title }}</strong>
+            <span class="edu-item__period">{{ item.period }}</span>
+            <span class="edu-item__inst">{{ item.institution }}</span>
+          </li>
+        </ul>
+      </div>
     </div>
   </section>
 </template>
@@ -195,6 +202,23 @@ function rankLabel(rank?: 1 | 2) {
   .edu-list--highlights {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+.edu-formal-group {
+  margin-bottom: 1.25rem;
+}
+
+.edu-formal-group:last-child {
+  margin-bottom: 0;
+}
+
+.edu-formal-group__label {
+  margin: 0 0 0.5rem;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .edu-list--compact {

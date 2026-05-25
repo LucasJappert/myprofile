@@ -2,11 +2,11 @@ export const profile = {
   name: 'Lucas Jappert',
   role: 'Responsable de Sistemas · Full Stack Developer',
   location: 'Rafaela, Santa Fe, Argentina',
-  tagline:
-    '15+ años construyendo plataformas agrotech, APIs e IA aplicada en producción.',
+  tagline: '15+ años en agrotech, APIs e IA aplicada en producción.',
   /** Enlace breve al logro Google (sección Formación) */
   credentialHighlight: {
     label: '1.er puesto · Google PWA Hackathon',
+    shortLabel: 'Google PWA · 1.º',
     href: '#educacion-google',
   },
   email: 'lucasnicolasjappert@gmail.com',

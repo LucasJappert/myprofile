@@ -9,16 +9,6 @@ import { profile } from '@/data/profile'
       <div class="about surface--plain">
         <p v-for="(paragraph, i) in profile.about" :key="i">{{ paragraph }}</p>
       </div>
-      <div class="interests">
-        <span
-          v-for="item in profile.interests"
-          :key="item.label"
-          class="chip"
-          :class="{ 'chip--verde': item.icon === 'game', 'chip--agua': item.icon === 'learn' }"
-        >
-          {{ item.label }}
-        </span>
-      </div>
     </div>
   </section>
 </template>
@@ -33,12 +23,5 @@ import { profile } from '@/data/profile'
 
 .about p:last-child {
   margin-bottom: 0;
-}
-
-.interests {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 1.5rem;
 }
 </style>

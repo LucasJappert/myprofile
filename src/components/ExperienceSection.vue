@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ExperienceItem } from '@/data/experience'
-import { experienceEarlier, experiencePrimary } from '@/data/experience'
+import { experienceEarlier, experienceIntro, experiencePrimary } from '@/data/experience'
 
 function jobKey(job: ExperienceItem) {
   return `${job.company}-${job.period}`
@@ -11,6 +11,7 @@ function jobKey(job: ExperienceItem) {
   <section id="experiencia" class="section">
     <div class="container">
       <h2 class="section-title"><span>Experiencia</span></h2>
+      <p class="experience__intro">{{ experienceIntro }}</p>
       <ol class="timeline">
         <li
           v-for="(job, index) in experiencePrimary"
@@ -75,6 +76,14 @@ function jobKey(job: ExperienceItem) {
 </template>
 
 <style scoped>
+.experience__intro {
+  margin: -1rem 0 1.75rem;
+  max-width: 58ch;
+  font-size: var(--text-base);
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
 .timeline {
   list-style: none;
   margin: 0;

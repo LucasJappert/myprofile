@@ -16,7 +16,7 @@
   --bg-surface: #0c0e18;
   --bg-card: rgba(14, 16, 28, 0.72);
   --text: #eef2ff;
-  --text-muted: #b8c5d9;
+  --text-muted: #c4d0e4;
   --border: rgba(0, 232, 255, 0.18);
   --gradient-brand: linear-gradient(
     135deg,
@@ -230,9 +230,9 @@ img {
   font-size: var(--text-xs);
   font-weight: 500;
   border-radius: 999px;
-  background: rgba(0, 232, 255, 0.1);
-  border: 1px solid rgba(0, 232, 255, 0.28);
-  color: #7ee8ff;
+  background: rgba(0, 232, 255, 0.12);
+  border: 1px solid rgba(0, 232, 255, 0.32);
+  color: #8eeaff;
 }
 
 .chip--agua,

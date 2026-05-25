@@ -56,7 +56,7 @@ const activeId = useScrollSpy(navLinks.map((l) => l.id))
 }
 
 main {
-  padding-bottom: 4.5rem;
+  padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
 }
 
 @media (min-width: 768px) {

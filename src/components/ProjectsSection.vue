@@ -6,10 +6,26 @@ const base = import.meta.env.BASE_URL
 const badgeLabels = {
   production: 'En producción',
   opensource: 'Open source',
+  youtube: 'Canal YouTube',
 } as const
 
 function imageSrc(path: string) {
   return `${base}${path}`
+}
+
+/** Embed en loop, silenciado; playlist=id necesario para loop */
+function youtubeEmbedSrc(videoId: string) {
+  const params = new URLSearchParams({
+    autoplay: '1',
+    mute: '1',
+    loop: '1',
+    playlist: videoId,
+    controls: '0',
+    modestbranding: '1',
+    playsinline: '1',
+    rel: '0',
+  })
+  return `https://www.youtube-nocookie.com/embed/${videoId}?${params}`
 }
 
 function layoutClass(layout?: string) {
@@ -35,37 +51,78 @@ function layoutClass(layout?: string) {
             layoutClass(project.layout),
           ]"
         >
-          <div v-if="project.image" class="bento__media">
-            <img
-              :src="imageSrc(project.image)"
-              :alt="`Captura de ${project.name}`"
-              loading="lazy"
-              :fetchpriority="index < 2 ? 'high' : 'auto'"
-            />
-          </div>
-          <div class="bento__body">
-            <header class="bento__header">
-              <div class="bento__title-row">
-                <h3>{{ project.name }}</h3>
-                <span v-if="project.badge" class="bento__badge" :class="`bento__badge--${project.badge}`">
-                  {{ badgeLabels[project.badge] }}
-                </span>
-              </div>
-              <time>{{ project.period }}</time>
-            </header>
-            <p>{{ project.description }}</p>
-            <div class="bento__stack">
-              <span v-for="tech in project.stack" :key="tech" class="chip chip--agua">{{ tech }}</span>
-            </div>
-            <a
-              v-if="project.href"
-              :href="project.href"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="bento__link"
+          <div
+            class="bento__wide-inner"
+            :class="{ 'bento__wide-inner--stack': project.layout !== 'wide' }"
+          >
+            <div
+              v-if="project.youtubeId"
+              class="bento__media bento__media--video"
             >
-              Ver proyecto →
-            </a>
+              <iframe
+                :src="youtubeEmbedSrc(project.youtubeId)"
+                :title="`Video de ${project.name}`"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+              />
+            </div>
+            <div v-else-if="project.image" class="bento__media">
+              <img
+                :src="imageSrc(project.image)"
+                :alt="`Captura de ${project.name}`"
+                loading="lazy"
+                :fetchpriority="index < 2 ? 'high' : 'auto'"
+              />
+            </div>
+            <div
+              v-else
+              class="bento__media bento__media--placeholder"
+              aria-hidden="true"
+            >
+              <span class="bento__placeholder-icon">◎</span>
+              <span class="bento__placeholder-label">Visión · IP/ONVIF</span>
+            </div>
+            <div class="bento__body">
+              <header class="bento__header">
+                <div class="bento__title-row">
+                  <h3>{{ project.name }}</h3>
+                  <a
+                    v-if="project.badge && project.badgeHref"
+                    :href="project.badgeHref"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="bento__badge"
+                    :class="`bento__badge--${project.badge}`"
+                    @click.stop
+                  >
+                    {{ badgeLabels[project.badge] }}
+                  </a>
+                  <span
+                    v-else-if="project.badge"
+                    class="bento__badge"
+                    :class="`bento__badge--${project.badge}`"
+                  >
+                    {{ badgeLabels[project.badge] }}
+                  </span>
+                </div>
+                <time>{{ project.period }}</time>
+              </header>
+              <p>{{ project.description }}</p>
+              <div class="bento__stack">
+                <span v-for="tech in project.stack" :key="tech" class="chip chip--agua">{{ tech }}</span>
+              </div>
+              <a
+                v-if="project.href"
+                :href="project.href"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="bento__link"
+              >
+                Ver proyecto →
+              </a>
+            </div>
           </div>
         </article>
       </div>
@@ -184,8 +241,52 @@ function layoutClass(layout?: string) {
   }
 }
 
-.bento__item--trio:not(:has(.bento__media)) .bento__body {
-  padding-top: 1.25rem;
+.bento__wide-inner--stack {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.bento__media--placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  background: linear-gradient(
+    160deg,
+    rgba(0, 232, 255, 0.08),
+    rgba(10, 12, 22, 0.9) 45%,
+    rgba(34, 232, 132, 0.06)
+  );
+}
+
+.bento__placeholder-icon {
+  font-size: 1.75rem;
+  color: var(--celeste);
+  opacity: 0.85;
+}
+
+.bento__placeholder-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--agua);
+}
+
+.bento__media--video {
+  overflow: hidden;
+}
+
+.bento__media--video iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  pointer-events: none;
 }
 
 .bento__media img {
@@ -194,6 +295,34 @@ function layoutClass(layout?: string) {
   object-fit: cover;
   object-position: top center;
   display: block;
+}
+
+.bento__item--support .bento__media img {
+  object-position: left top;
+}
+
+.bento__item--wide .bento__wide-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 960px) {
+  .bento__item--wide .bento__wide-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .bento__item--wide .bento__media {
+    height: auto;
+    max-height: none;
+    border-bottom: none;
+    border-right: 1px solid var(--border);
+  }
+
+  .bento__item--wide .bento__body {
+    justify-content: center;
+  }
 }
 
 .bento__item--wide .bento__media {
@@ -253,6 +382,20 @@ function layoutClass(layout?: string) {
   color: var(--agua);
   background: rgba(46, 232, 184, 0.1);
   border: 1px solid rgba(46, 232, 184, 0.28);
+}
+
+.bento__badge--youtube {
+  color: #ff8a8a;
+  background: rgba(255, 60, 60, 0.12);
+  border: 1px solid rgba(255, 80, 80, 0.35);
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+a.bento__badge--youtube:hover {
+  color: #ffb4b4;
+  background: rgba(255, 60, 60, 0.2);
+  border-color: rgba(255, 120, 120, 0.5);
 }
 
 .bento__item time {

@@ -8,6 +8,9 @@ export interface ExperienceItem {
   featured?: boolean
 }
 
+export const experienceIntro =
+  'Liderazgo de sistemas en agrotech: plataforma multi-producto, equipo ágil, Azure y IA aplicada en producción desde Rafaela.';
+
 /** Roles recientes — siempre visibles */
 export const experiencePrimary: ExperienceItem[] = [
   {

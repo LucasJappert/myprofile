@@ -9,16 +9,18 @@ const base = import.meta.env.BASE_URL
     <div class="hero__mesh" aria-hidden="true" />
     <div class="container hero__grid">
       <div class="hero__content">
+        <p class="hero__eyebrow">Hola, soy</p>
+        <h1 class="hero__name">{{ profile.name }}</h1>
+        <p class="hero__role">{{ profile.role }}</p>
         <a
           v-if="profile.credentialHighlight"
           :href="profile.credentialHighlight.href"
           class="hero__credential"
         >
           <span class="hero__credential-dot" aria-hidden="true" />
-          {{ profile.credentialHighlight.label }}
+          <span class="hero__credential-long">{{ profile.credentialHighlight.label }}</span>
+          <span class="hero__credential-short">{{ profile.credentialHighlight.shortLabel }}</span>
         </a>
-        <h1 class="hero__name">{{ profile.name }}</h1>
-        <p class="hero__role">{{ profile.role }}</p>
         <p class="hero__tagline">{{ profile.tagline }}</p>
         <p class="hero__location">{{ profile.location }}</p>
         <div class="hero__actions">
@@ -103,11 +105,18 @@ const base = import.meta.env.BASE_URL
   }
 }
 
+.hero__eyebrow {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--celeste);
+}
+
 .hero__credential {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  margin: 0 0 0.85rem;
+  margin: 0.65rem 0 0;
   padding: 0.35rem 0.75rem 0.35rem 0.55rem;
   font-size: var(--text-xs);
   font-weight: 600;
@@ -135,6 +144,20 @@ const base = import.meta.env.BASE_URL
   border-radius: 50%;
   background: var(--gradient-brand);
   box-shadow: 0 0 8px rgba(34, 232, 132, 0.6);
+}
+
+.hero__credential-short {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .hero__credential-long {
+    display: none;
+  }
+
+  .hero__credential-short {
+    display: inline;
+  }
 }
 
 .hero__name {
@@ -240,13 +263,22 @@ const base = import.meta.env.BASE_URL
 }
 
 @media (max-width: 899px) {
+  .hero {
+    min-height: auto;
+    padding-bottom: 3rem;
+  }
+
   .hero__content {
     order: 1;
   }
 
   .hero__visual {
     order: 2;
-    max-width: 320px;
+    max-width: 260px;
+  }
+
+  .hero__frame img {
+    min-height: 220px;
   }
 }
 </style>

@@ -45,25 +45,49 @@ export const featuredComplementary = complementary.find((item) => item.featured)
 
 export const complementaryGrid = complementary.filter((item) => !item.featured)
 
-export const education: EducationItem[] = [
+export type FormalCategory = 'university' | 'courses' | 'secondary'
+
+export interface FormalEducationItem extends EducationItem {
+  category: FormalCategory
+}
+
+export const formalEducation: FormalEducationItem[] = [
   {
-    institution: 'Udemy',
-    title: 'Desarrollo con Node.js — aplicación, testing y seguridad',
-    period: '2023 – 2024',
+    institution: 'UTN',
+    title: 'Tecnicatura Superior en Programación',
+    period: '2011 – 2013',
+    category: 'university',
   },
   {
     institution: 'UTN',
     title: 'Ingeniería Electromecánica (incompleta)',
     period: '2015',
+    category: 'university',
   },
   {
-    institution: 'UTN',
-    title: 'Tecnicatura Superior en Programación',
-    period: '2011 – 2013',
+    institution: 'Udemy',
+    title: 'Desarrollo con Node.js — aplicación, testing y seguridad',
+    period: '2023 – 2024',
+    category: 'courses',
   },
   {
     institution: 'Escuela San José de Calasanz',
     title: 'Teoría y Gestión de Organizaciones, Economía',
     period: '2002 – 2006',
+    category: 'secondary',
   },
 ]
+
+const formalLabels: Record<FormalCategory, string> = {
+  university: 'Universidad y tecnicatura',
+  courses: 'Cursos y certificaciones',
+  secondary: 'Educación secundaria',
+}
+
+export const formalEducationGroups = (['university', 'courses', 'secondary'] as const).map(
+  (category) => ({
+    category,
+    label: formalLabels[category],
+    items: formalEducation.filter((item) => item.category === category),
+  }),
+)

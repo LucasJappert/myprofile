@@ -6,7 +6,11 @@ export interface Project {
 	href?: string;
 	/** Ruta bajo public/, ej. projects/nova-rpg.jpg */
 	image?: string;
-	badge?: 'production' | 'opensource';
+	badge?: 'production' | 'opensource' | 'youtube';
+	/** Enlace del chip (ej. canal de YouTube) */
+	badgeHref?: string;
+	/** ID de video de YouTube para embed en la tarjeta (en lugar de image) */
+	youtubeId?: string;
 	featured?: boolean;
 	/** lead/support = fila 1 (70/30); trio = fila 2 (3 cols); wide = ancho completo */
 	layout?: 'lead' | 'support' | 'trio' | 'wide' | 'default';
@@ -19,8 +23,9 @@ export const projects: Project[] = [
 		stack: ['VB.NET', 'C#', 'MonoGame', 'TCP'],
 		description: 'MMORPG 2D cliente-servidor: clanes, dungeons, PvP, +10 años de evolución.',
 		href: 'https://novarpgoficial.com',
-		image: 'projects/nova-rpg.jpg',
-		badge: 'production',
+		youtubeId: 'VRarAjHraOw',
+		badge: 'youtube',
+		badgeHref: 'https://www.youtube.com/@novarpgoficial',
 		featured: true,
 		layout: 'lead',
 	},

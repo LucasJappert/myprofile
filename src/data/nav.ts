@@ -19,3 +19,12 @@ export const navLinks: NavLink[] = [
 export const mobileBarLinks = navLinks.filter((l) =>
   ['inicio', 'experiencia', 'proyectos', 'competencias', 'contacto'].includes(l.id),
 )
+
+/** Enlace extra en drawer (ancla dentro de Formación) */
+export const navHighlightLink = {
+  href: '#educacion-google',
+  label: 'Logros Google',
+  icon: '★',
+  /** Para marcar activo cuando la sección educacion está visible */
+  activeSectionId: 'educacion',
+} as const
