@@ -14,7 +14,7 @@ import { profile } from '@/data/profile'
           v-for="item in profile.interests"
           :key="item.label"
           class="chip"
-          :class="{ 'chip--rosa': item.icon === 'game', 'chip--violet': item.icon === 'learn' }"
+          :class="{ 'chip--verde': item.icon === 'game', 'chip--agua': item.icon === 'learn' }"
         >
           {{ item.label }}
         </span>

@@ -8,7 +8,8 @@ export interface ExperienceItem {
   featured?: boolean
 }
 
-export const experience: ExperienceItem[] = [
+/** Roles recientes — siempre visibles */
+export const experiencePrimary: ExperienceItem[] = [
   {
     company: 'Agroideas S.A.',
     role: 'Responsable de Sistemas',
@@ -56,6 +57,10 @@ export const experience: ExperienceItem[] = [
       'PWA publicada: Foro Club Benelli Argentina.',
     ],
   },
+]
+
+/** Trayectoria anterior — colapsable */
+export const experienceEarlier: ExperienceItem[] = [
   {
     company: 'CREDISAN',
     role: 'Gerencia y Administración',
@@ -71,3 +76,6 @@ export const experience: ExperienceItem[] = [
     summary: 'Relación institucional, prensa, administración, desarrollo de software y asesoría.',
   },
 ]
+
+/** Lista completa (compatibilidad) */
+export const experience: ExperienceItem[] = [...experiencePrimary, ...experienceEarlier]

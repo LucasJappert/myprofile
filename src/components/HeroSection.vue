@@ -57,8 +57,8 @@ const base = import.meta.env.BASE_URL
   inset: -20% -10%;
   background:
     radial-gradient(ellipse 60% 50% at 20% 30%, rgba(0, 232, 255, 0.2), transparent 55%),
-    radial-gradient(ellipse 50% 45% at 80% 60%, rgba(255, 61, 154, 0.15), transparent 50%),
-    radial-gradient(ellipse 40% 40% at 50% 80%, rgba(157, 78, 221, 0.18), transparent 45%);
+    radial-gradient(ellipse 50% 45% at 80% 60%, rgba(34, 232, 132, 0.12), transparent 50%),
+    radial-gradient(ellipse 40% 40% at 50% 80%, rgba(46, 232, 184, 0.14), transparent 45%);
   pointer-events: none;
   animation: mesh-drift 18s ease-in-out infinite alternate;
 }

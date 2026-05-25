@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { experience } from '@/data/experience'
+import type { ExperienceItem } from '@/data/experience'
+import { experienceEarlier, experiencePrimary } from '@/data/experience'
+
+function jobKey(job: ExperienceItem) {
+  return `${job.company}-${job.period}`
+}
 </script>
 
 <template>
@@ -8,8 +13,8 @@ import { experience } from '@/data/experience'
       <h2 class="section-title"><span>Experiencia</span></h2>
       <ol class="timeline">
         <li
-          v-for="(job, index) in experience"
-          :key="job.company + job.period"
+          v-for="(job, index) in experiencePrimary"
+          :key="jobKey(job)"
           class="timeline__item"
           :class="{ 'timeline__item--featured': job.featured }"
         >
@@ -34,6 +39,37 @@ import { experience } from '@/data/experience'
           </article>
         </li>
       </ol>
+
+      <details v-if="experienceEarlier.length" class="timeline__earlier">
+        <summary>Experiencia anterior ({{ experienceEarlier.length }} roles)</summary>
+        <ol class="timeline timeline--nested">
+          <li
+            v-for="(job, index) in experienceEarlier"
+            :key="jobKey(job)"
+            class="timeline__item"
+          >
+            <div class="timeline__marker timeline__marker--muted" aria-hidden="true">
+              <span>{{ index + 1 }}</span>
+            </div>
+            <article class="card timeline__card">
+              <header class="timeline__header">
+                <div>
+                  <h3>{{ job.role }}</h3>
+                  <p class="timeline__company">{{ job.company }}</p>
+                </div>
+                <div class="timeline__meta">
+                  <time>{{ job.period }}</time>
+                  <span v-if="job.location">{{ job.location }}</span>
+                </div>
+              </header>
+              <p>{{ job.summary }}</p>
+              <ul v-if="job.highlights?.length" class="timeline__highlights">
+                <li v-for="h in job.highlights" :key="h">{{ h }}</li>
+              </ul>
+            </article>
+          </li>
+        </ol>
+      </details>
     </div>
   </section>
 </template>
@@ -46,6 +82,10 @@ import { experience } from '@/data/experience'
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+.timeline--nested {
+  margin-top: 1rem;
 }
 
 .timeline__item {
@@ -75,8 +115,14 @@ import { experience } from '@/data/experience'
   color: var(--bg-deep);
 }
 
+.timeline__marker--muted span {
+  background: rgba(46, 232, 184, 0.2);
+  color: var(--agua);
+  border: 1px solid rgba(46, 232, 184, 0.35);
+}
+
 .timeline__item--featured .timeline__card {
-  border-color: rgba(255, 61, 154, 0.4);
+  border-color: rgba(46, 232, 184, 0.38);
   box-shadow: var(--shadow-glow);
 }
 
@@ -109,7 +155,9 @@ import { experience } from '@/data/experience'
 .timeline__meta time {
   display: block;
   font-family: var(--font-mono);
-  color: var(--rosa);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--agua);
 }
 
 .timeline__card > p {
@@ -129,6 +177,44 @@ import { experience } from '@/data/experience'
 
 .timeline__highlights li {
   margin-bottom: 0.4rem;
+}
+
+.timeline__earlier {
+  margin-top: 2rem;
+}
+
+.timeline__earlier summary {
+  cursor: pointer;
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--agua);
+  list-style: none;
+  user-select: none;
+  padding: 0.5rem 0;
+}
+
+.timeline__earlier summary::-webkit-details-marker {
+  display: none;
+}
+
+.timeline__earlier summary::before {
+  content: '▸ ';
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.timeline__earlier[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.timeline__earlier summary:hover {
+  color: var(--verde);
+}
+
+.timeline__earlier summary:focus-visible {
+  outline: 2px solid var(--celeste);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 @media (max-width: 600px) {

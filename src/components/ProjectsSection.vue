@@ -19,7 +19,7 @@ import { projects } from '@/data/projects'
           </header>
           <p>{{ project.description }}</p>
           <div class="bento__stack">
-            <span v-for="tech in project.stack" :key="tech" class="chip chip--violet">{{ tech }}</span>
+            <span v-for="tech in project.stack" :key="tech" class="chip chip--agua">{{ tech }}</span>
           </div>
           <a
             v-if="project.href"
@@ -77,7 +77,7 @@ import { projects } from '@/data/projects'
 .bento__item time {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  color: var(--rosa);
+  color: var(--agua);
 }
 
 .bento__item p {

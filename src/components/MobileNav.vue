@@ -71,6 +71,24 @@ const drawerOnlyLinks = navLinks.filter(
   cursor: pointer;
 }
 
+.mobile-nav a,
+.mobile-nav__more {
+  position: relative;
+}
+
+.mobile-nav a::after {
+  content: '';
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  bottom: 0.15rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--gradient-brand);
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
+}
+
 .mobile-nav a:hover,
 .mobile-nav a.is-active,
 .mobile-nav__more:hover,
@@ -81,6 +99,10 @@ const drawerOnlyLinks = navLinks.filter(
 .mobile-nav a.is-active,
 .mobile-nav__more.is-active {
   font-weight: 600;
+}
+
+.mobile-nav a.is-active::after {
+  transform: scaleX(1);
 }
 
 .mobile-nav a:focus-visible,

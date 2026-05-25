@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { nextTick, onUnmounted, ref, watch } from 'vue'
 import { navLinks } from '@/data/nav'
 import { useMobileMenu } from '@/composables/useMobileMenu'
 
@@ -7,6 +8,52 @@ defineProps<{
 }>()
 
 const { menuOpen, toggleMenu, closeMenu } = useMobileMenu()
+const panelRef = ref<HTMLElement | null>(null)
+const menuBtnRef = ref<HTMLButtonElement | null>(null)
+
+function onKeydown(e: KeyboardEvent) {
+  if (!menuOpen.value) return
+
+  if (e.key === 'Escape') {
+    e.preventDefault()
+    closeMenu()
+    menuBtnRef.value?.focus()
+    return
+  }
+
+  if (e.key !== 'Tab' || !panelRef.value) return
+
+  const focusable = panelRef.value.querySelectorAll<HTMLElement>(
+    'a[href], button:not([disabled])',
+  )
+  if (focusable.length === 0) return
+
+  const first = focusable[0]!
+  const last = focusable[focusable.length - 1]!
+
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault()
+    last.focus()
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault()
+    first.focus()
+  }
+}
+
+watch(menuOpen, async (open) => {
+  if (open) {
+    document.addEventListener('keydown', onKeydown)
+    await nextTick()
+    panelRef.value?.querySelector<HTMLElement>('a[href]')?.focus()
+  } else {
+    document.removeEventListener('keydown', onKeydown)
+  }
+})
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', onKeydown)
+  document.body.style.overflow = ''
+})
 </script>
 
 <template>
@@ -26,11 +73,12 @@ const { menuOpen, toggleMenu, closeMenu } = useMobileMenu()
       </nav>
 
       <button
+        ref="menuBtnRef"
         type="button"
         class="nav__menu-btn"
         :aria-expanded="menuOpen"
         aria-controls="nav-drawer"
-        aria-label="Abrir menú de secciones"
+        :aria-label="menuOpen ? 'Cerrar menú' : 'Abrir menú de secciones'"
         @click="toggleMenu"
       >
         <span class="nav__menu-icon" aria-hidden="true" />
@@ -53,7 +101,11 @@ const { menuOpen, toggleMenu, closeMenu } = useMobileMenu()
           aria-label="Cerrar menú"
           @click="closeMenu"
         />
-        <nav class="nav-drawer__panel" aria-label="Secciones del sitio">
+        <nav
+          ref="panelRef"
+          class="nav-drawer__panel"
+          aria-label="Secciones del sitio"
+        >
           <div class="nav-drawer__head">
             <span class="nav-drawer__title">Secciones</span>
             <button type="button" class="nav-drawer__close" aria-label="Cerrar" @click="closeMenu">
@@ -111,23 +163,44 @@ const { menuOpen, toggleMenu, closeMenu } = useMobileMenu()
 
 .nav__links {
   display: none;
-  gap: 1.1rem;
+  gap: 0.35rem 1rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .nav__links a {
+  position: relative;
   font-size: var(--text-sm);
   font-weight: 500;
   color: var(--text-muted);
+  padding: 0.35rem 0.15rem;
   transition: color 0.2s ease;
 }
 
-.nav__links a:hover,
-.nav__links a.is-active {
+.nav__links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--gradient-brand);
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
+}
+
+.nav__links a:hover {
   color: var(--celeste);
 }
 
 .nav__links a.is-active {
+  color: var(--celeste);
   font-weight: 600;
+}
+
+.nav__links a.is-active::after {
+  transform: scaleX(1);
 }
 
 .nav__menu-btn {
@@ -259,16 +332,19 @@ const { menuOpen, toggleMenu, closeMenu } = useMobileMenu()
   font-weight: 500;
   color: var(--text-muted);
   border-radius: var(--radius);
+  border-left: 3px solid transparent;
 }
 
-.nav-drawer__link:hover,
-.nav-drawer__link.is-active {
+.nav-drawer__link:hover {
   color: var(--celeste);
   background: rgba(0, 232, 255, 0.06);
 }
 
 .nav-drawer__link.is-active {
+  color: var(--celeste);
   font-weight: 600;
+  background: rgba(46, 232, 184, 0.08);
+  border-left-color: var(--agua);
 }
 
 .nav-drawer__icon {

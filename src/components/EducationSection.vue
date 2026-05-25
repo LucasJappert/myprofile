@@ -15,7 +15,7 @@ import { complementary, education } from '@/data/education'
             <span class="edu-item__period">{{ item.period }}</span>
           </div>
           <span class="edu-item__inst">{{ item.institution }}</span>
-          <span v-if="item.note" class="chip chip--rosa edu-item__note">{{ item.note }}</span>
+          <span v-if="item.note" class="chip chip--verde edu-item__note">{{ item.note }}</span>
         </li>
       </ul>
 
@@ -38,7 +38,7 @@ import { complementary, education } from '@/data/education'
   margin: 0 0 1rem;
   font-size: var(--text-base);
   font-weight: 600;
-  color: var(--violeta);
+  color: var(--agua);
 }
 
 .subsection:not(:first-of-type) {
@@ -68,7 +68,7 @@ import { complementary, education } from '@/data/education'
 .edu-item__period {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  color: var(--rosa);
+  color: var(--agua);
 }
 
 .edu-item__inst {

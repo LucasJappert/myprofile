@@ -33,5 +33,5 @@ En **Settings → Pages**, el origen debe ser **GitHub Actions** (no “Deploy f
 ## Paleta
 
 - Celeste `#00e8ff`
-- Rosa neón `#ff3d9a`
-- Violeta `#9d4edd` (transiciones celeste → rosa)
+- Agua `#2ee8b8`
+- Verde `#22e884` (gradiente marca: celeste → agua → verde)

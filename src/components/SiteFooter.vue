@@ -5,7 +5,7 @@ const year = new Date().getFullYear()
 <template>
   <footer class="footer">
     <div class="container footer__inner">
-      <p>© {{ year }} Lucas Jappert · Hecho con Vue 3 + Vite + TypeScript</p>
+      <p>© {{ year }} Lucas Jappert · Desarrollado con Vue 3, Vite y TypeScript</p>
       <p class="footer__gradient" aria-hidden="true" />
     </div>
   </footer>

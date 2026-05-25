@@ -17,7 +17,7 @@ export const profile = {
   ],
   interests: [
     { label: 'Programación', icon: 'code' },
-    { label: 'Game dev', icon: 'game' },
+    { label: 'Desarrollo de juegos', icon: 'game' },
     { label: 'Fútbol', icon: 'ball' },
     { label: 'Música', icon: 'music' },
     { label: 'Aprendizaje', icon: 'learn' },
