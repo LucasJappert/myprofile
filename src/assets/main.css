@@ -37,9 +37,11 @@
   --font-sans: 'Outfit', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  --text-base: 1.0625rem;
-  --text-sm: 0.9375rem;
-  --text-xs: 0.8125rem;
+  /* Escala tipográfica (subida ~1 paso; sm nunca baja de 16px) */
+  --text-base: 1.125rem;
+  --text-sm: 1rem;
+  --text-xs: 0.875rem;
+  --text-lg: 1.25rem;
 }
 
 *,
@@ -69,7 +71,7 @@ body {
   margin: 0;
   font-family: var(--font-sans);
   font-size: var(--text-base);
-  line-height: 1.7;
+  line-height: 1.75;
   color: var(--text);
   background: var(--bg-deep);
   -webkit-font-smoothing: antialiased;
@@ -140,7 +142,7 @@ img {
 
 .section-title {
   margin: 0 0 2rem;
-  font-size: clamp(1.75rem, 4.5vw, 2.25rem);
+  font-size: clamp(1.875rem, 4.5vw, 2.375rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   scroll-margin-top: calc(var(--nav-h) + 0.5rem);

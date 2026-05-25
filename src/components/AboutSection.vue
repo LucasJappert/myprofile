@@ -33,7 +33,7 @@ import { profile } from '@/data/profile'
   margin: 0 0 1rem;
   color: var(--text-muted);
   font-size: var(--text-base);
-  line-height: 1.75;
+  line-height: 1.8;
 }
 
 .about p:last-child {

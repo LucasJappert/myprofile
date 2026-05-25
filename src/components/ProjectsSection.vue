@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import ProjectVideoMedia from '@/components/ProjectVideoMedia.vue'
 import { projects } from '@/data/projects'
-
-const base = import.meta.env.BASE_URL
+import { assetUrl } from '@/utils/assetUrl'
 
 const badgeLabels = {
   production: 'En producción',
@@ -10,10 +9,6 @@ const badgeLabels = {
   youtube: 'Canal YouTube',
   itchio: 'itch.io',
 } as const
-
-function imageSrc(path: string) {
-  return `${base}${path}`
-}
 
 function layoutClass(layout?: string) {
   if (layout === 'lead') return 'bento__item--lead'
@@ -57,7 +52,7 @@ function hasMedia(project: (typeof projects)[number]) {
             />
             <div v-else-if="project.image" class="bento__media">
               <img
-                :src="imageSrc(project.image)"
+                :src="assetUrl(project.image)"
                 :alt="`Captura de ${project.name}`"
                 loading="lazy"
                 :fetchpriority="index < 2 ? 'high' : 'auto'"
@@ -312,13 +307,13 @@ function hasMedia(project: (typeof projects)[number]) {
 }
 
 .bento__item--row2-compact p {
-  font-size: 0.875rem;
-  line-height: 1.5;
+  font-size: var(--text-sm);
+  line-height: 1.55;
 }
 
 .bento__item--row2-compact .chip {
-  font-size: 0.7rem;
-  padding: 0.15rem 0.45rem;
+  font-size: var(--text-xs);
+  padding: 0.2rem 0.5rem;
 }
 
 .bento__media img {
@@ -388,8 +383,8 @@ function hasMedia(project: (typeof projects)[number]) {
   }
 
   .bento__item--wide .bento__stack .chip {
-    font-size: 0.7rem;
-    padding: 0.2rem 0.5rem;
+    font-size: var(--text-xs);
+    padding: 0.25rem 0.55rem;
   }
 }
 
@@ -420,7 +415,7 @@ function hasMedia(project: (typeof projects)[number]) {
 }
 
 .bento__badge {
-  font-size: 0.7rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -477,8 +472,8 @@ a.bento__badge--itchio:hover {
 
 .bento__item p {
   margin: 0;
-  font-size: var(--text-sm);
-  line-height: 1.55;
+  font-size: var(--text-base);
+  line-height: 1.6;
   color: var(--text-muted);
 }
 

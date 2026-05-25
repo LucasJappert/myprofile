@@ -1,5 +1,12 @@
+import { assetUrl } from '@/utils/assetUrl'
+
 export const profile = {
   name: 'Lucas Jappert',
+  /** Línea superior del hero (empresa actual) */
+  currentEmployer: {
+    company: 'Agroideas S.A.',
+    sector: 'Agrotech',
+  },
   role: 'Responsable de Sistemas · Full Stack Developer',
   location: 'Rafaela, Santa Fe, Argentina',
   tagline: 'Liderazgo de sistemas en agrotech · full stack e IA en producción.',
@@ -13,7 +20,7 @@ export const profile = {
   avatar: 'profile-image.jpeg',
   avatarAlt:
     'Ilustración caricaturesca de Lucas con su pareja y tres gatos, bajo un cielo nocturno con cometa, luna y estrellas',
-  cvUrl: `${import.meta.env.BASE_URL}Profile.pdf`,
+  cvUrl: assetUrl('Profile.pdf'),
   links: [
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/lucasjappert/', icon: 'linkedin' },
     { label: 'GitHub', href: 'https://github.com/LucasJappert', icon: 'github' },

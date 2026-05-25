@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { profile } from '@/data/profile'
-
-const base = import.meta.env.BASE_URL
+import { assetUrl } from '@/utils/assetUrl'
 </script>
 
 <template>
@@ -9,7 +8,11 @@ const base = import.meta.env.BASE_URL
     <div class="hero__mesh" aria-hidden="true" />
     <div class="container hero__grid">
       <div class="hero__content">
-        <p class="hero__eyebrow">Hola, soy</p>
+        <p v-if="profile.currentEmployer" class="hero__employer">
+          <span class="hero__employer-company">{{ profile.currentEmployer.company }}</span>
+          <span class="hero__employer-sep" aria-hidden="true">·</span>
+          <span class="hero__employer-sector">{{ profile.currentEmployer.sector }}</span>
+        </p>
         <h1 class="hero__name">{{ profile.name }}</h1>
         <p class="hero__role">{{ profile.role }}</p>
         <a
@@ -49,7 +52,7 @@ const base = import.meta.env.BASE_URL
         <figure class="hero__figure">
           <div class="hero__frame hero__frame--art">
             <img
-              :src="`${base}${profile.avatar}`"
+              :src="assetUrl(profile.avatar)"
               :alt="profile.avatarAlt"
               width="400"
               height="500"
@@ -115,11 +118,29 @@ const base = import.meta.env.BASE_URL
   }
 }
 
-.hero__eyebrow {
+.hero__employer {
   margin: 0 0 0.5rem;
   font-family: var(--font-mono);
   font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.hero__employer-company {
   color: var(--celeste);
+  font-weight: 600;
+}
+
+.hero__employer-sep {
+  margin: 0 0.35rem;
+  color: var(--text-muted);
+}
+
+.hero__employer-sector {
+  color: var(--agua);
+  text-transform: uppercase;
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
 }
 
 .hero__credential {
