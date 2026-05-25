@@ -12,13 +12,22 @@ const base = import.meta.env.BASE_URL
         <p class="hero__eyebrow">Hola, soy</p>
         <h1 class="hero__name">{{ profile.name }}</h1>
         <p class="hero__role">{{ profile.role }}</p>
+        <a
+          v-if="profile.credentialHighlight"
+          :href="profile.credentialHighlight.href"
+          class="hero__credential"
+        >
+          <span class="hero__credential-dot" aria-hidden="true" />
+          <span class="hero__credential-long">{{ profile.credentialHighlight.label }}</span>
+          <span class="hero__credential-short">{{ profile.credentialHighlight.shortLabel }}</span>
+        </a>
         <p class="hero__tagline">{{ profile.tagline }}</p>
         <p class="hero__location">{{ profile.location }}</p>
         <div class="hero__actions">
           <a :href="profile.cvUrl" class="btn btn-primary" target="_blank" rel="noopener">
             Descargar CV
           </a>
-          <a href="#contacto" class="btn btn-ghost">Contacto</a>
+          <a href="#proyectos" class="btn btn-ghost">Ver proyectos</a>
         </div>
         <div class="hero__social">
           <a
@@ -33,9 +42,18 @@ const base = import.meta.env.BASE_URL
         </div>
       </div>
       <div class="hero__visual">
-        <div class="hero__frame">
-          <img :src="`${base}profile.png`" alt="Foto de perfil de Lucas Jappert" width="320" height="320" />
-        </div>
+        <figure class="hero__figure">
+          <div class="hero__frame hero__frame--art">
+            <img
+              :src="`${base}${profile.avatar}`"
+              :alt="profile.avatarAlt"
+              width="400"
+              height="500"
+              fetchpriority="high"
+            />
+          </div>
+          <figcaption class="hero__caption">Ilustración personal</figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -47,7 +65,7 @@ const base = import.meta.env.BASE_URL
   padding-top: calc(var(--nav-h) + 3rem);
   padding-bottom: 4rem;
   overflow: hidden;
-  min-height: min(100dvh, 900px);
+  min-height: min(100dvh, 920px);
   display: flex;
   align-items: center;
 }
@@ -56,9 +74,10 @@ const base = import.meta.env.BASE_URL
   position: absolute;
   inset: -20% -10%;
   background:
-    radial-gradient(ellipse 60% 50% at 20% 30%, rgba(0, 232, 255, 0.2), transparent 55%),
-    radial-gradient(ellipse 50% 45% at 80% 60%, rgba(255, 61, 154, 0.15), transparent 50%),
-    radial-gradient(ellipse 40% 40% at 50% 80%, rgba(157, 78, 221, 0.18), transparent 45%);
+    radial-gradient(ellipse 55% 45% at 18% 28%, rgba(0, 232, 255, 0.22), transparent 55%),
+    radial-gradient(ellipse 45% 40% at 82% 55%, rgba(34, 232, 132, 0.14), transparent 50%),
+    radial-gradient(ellipse 35% 35% at 72% 22%, rgba(46, 232, 184, 0.12), transparent 45%),
+    radial-gradient(ellipse 30% 25% at 50% 12%, rgba(255, 255, 255, 0.04), transparent 40%);
   pointer-events: none;
   animation: mesh-drift 18s ease-in-out infinite alternate;
 }
@@ -81,7 +100,7 @@ const base = import.meta.env.BASE_URL
 
 @media (min-width: 900px) {
   .hero__grid {
-    grid-template-columns: 1.1fr 0.9fr;
+    grid-template-columns: 1.05fr 0.95fr;
     gap: 3rem;
   }
 }
@@ -89,8 +108,56 @@ const base = import.meta.env.BASE_URL
 .hero__eyebrow {
   margin: 0 0 0.5rem;
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   color: var(--celeste);
+}
+
+.hero__credential {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.65rem 0 0;
+  padding: 0.35rem 0.75rem 0.35rem 0.55rem;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--verde);
+  text-decoration: none;
+  border-radius: 999px;
+  border: 1px solid rgba(34, 232, 132, 0.35);
+  background: rgba(34, 232, 132, 0.08);
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.hero__credential:hover {
+  color: var(--celeste);
+  border-color: rgba(0, 232, 255, 0.45);
+  background: rgba(0, 232, 255, 0.1);
+}
+
+.hero__credential-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--gradient-brand);
+  box-shadow: 0 0 8px rgba(34, 232, 132, 0.6);
+}
+
+.hero__credential-short {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .hero__credential-long {
+    display: none;
+  }
+
+  .hero__credential-short {
+    display: inline;
+  }
 }
 
 .hero__name {
@@ -107,21 +174,21 @@ const base = import.meta.env.BASE_URL
 
 .hero__role {
   margin: 0.75rem 0 0;
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: var(--text);
 }
 
 .hero__tagline {
   margin: 1rem 0 0;
-  max-width: 36ch;
+  max-width: 38ch;
   color: var(--text-muted);
-  font-size: 1.05rem;
+  font-size: var(--text-base);
 }
 
 .hero__location {
   margin: 0.5rem 0 0;
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   color: var(--text-muted);
 }
 
@@ -136,8 +203,12 @@ const base = import.meta.env.BASE_URL
   display: flex;
   gap: 1.25rem;
   margin-top: 1.5rem;
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   font-weight: 500;
+}
+
+.hero__figure {
+  margin: 0;
 }
 
 .hero__frame {
@@ -148,23 +219,66 @@ const base = import.meta.env.BASE_URL
   box-shadow: var(--shadow-glow);
 }
 
+.hero__frame--art {
+  padding: 4px;
+  overflow: hidden;
+  background: linear-gradient(
+    160deg,
+    rgba(0, 232, 255, 0.85),
+    rgba(46, 232, 184, 0.7) 45%,
+    rgba(34, 232, 132, 0.85)
+  );
+}
+
 .hero__frame img {
   display: block;
   width: 100%;
-  border-radius: calc(var(--radius-lg) - 3px);
-  background: var(--bg-surface);
-  aspect-ratio: 1;
+  height: 100%;
+  min-height: 280px;
+  border-radius: calc(var(--radius-lg) - 4px);
+  background: radial-gradient(ellipse at 50% 15%, #1a2744 0%, #0a0e18 50%, #05060d 100%);
+  aspect-ratio: 4 / 5;
   object-fit: cover;
+  object-position: center 35%;
+}
+
+.hero__caption {
+  margin-top: 0.65rem;
+  text-align: center;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  font-style: italic;
 }
 
 .hero__visual {
-  max-width: 320px;
+  max-width: min(100%, 380px);
   margin-inline: auto;
 }
 
 @media (min-width: 900px) {
   .hero__visual {
     margin-inline: auto 0;
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 899px) {
+  .hero {
+    min-height: auto;
+    padding-bottom: 3rem;
+  }
+
+  .hero__content {
+    order: 1;
+  }
+
+  .hero__visual {
+    order: 2;
+    max-width: 260px;
+  }
+
+  .hero__frame img {
+    min-height: 220px;
   }
 }
 </style>

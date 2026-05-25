@@ -1,6 +1,8 @@
 export interface SkillGroup {
   title: string
   items: string[]
+  /** Destaca el grupo en la grilla (diferencial profesional) */
+  highlight?: boolean
 }
 
 export const skillGroups: SkillGroup[] = [
@@ -27,13 +29,15 @@ export const skillGroups: SkillGroup[] = [
   {
     title: 'IA y automatización',
     items: ['OpenRouter', 'OrcaRouter', 'DeepSeek', 'Gemini', 'YOLOv8', 'OpenCV', 'TTS', 'Puppeteer'],
+    highlight: true,
   },
   {
     title: 'Herramientas IA',
     items: ['Cursor', 'OpenCode', 'AGENTS.md', 'docs/', '.cursor/rules/'],
   },
   {
-    title: 'Gestión',
-    items: ['Scrum Master', 'Backlog', 'Daily', 'Sprint planning', 'Retros'],
+    title: 'Gestión y liderazgo',
+    items: ['Scrum Master', 'Backlog', 'Daily', 'Sprint planning', 'Retros', 'Equipos ágiles'],
+    highlight: true,
   },
 ]

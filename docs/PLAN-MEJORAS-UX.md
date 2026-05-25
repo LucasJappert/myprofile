@@ -2,8 +2,8 @@
 
 Sitio: [lucasjappert.github.io/myprofile](https://lucasjappert.github.io/myprofile/)  
 Stack: Vue 3 + Vite + TypeScript  
-Última revisión del plan: **2026-05-25**  
-Referencia: auditoría post-MVP (screenshot localhost + código en `src/`)
+Última revisión del plan: **2026-05-25** · **Sprint UX-3 implementado (pendiente commit / revisión)**  
+Referencia: auditoría post-MVP + screenshot localhost
 
 **Cómo usar este documento:** marcá cada ítem con `[x]` cuando esté implementado y commiteado en `dev` (o `main` si ya está publicado). Podés agregar fecha y commit opcional al lado.
 
@@ -11,19 +11,19 @@ Referencia: auditoría post-MVP (screenshot localhost + código en `src/`)
 
 ## Resumen de estado
 
-| Prioridad | Total ítems | Hechos |
+| Prioridad | Total ítems | Estado |
 |-----------|-------------|--------|
-| Alta      | 7           | 0      |
-| Media     | 7           | 0      |
-| Baja      | 5           | 0      |
-| Móvil     | 4           | 0      |
-| **Total** | **23**      | **0**  |
+| Alta      | 7           | Completo (Lighthouse manual pendiente) |
+| Media     | 7           | Mayoría hecha en UX-2 / UX-3 |
+| Baja      | 5           | Pendiente → **UX-4** |
+| Móvil     | 4           | 3/4 en UX-3 (iOS Safari manual) |
+| **Sprint UX-3** | —       | **Implementado, sin commit** |
 
 ---
 
 ## Lo que ya funciona (no requiere cambio urgente)
 
-- [x] Identidad de color celeste / rosa neón / violeta definida en tokens CSS
+- [x] Identidad de color celeste / agua / verde definida en tokens CSS
 - [x] Hero con nombre, rol, tagline, CTAs y foto
 - [x] Timeline de experiencia con rol actual destacado
 - [x] Skills por chips (sin barras de porcentaje)
@@ -36,232 +36,187 @@ Referencia: auditoría post-MVP (screenshot localhost + código en `src/`)
 
 ## Prioridad alta
 
-Impacto fuerte en percepción profesional, usabilidad o accesibilidad. Conviene abordar primero.
-
 ### 1. Ritmo visual — evitar “todas las secciones son la misma card”
 
-- [ ] Variar layouts por sección (hero full-bleed; experiencia sin card contenedora redundante; etc.)
-- [ ] Reducir bordes/glow repetidos en cada bloque
-- [ ] Definir 2–3 patrones de superficie (plana, card, destacado) y usarlos de forma consistente
-
-**Archivos probables:** `src/components/*Section.vue`, `src/assets/main.css`
+- [x] Variar layouts por sección (about plain, skills tiles, educación lista, contacto accent)
+- [x] Hover solo en cards de proyectos (`card--hover`)
+- [x] Patrones `surface--plain`, `surface--muted`, `surface--tile`, `surface--accent`
 
 ---
 
 ### 2. Densidad de texto en Experiencia
 
-- [ ] Acortar vista por defecto del bloque Agroideas (resumen + 3 bullets clave)
-- [ ] Agregar expansión “Ver detalle” / `<details>` para el resto de bullets
-- [ ] Opcional: agrupar roles antiguos bajo “Experiencia anterior” colapsable
-
-**Archivos probables:** `src/data/experience.ts`, `src/components/ExperienceSection.vue`
+- [x] Bullets de Agroideas visibles (6 ítems)
+- [x] Texto APIX corregido (sin “Maizplus”)
+- [x] Agrupar roles antiguos bajo “Experiencia anterior” colapsable
+- [x] Párrafo introductorio bajo el título (UX-3)
 
 ---
 
 ### 3. Contraste y accesibilidad (WCAG)
 
-- [ ] Subir luminosidad de `--text-muted` (objetivo ≥ 4.5:1 sobre fondo para texto body)
-- [ ] Revisar contraste de chips celeste/rosa sobre `--bg-card`
-- [ ] Añadir `:focus-visible` claro en links, botones y nav (outline 2px celeste)
-- [ ] Validar con Lighthouse Accessibility o axe DevTools
-
-**Archivos probables:** `src/assets/main.css`, componentes con `.btn` y `.chip`
+- [x] Subir luminosidad de `--text-muted`
+- [x] Revisar contraste de chips (UX-3: tonos más legibles)
+- [x] Añadir `:focus-visible` claro en links, botones y nav
+- [ ] Validar con Lighthouse Accessibility o axe DevTools (manual)
 
 ---
 
 ### 4. Navegación móvil completa
 
-- [ ] Incluir acceso a Perfil y Educación (drawer, menú “Más”, o ampliar barra inferior)
-- [ ] Implementar scroll-spy: resaltar sección activa en nav
-- [ ] Asegurar área táctil mínima 44×44px en ítems de navegación
-
-**Archivos probables:** `src/components/SiteNav.vue`, `src/components/MobileNav.vue`, lógica en `App.vue`
+- [x] Drawer vía botón “Más” + menú hamburguesa
+- [x] Scroll-spy: resaltar sección activa
+- [x] Área táctil mínima 44×44px
+- [x] Enlace drawer “Logros Google” → `#educacion-google` (UX-3)
 
 ---
 
 ### 5. Consistencia de idioma (español)
 
-- [ ] Cambiar “Skills” → “Competencias” o “Habilidades” en nav, `id` de sección y título
-- [ ] Revisar labels sueltos en inglés (footer, botones, aria-labels)
-- [ ] Alinear copy del hero con rol público deseado (`profile.ts`)
-
-**Archivos probables:** `src/data/profile.ts`, `SiteNav.vue`, `MobileNav.vue`, `SkillsSection.vue`
+- [x] “Competencias” en nav y sección
+- [x] Labels en español (footer, copy)
+- [x] Hero alineado a `profile.ts`
 
 ---
 
 ### 6. Foto de perfil vs. estética neón
 
-- [ ] Decidir tratamiento: recorte, fondo oscuro, duotone celeste/rosa, o reemplazo por avatar/ilustración
-- [ ] Ajustar marco del hero (sombra, proporción, `object-position`)
-- [ ] Optimizar peso de imagen (WebP/AVIF en `public/`)
-
-**Archivos probables:** `public/profile.png`, `src/components/HeroSection.vue`
+- [x] Ilustración `profile-image.jpeg`
+- [x] `object-fit: cover` en marco hero (sin bandas laterales)
+- [ ] Optimizar peso (WebP/AVIF) — **UX-4**
 
 ---
 
 ### 7. Proyectos con evidencia visual
 
-- [ ] Añadir thumbnail o captura por proyecto destacado
-- [ ] Badge “En producción” / “Open source” donde aplique
-- [ ] Mejorar jerarquía en cards (título → descripción → stack → link)
-- [ ] Reutilizar imágenes de `legacy/images/portfolios/` si sirven, o nuevas capturas
-
-**Archivos probables:** `src/data/projects.ts`, `src/components/ProjectsSection.vue`, `public/projects/`
+- [x] Thumbnails + badges
+- [x] Bento: fila 1 (70/30), fila 2 (3 cols), fila 3 overlay ancho completo
+- [x] Altura máx. ~500px fila destacada; overlay imagen proporcional
+- [x] Placeholder visual **cams / onvix** (UX-3)
+- [x] `object-position` afinado en **sprint-it** (UX-3)
 
 ---
 
 ## Prioridad media
 
-Pulido profesional; mejora percepción sin rehacer la estructura.
-
 ### 8. Jerarquía tipográfica
 
-- [ ] Definir escala tipográfica (H1 hero, H2 sección, H3 card, body, small)
-- [ ] Aumentar `line-height` en párrafos largos (1.65–1.75)
-- [ ] Reducir peso visual de metadatos (fechas, ubicación)
-
-**Archivos probables:** `src/assets/main.css`, componentes de sección
+- [x] Escala tipográfica en tokens
+- [x] Tamaños y `line-height` en párrafos largos
+- [x] Fechas en timeline/educación
 
 ---
 
 ### 9. Uso moderado de gradientes
 
-- [ ] Reservar gradiente de marca para: nombre en hero + botón primario
-- [ ] Títulos de sección: celeste sólido o blanco (sin gradiente)
-- [ ] Fechas / acentos: rosa sólido; violeta solo en transiciones puntuales
-
-**Archivos probables:** `src/assets/main.css`, `.section-title`, timeline, chips
+- [x] Gradiente en nombre hero + botón primario
+- [x] Títulos de sección: celeste sólido
+- [x] Chips y fechas con color sólido de marca
 
 ---
 
 ### 10. CTAs y jerarquía de acciones
 
-- [ ] Hero: primario “Descargar CV”, secundario “Ver proyectos” o LinkedIn
-- [ ] Diferenciar visualmente primario / secundario / ghost en todo el sitio
-- [ ] Evitar duplicar mismos CTAs sin motivo (hero vs contacto: OK si contacto suma email + redes)
-
-**Archivos probables:** `HeroSection.vue`, `ContactSection.vue`, `main.css`
+- [x] Hero: CV primario, proyectos secundario
+- [x] Chip credencial Google → Formación (UX-3)
+- [x] Contacto: “Enviar email” primario + copiar email (UX-3)
 
 ---
 
 ### 11. Sección Contacto más útil
 
-- [ ] Botón “Copiar email” con feedback (toast o texto “Copiado”)
-- [ ] Copy más específico (agrotech, APIs, IA aplicada)
-- [ ] Iconos SVG para LinkedIn / GitHub (accesibles, con `aria-label`)
-
-**Archivos probables:** `ContactSection.vue`, `public/icons.svg` o componentes icono
+- [x] Botón “Copiar email” con feedback “Copiado ✓”
+- [x] Email visible + `mailto`
+- [ ] Copy más específico agrotech (opcional)
+- [ ] Iconos SVG LinkedIn / GitHub — **UX-4**
 
 ---
 
 ### 12. Skills — escaneabilidad
 
-- [ ] Mostrar 6–8 skills top + enlace “ver todas” o expandir
-- [ ] O codificar por color: celeste (frontend), rosa (IA), violeta (DevOps)
-- [ ] Reducir tamaño de grid en móvil (1 columna)
-
-**Archivos probables:** `SkillsSection.vue`, `src/data/skills.ts`
+- [x] Destacar grupos **IA y automatización** y **Gestión y liderazgo** (`highlight`)
+- [ ] Mostrar 6–8 top + “ver todas” — **UX-4** (opcional)
+- [x] Grid 1 col móvil / 2 tablet / 4 desktop
 
 ---
 
 ### 13. Destacar formación complementaria (hackathons)
 
-- [ ] Badges visibles para PWA Hackathon (1.er puesto) y AMP (2.º puesto)
-- [ ] Separar visualmente “Complementaria” vs “Educación formal”
-- [ ] Opcional: icono trofeo o pill destacada
-
-**Archivos probables:** `EducationSection.vue`, `src/data/education.ts`
+- [x] Tarjeta featured PWA 1.er puesto + chips Google
+- [x] AMP 2.º con estilo `edu-item--google`
+- [x] Educación formal agrupada: universidad / cursos / secundaria (UX-3)
 
 ---
 
 ### 14. Footer con más presencia de marca
 
-- [ ] Links rápidos (LinkedIn, GitHub, CV)
-- [ ] Año dinámico + línea corta de stack (“Vue 3 + Vite”)
-- [ ] Ajustar glow inferior para cierre visual sin distraer
-
-**Archivos probables:** `SiteFooter.vue`
+- [x] Links rápidos (LinkedIn, GitHub, CV, Logros Google)
+- [x] Intereses movidos desde Sobre mí al footer
+- [x] Año dinámico + stack en línea de copyright
 
 ---
 
-## Prioridad baja
-
-Nice-to-have e innovación; después de alta y media.
+## Prioridad baja → Sprint UX-4
 
 ### 15. Micro-interacciones
 
-- [ ] Scroll reveal suave en entradas de sección (respetando `prefers-reduced-motion`)
-- [ ] Hover sutil en cards de proyectos y timeline
-- [ ] Transición suave al expandir detalle de experiencia
-
----
+- [x] Scroll reveal suave (con `prefers-reduced-motion`) — `useScrollReveal`, clase `.reveal`
+- [ ] Hover sutil en timeline
+- [ ] Transición al expandir experiencia anterior
 
 ### 16. Indicador de progreso de scroll
 
-- [ ] Barra fina superior (gradiente celeste → rosa) según `scrollY`
-- [ ] Opcional: índice lateral en desktop
-
----
+- [x] Barra superior según `scrollY` — `ScrollProgressBar.vue`
 
 ### 17. Modo claro (opcional)
 
-- [ ] Definir tokens light
-- [ ] Toggle en nav con persistencia `localStorage`
-- [ ] Solo si aporta a la marca; no obligatorio
-
----
+- [ ] Tokens light + toggle
 
 ### 18. Open Graph y redes sociales
 
-- [ ] Imagen OG estática generada (hero + nombre + gradiente)
-- [ ] Actualizar `meta` en `index.html` con descripción alineada al CV
-- [ ] Probar preview en LinkedIn Post Inspector
-
-**Archivos probables:** `index.html`, `public/og-image.png`
-
----
+- [ ] `og-image.png` + meta en `index.html`
 
 ### 19. Sincronización contenido ↔ CV
 
-- [ ] Documentar flujo: editar `my-cv.md` → actualizar `src/data/*.ts`
-- [ ] Opcional futuro: script que parsee MD y genere JSON/TS
-- [ ] Verificar rol público, fechas y proyectos vs `Profile.pdf`
-
-**Archivos probables:** `README.md`, repo `my-cv`
+- [ ] Flujo documentado `my-cv.md` → `src/data/*.ts`
 
 ---
 
 ## Móvil (transversal)
 
-Ítems específicos de viewport pequeño; pueden hacerse dentro de los puntos anteriores.
-
-- [ ] Colapsar Agroideas por defecto en `< 768px`
-- [ ] Validar `padding-bottom` del `main` con barra inferior + `safe-area-inset`
-- [ ] Hero móvil: texto primero o foto más compacta (orden en grid)
-- [ ] Probar en iOS Safari (100dvh, barra de URL, scroll)
+- [x] Experiencia anterior colapsable
+- [x] `padding-bottom` main + `safe-area-inset-bottom` (UX-3)
+- [x] Hero móvil: texto primero, foto más compacta, chip corto (UX-3)
+- [ ] Prueba manual iOS Safari
 
 ---
 
-## Sprints sugeridos (orden de implementación)
+## Sprints
 
-### Sprint UX-1 — Fundamentos (1–2 sesiones)
+### Sprint UX-1 — Fundamentos ✅ CERRADO
 
-- [ ] Ítems **3**, **4**, **5** (accesibilidad, nav móvil, español)
-- [ ] Ítem **2** parcial (colapsar Agroideas)
+### Sprint UX-2 — Visual y proyectos ✅ CERRADO
 
-### Sprint UX-2 — Visual y proyectos (2–3 sesiones)
+- Thumbnails, bento proyectos, `profile-image.jpeg`, superficies variadas
 
-- [ ] Ítems **1**, **6**, **7** (ritmo visual, foto, thumbnails)
-- [ ] Ítem **9** (gradientes)
+### Sprint UX-3 — Pulido y marca ✅ IMPLEMENTADO (revisión local, sin commit)
 
-### Sprint UX-3 — Pulido y marca (1–2 sesiones)
+- [x] Proyectos: placeholder cams, sprint-it crop, overlay layout horizontal desktop
+- [x] Hero: chip Google bajo rol, label corto móvil, tagline acortado, cover foto
+- [x] Formación: featured Google + grupos formales
+- [x] Competencias: highlight IA + Gestión
+- [x] Experiencia: intro
+- [x] Contacto: copiar email
+- [x] Footer: links + intereses
+- [x] Nav drawer: Logros Google
+- [x] Contraste chips / `--text-muted`
 
-- [ ] Ítems **8**, **10**, **11**, **12**, **13**, **14**
-- [ ] Ítems móvil pendientes
+**Commit previo relacionado (parcial UX-3):** `90cffa3` — bento + Google destacado inicial
 
-### Sprint UX-4 — Extra (opcional)
+### Sprint UX-4 — Extra (parcial)
 
-- [ ] Ítems **15**–**19**
+- [x] Scroll reveal + barra de progreso (ítems **15**, **16**)
+- [ ] OG, WebP, micro-hover timeline, modo claro
 
 ---
 
@@ -270,7 +225,10 @@ Nice-to-have e innovación; después de alta y media.
 | Fecha       | Sprint / ítem | Commit / notas |
 |-------------|---------------|----------------|
 | 2026-05-25  | Plan creado   | Basado en auditoría chat + screenshot local |
-|             |               |                |
+| 2026-05-25  | Sprint UX-1   | Nav, contraste, experiencia, español |
+| 2026-05-25  | Sprint UX-2   | Thumbnails, Moo Raiders, ritmo visual |
+| 2026-05-25  | Post UX-2     | `90cffa3` — bento 70/30/trio/wide, hero Google chip, overlay proporcional |
+| 2026-05-25  | Sprint UX-3   | Pendiente commit — pulido auditoría (ver lista arriba) |
 
 ---
 
