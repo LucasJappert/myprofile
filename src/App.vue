@@ -13,9 +13,11 @@ import ScrollToTopButton from '@/components/ScrollToTopButton.vue'
 import { navLinks } from '@/data/nav'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useScrollSpy } from '@/composables/useScrollSpy'
+import { useSiteAnalytics } from '@/composables/useSiteAnalytics'
 
 const activeId = useScrollSpy(navLinks.map((l) => l.id))
 useScrollReveal()
+useSiteAnalytics()
 </script>
 
 <template>

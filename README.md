@@ -24,6 +24,13 @@ Al hacer merge a `main`, el workflow `.github/workflows/deploy.yml` publica `dis
 
 En **Settings → Pages**, el origen debe ser **GitHub Actions** (no “Deploy from a branch”).
 
+## Analytics (visitas)
+
+Tracking vía el **mismo** Google Apps Script y Sheet que la landing; eventos del perfil en pestaña **MyProfile**. Setup del script GAS: [`docs/ANALYTICS-GAS.md`](docs/ANALYTICS-GAS.md).
+
+- Producción: URL en `.env.production` (misma `/exec` que la landing).
+- Probar en local: copiá `.env.example` → `.env.local` con `VITE_ANALYTICS_ALLOW_DEV=true`.
+
 ## Estructura
 
 - `src/data/` — contenido del CV (sincronizado con `my-cv.md`)
