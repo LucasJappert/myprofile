@@ -10,9 +10,11 @@ El perfil usa la **misma URL `/exec`** que *Ingeniero Aumentado*. El front manda
 | `Eventos` | Visitas / funnel landing |
 | `MyProfile` | Visitas del sitio de perfil (GitHub Pages) |
 
-## Script unificado (reemplazar el actual en Apps Script)
+## Script final — copiar completo en Apps Script
 
-Pegá esto en **Extensiones → Apps Script** de la Sheet que ya usás (`SHEET_ID` abajo). Es tu script actual + routing por `sheet_tab`.
+Reemplazá **todo** el contenido del editor (`Code.gs`). No mezcles con la versión anterior (el `ensureHeaders_` viejo rompe MyProfile).
+
+Pegá esto en **Extensiones → Apps Script** de la Sheet (`SHEET_ID` abajo). Luego **Guardar → Implementar → Nueva versión**.
 
 ```javascript
 /**
@@ -22,6 +24,8 @@ Pegá esto en **Extensiones → Apps Script** de la Sheet que ya usás (`SHEET_I
  * 2. Implementar como app web → copiar URL /exec.
  * 3. Landing: js/config.js → FORM_SUBMIT_URL
  * 4. MyProfile: VITE_ANALYTICS_URL (misma URL /exec)
+ *
+ * v5 — ensureHeaders_ corregido (getRange usa numColumnas, no columna final)
  */
 
 var SHEET_ID = "1Xom_jpFm3C6B8adqyrWvMiYt_J-R2TC3MpaspHuXqZ8";
@@ -76,7 +80,7 @@ function doGet(e) {
     });
   }
   return ContentService.createTextOutput(
-    JSON.stringify({ ok: true, service: "ingeniero-aumentado-form", version: 4 })
+    JSON.stringify({ ok: true, service: "ingeniero-aumentado-form", version: 5 })
   ).setMimeType(ContentService.MimeType.JSON);
 }
 
@@ -396,10 +400,6 @@ La landing **no** manda `sheet_tab` → el script usa **Eventos** como siempre. 
 | `timezone` | `America/Argentina/Buenos_Aires` | `Intl` |
 | `user_agent` | string completo (truncado) | Navegador |
 
-Si la pestaña **MyProfile** ya existía, al publicar una **nueva versión** del script se agregan solas las columnas faltantes en la fila 1.
+Si la pestaña **MyProfile** ya existía, al publicar la **v5** del script se agregan solas las columnas faltantes en la fila 1.
 
 **IP:** Apps Script en modo app web **no expone la IP del visitante** en `doPost`/`doGet`. Para IP haría falta otro backend o un servicio externo; por privacidad y simplicidad no la incluimos.
-
-### Si dejó de loguear tras agregar columnas
-
-El bug era `getRange(fila, col, numFilas, numColumnas)`: el 4.º argumento es **cantidad de columnas**, no la columna final. La versión corregida usa `missing.length` y la función `headerColumnCount_` (arriba en el script).
