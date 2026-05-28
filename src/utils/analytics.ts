@@ -1,5 +1,7 @@
 /** Visitas y eventos → mismo Apps Script que la landing (pestaña MyProfile). Ver docs/ANALYTICS-GAS.md */
 
+import { getClientContext, getClientContextForGet } from '@/utils/clientContext'
+
 const SESSION_KEY = 'myprofile_session_id'
 const UTM_STORAGE_KEY = 'myprofile_utms'
 /** Pestaña destino en la Google Sheet compartida con la landing */
@@ -30,6 +32,15 @@ export type AnalyticsEventPayload = {
   utm_campaign: string
   utm_content: string
   utm_term: string
+  device_type: string
+  browser: string
+  os: string
+  viewport: string
+  screen: string
+  language: string
+  referrer: string
+  timezone: string
+  user_agent: string
 }
 
 export type TrackOptions = {
@@ -120,6 +131,7 @@ function pageLabel(): string {
 
 function buildPayload(event: string, section: string): AnalyticsEventPayload {
   const utms = readUtms()
+  const ctx = getClientContext()
   return {
     type: 'event',
     sheet_tab: ANALYTICS_SHEET_TAB,
@@ -133,7 +145,18 @@ function buildPayload(event: string, section: string): AnalyticsEventPayload {
     utm_campaign: utms.utm_campaign,
     utm_content: utms.utm_content,
     utm_term: utms.utm_term,
+    ...ctx,
   }
+}
+
+function payloadForGet(payload: AnalyticsEventPayload): Record<string, string> {
+  const compact = getClientContextForGet()
+  const out: Record<string, string> = {}
+  for (const [key, value] of Object.entries({ ...payload, ...compact })) {
+    if (key === 'user_agent') continue
+    if (value !== undefined && value !== null) out[key] = String(value)
+  }
+  return out
 }
 
 function isInAppBrowser(): boolean {
@@ -174,12 +197,7 @@ function sendGet(payload: AnalyticsEventPayload): void {
   if (!url) return
 
   const base = url.includes('?') ? url.split('?')[0]! : url
-  const params = new URLSearchParams()
-  for (const [key, value] of Object.entries(payload)) {
-    if (value !== undefined && value !== null) {
-      params.set(key, String(value))
-    }
-  }
+  const params = new URLSearchParams(payloadForGet(payload))
 
   const img = new Image()
   img.src = `${base}?${params.toString()}`
