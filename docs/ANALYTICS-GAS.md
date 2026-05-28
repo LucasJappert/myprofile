@@ -64,6 +64,15 @@ function doGet(e) {
       utm_campaign: p.utm_campaign || "",
       utm_content: p.utm_content || "",
       utm_term: p.utm_term || "",
+      device_type: p.device_type || "",
+      browser: p.browser || "",
+      os: p.os || "",
+      viewport: p.viewport || "",
+      screen: p.screen || "",
+      language: p.language || "",
+      referrer: p.referrer || "",
+      timezone: p.timezone || "",
+      user_agent: p.user_agent || "",
     });
   }
   return ContentService.createTextOutput(
@@ -120,11 +129,20 @@ function handleApplication_(data) {
 
 function handleEvent_(data) {
   var tabName = resolveEventTab_(data);
+  var headers = tabName === TAB_MYPROFILE ? MYPROFILE_HEADERS_ : EVENT_HEADERS_;
   var ss = SpreadsheetApp.openById(SHEET_ID);
-  var sheet = getOrCreateSheet_(ss, tabName, EVENT_HEADERS_);
-  ensureHeaders_(sheet, EVENT_HEADERS_);
+  var sheet = getOrCreateSheet_(ss, tabName, headers);
+  ensureHeaders_(sheet, headers);
 
-  sheet.appendRow([
+  var row =
+    tabName === TAB_MYPROFILE ? buildMyProfileRow_(data) : buildEventRow_(data);
+  sheet.appendRow(row);
+
+  return jsonResponse_({ ok: true, sheet_tab: tabName });
+}
+
+function buildEventRow_(data) {
+  return [
     new Date(),
     clean_(data.event),
     clean_(data.section),
@@ -136,9 +154,21 @@ function handleEvent_(data) {
     clean_(data.utm_campaign),
     clean_(data.utm_content),
     clean_(data.utm_term),
-  ]);
+  ];
+}
 
-  return jsonResponse_({ ok: true, sheet_tab: tabName });
+function buildMyProfileRow_(data) {
+  return buildEventRow_(data).concat([
+    clean_(data.device_type),
+    clean_(data.browser),
+    clean_(data.os),
+    clean_(data.viewport),
+    clean_(data.screen),
+    clean_(data.language),
+    clean_(data.referrer),
+    clean_(data.timezone),
+    clean_(data.user_agent),
+  ]);
 }
 
 /** MyProfile manda sheet_tab explícito; la landing sigue en Eventos. */
@@ -181,6 +211,18 @@ var EVENT_HEADERS_ = [
   "utm_content",
   "utm_term",
 ];
+
+var MYPROFILE_HEADERS_ = EVENT_HEADERS_.concat([
+  "device_type",
+  "browser",
+  "os",
+  "viewport",
+  "screen",
+  "language",
+  "referrer",
+  "timezone",
+  "user_agent",
+]);
 
 function calcSemaforo_(data) {
   var exp = clean_(data.experiencia);
@@ -269,10 +311,19 @@ function getOrCreateSheet_(ss, name, headers) {
 }
 
 function ensureHeaders_(sheet, headers) {
-  if (sheet.getLastRow() > 0) {
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(headers);
+    sheet.setFrozenRows(1);
     return;
   }
-  sheet.appendRow(headers);
+  var lastCol = sheet.getLastColumn();
+  if (lastCol >= headers.length) {
+    return;
+  }
+  sheet.getRange(1, lastCol + 1, 1, headers.length).setValues([
+    headers.slice(lastCol),
+  ]);
+  sheet.getRange(1, 1, 1, headers.length).setFontWeight("bold");
   sheet.setFrozenRows(1);
 }
 
@@ -313,3 +364,21 @@ VITE_ANALYTICS_ALLOW_DEV=true
 | `outbound_click` | `seccion:dominio` | Links externos |
 
 La landing **no** manda `sheet_tab` → el script usa **Eventos** como siempre. No hace falta tocar `landing-events.js`.
+
+## Columnas extra en MyProfile
+
+| Columna | Ejemplo | Origen |
+|---------|---------|--------|
+| `device_type` | `mobile`, `tablet`, `desktop` | User-Agent |
+| `browser` | `Chrome`, `Firefox`, `Safari` | User-Agent |
+| `os` | `Windows`, `macOS`, `Android` | User-Agent |
+| `viewport` | `390x844` | Tamaño ventana |
+| `screen` | `1920x1080` | Pantalla física |
+| `language` | `es-AR` | `navigator.language` |
+| `referrer` | URL de origen | `document.referrer` |
+| `timezone` | `America/Argentina/Buenos_Aires` | `Intl` |
+| `user_agent` | string completo (truncado) | Navegador |
+
+Si la pestaña **MyProfile** ya existía, al publicar una **nueva versión** del script se agregan solas las columnas faltantes en la fila 1.
+
+**IP:** Apps Script en modo app web **no expone la IP del visitante** en `doPost`/`doGet`. Para IP haría falta otro backend o un servicio externo; por privacidad y simplicidad no la incluimos.
