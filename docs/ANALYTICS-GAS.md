@@ -310,21 +310,38 @@ function getOrCreateSheet_(ss, name, headers) {
   return sheet;
 }
 
+function headerColumnCount_(sheet) {
+  var width = Math.max(sheet.getLastColumn(), 1);
+  var row = sheet.getRange(1, 1, 1, width).getValues()[0];
+  var count = 0;
+  for (var i = 0; i < row.length; i++) {
+    if (String(row[i] || "").trim() !== "") {
+      count = i + 1;
+    }
+  }
+  return count;
+}
+
 function ensureHeaders_(sheet, headers) {
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(headers);
     sheet.setFrozenRows(1);
+    sheet.getRange(1, 1, 1, headers.length).setFontWeight("bold");
     return;
   }
-  var lastCol = sheet.getLastColumn();
-  if (lastCol >= headers.length) {
+  var existing = headerColumnCount_(sheet);
+  if (existing >= headers.length) {
     return;
   }
-  sheet.getRange(1, lastCol + 1, 1, headers.length).setValues([
-    headers.slice(lastCol),
-  ]);
-  sheet.getRange(1, 1, 1, headers.length).setFontWeight("bold");
-  sheet.setFrozenRows(1);
+  var missing = headers.slice(existing);
+  try {
+    // getRange(fila, col, numFilas, numColumnas) — NO es celda inicio/fin
+    sheet.getRange(1, existing + 1, 1, missing.length).setValues([missing]);
+    sheet.getRange(1, 1, 1, headers.length).setFontWeight("bold");
+    sheet.setFrozenRows(1);
+  } catch (err) {
+    /* no bloquear eventos si falla el sync de headers */
+  }
 }
 
 function jsonResponse_(obj) {
@@ -382,3 +399,7 @@ La landing **no** manda `sheet_tab` → el script usa **Eventos** como siempre. 
 Si la pestaña **MyProfile** ya existía, al publicar una **nueva versión** del script se agregan solas las columnas faltantes en la fila 1.
 
 **IP:** Apps Script en modo app web **no expone la IP del visitante** en `doPost`/`doGet`. Para IP haría falta otro backend o un servicio externo; por privacidad y simplicidad no la incluimos.
+
+### Si dejó de loguear tras agregar columnas
+
+El bug era `getRange(fila, col, numFilas, numColumnas)`: el 4.º argumento es **cantidad de columnas**, no la columna final. La versión corregida usa `missing.length` y la función `headerColumnCount_` (arriba en el script).
