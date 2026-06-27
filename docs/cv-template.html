@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+@page { size: A4; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #05060d;
+  color: #eef2ff;
+  line-height: 1.45;
+  font-size: 12pt;
+}
+.page { width: 210mm; height: 297mm; overflow: hidden; display: flex; flex-direction: column; }
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, #05060d 0%, #0a0e1a 50%, #0d1225 100%);
+  padding: 22px 32px 18px;
+  border-bottom: 1px solid rgba(0,232,255,0.12);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.header::after { content: ''; position: absolute; bottom: 0; left: 32px; right: 32px; height: 1px; background: linear-gradient(90deg, #00e8ff, #2ee8b8, #22e884, transparent); }
+.header-photo { width: 96px; height: 96px; border-radius: 50%; border: 2px solid rgba(0,232,255,0.3); flex-shrink: 0; object-fit: cover; }
+.header-info { flex: 1; }
+.header-info .name-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 2px; flex-wrap: nowrap; }
+.header-info h1 { font-size: 20pt; font-weight: 700; letter-spacing: -0.02em; color: #eef2ff; white-space: nowrap; }
+.header-info .title-role { font-size: 10pt; color: #2ee8b8; font-weight: 500; white-space: nowrap; }
+.header-info .name-row .dash { color: #6b7d98; font-size: 20pt; font-weight: 300; white-space: nowrap; }
+.header-info .contact-row { display: flex; flex-wrap: wrap; gap: 3px 22px; font-size: 9pt; color: #8ba0b8; align-items: center; }
+.header-info .contact-row .label { color: #00e8ff; font-weight: 500; }
+.header-info .web-highlight {
+  display: inline-block; font-size: 9pt; font-weight: 600; color: #2ee8b8;
+  background: rgba(46,232,184,0.1); border: 1px solid rgba(46,232,184,0.35);
+  border-radius: 999px; padding: 1px 14px; margin-top: 4px;
+  text-decoration: none; white-space: nowrap;
+}
+.header-info .web-highlight::before { content: "\25C9"; margin-right: 5px; font-size: 10pt; color: #22e884; }
+
+/* MAIN */
+.main { display: flex; flex: 1; min-height: 0; }
+.sidebar { width: 180px; padding: 16px 12px 16px 32px; background: rgba(8,10,18,0.5); border-right: 1px solid rgba(0,232,255,0.08); }
+.content { flex: 1; padding: 16px 32px 16px 16px; }
+
+/* SIDEBAR */
+.side-section { margin-bottom: 13px; }
+.side-section:last-child { margin-bottom: 0; }
+.side-title { font-size: 9pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #00e8ff; margin-bottom: 5px; padding-bottom: 2px; border-bottom: 1px solid rgba(0,232,255,0.15); }
+.side-item { font-size: 8.5pt; color: #c8d0e0; margin-bottom: 2px; line-height: 1.45; }
+.side-item .dim { color: #6b7d98; font-size: 7.5pt; }
+
+/* SKILL TAGS */
+.skill-group { margin-bottom: 7px; }
+.skill-group:last-child { margin-bottom: 0; }
+.skill-group-label { font-size: 7.5pt; color: #2ee8b8; font-weight: 600; margin-bottom: 2px; }
+.skill-tag { display: inline-block; font-size: 7.5pt; color: #8eeaff; background: rgba(0,232,255,0.1); border: 1px solid rgba(0,232,255,0.28); border-radius: 999px; padding: 0 5px; margin: 0 1px; font-weight: 500; line-height: 1.5; }
+.skill-tag.agua { color: #2ee8b8; background: rgba(46,232,184,0.1); border-color: rgba(46,232,184,0.28); }
+.skill-tag.verde { color: #22e884; background: rgba(34,232,132,0.1); border-color: rgba(34,232,132,0.28); }
+
+/* EXPERIENCE */
+.section-title { font-size: 10.5pt; font-weight: 700; color: #eef2ff; margin-bottom: 7px; letter-spacing: -0.01em; padding-bottom: 2px; border-bottom: 1px solid rgba(0,232,255,0.15); }
+.section-title span { color: #00e8ff; }
+.exp-item { margin-bottom: 8px; page-break-inside: avoid; }
+.exp-item:last-child { margin-bottom: 0; }
+.exp-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0; }
+.exp-role { font-size: 10pt; font-weight: 600; color: #eef2ff; }
+.exp-company { font-size: 9pt; color: #2ee8b8; font-weight: 500; }
+.exp-date { font-size: 8pt; color: #6b7d98; white-space: nowrap; }
+.exp-desc { font-size: 8.5pt; color: #b8c4d8; line-height: 1.45; }
+.exp-desc ul { list-style: none; padding-left: 0; }
+.exp-desc li { position: relative; padding-left: 10px; margin-bottom: 0; line-height: 1.45; }
+.exp-desc li::before { content: '›'; position: absolute; left: 1px; color: #00e8ff; font-weight: bold; }
+
+/* PROFILE */
+.profile-text { font-size: 8.5pt; color: #b8c4d8; line-height: 1.5; margin-bottom: 8px; }
+
+/* LANG */
+.lang-item { display: flex; justify-content: space-between; font-size: 8.5pt; color: #c8d0e0; margin-bottom: 2px; }
+.lang-bar { display: inline-flex; gap: 2px; align-items: center; }
+.lang-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(0,232,255,0.2); }
+.lang-dot.filled { background: #00e8ff; }
+.lang-dot.filled.agua { background: #2ee8b8; }
+
+/* PROJ */
+.proj-grid { display: flex; flex-wrap: wrap; gap: 4px; }
+.proj-item { font-size: 8pt; color: #b8c4d8; background: rgba(10,12,22,0.65); border: 1px solid rgba(0,232,255,0.1); border-radius: 4px; padding: 3px 8px; flex: 1 1 48%; min-width: 120px; }
+.proj-item strong { color: #eef2ff; font-weight: 600; display: block; }
+.proj-item .proj-desc { font-size: 7.5pt; color: #7a8fa8; display: block; line-height: 1.35; }
+
+/* IA */
+.ia-text { font-size: 8.5pt; color: #b8c4d8; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <img class="header-photo" src="file:///home/ljappert/Downloads/cv-foto.jpeg" alt="Lucas Jappert">
+    <div class="header-info">
+      <div class="name-row">
+          <h1>Lucas Jappert</h1>
+          <span class="dash">—</span>
+          <div class="title-role">Full Stack Engineering Lead</div>
+        </div>
+      <div class="contact-row">
+        <a href="mailto:lucasnicolasjappert@gmail.com" style="color:inherit;text-decoration:none;"><span class="label">✉</span> lucasnicolasjappert@gmail.com</a>
+        <a href="https://linkedin.com/in/lucasjappert/" style="color:inherit;text-decoration:none;" target="_blank"><span class="label">in</span> linkedin.com/in/lucasjappert/</a>
+        <a href="https://github.com/lucasjappert" style="color:inherit;text-decoration:none;" target="_blank"><span class="label">gh</span> github.com/lucasjappert</a>
+        <span><span class="label">⌂</span> Rafaela, Argentina</span>
+      </div>
+      <a href="https://lucasjappert.github.io/myprofile/" class="web-highlight" target="_blank">lucasjappert.github.io/myprofile/</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="sidebar">
+      <div class="side-section">
+        <div class="side-title">Enfoque</div>
+        <div class="side-item" style="font-size:8pt;line-height:1.45;color:#b8c4d8;">Liderazgo técnico, arquitectura de sistemas, producto. TypeScript + Python + Vue + FastAPI. CI/CD, code review, IA aplicada. 15+ años.</div>
+      </div>
+      <div class="side-section">
+        <div class="side-title">Stack</div>
+        <div class="skill-group">
+          <div class="skill-group-label">Lenguajes y Frameworks</div>
+          <div><span class="skill-tag">TypeScript</span><span class="skill-tag agua">Python</span><span class="skill-tag">Vue 2/3</span><span class="skill-tag verde">FastAPI</span><span class="skill-tag">Node.js</span><span class="skill-tag">.NET / C#</span></div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-label">Infraestructura</div>
+          <div><span class="skill-tag verde">Azure</span><span class="skill-tag">Docker</span><span class="skill-tag">CI/CD</span><span class="skill-tag">Firebase</span><span class="skill-tag">SQL</span><span class="skill-tag">WebSockets</span></div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-label">IA Aplicada</div>
+          <div><span class="skill-tag agua">LLMs</span><span class="skill-tag">DeepSeek</span><span class="skill-tag">Claude</span><span class="skill-tag">YOLOv8</span><span class="skill-tag">OpenCV</span></div>
+        </div>
+      </div>
+      <div class="side-section">
+        <div class="side-title">Idiomas</div>
+        <div class="lang-item"><span>Español (nativo)</span><span class="lang-bar"><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span><span class="lang-dot filled"></span></span></div>
+        <div class="lang-item"><span>Inglés: lectura y escritura técnicas</span><span class="lang-bar"><span class="lang-dot filled agua"></span><span class="lang-dot filled agua"></span><span class="lang-dot filled agua"></span><span class="lang-dot"></span><span class="lang-dot"></span></span></div>
+      </div>
+      <div class="side-section">
+        <div class="side-title">Educación</div>
+        <div class="side-item">Téc. Sup. Programación <span class="dim">· UTN · 2014</span></div>
+        <div class="side-item" style="margin-top:3px;">Scrum Master <span class="dim">· UTN FRRE · 2019</span></div>
+        <div class="side-item" style="margin-top:3px;color:#2ee8b8;font-weight:500;">Google PWA Hackathon <span class="dim" style="color:#6b7d98;">· 1.er puesto</span></div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="profile-text"><strong style="color:#eef2ff;">Engineering Lead</strong> con 15+ años construyendo software de punta a punta. Dirijo la plataforma digital de <strong style="color:#2ee8b8;">Agroideas S.A.</strong> — APIs, aplicaciones web, tiempo real y automatización. Conecto requerimientos de negocio, decisiones de arquitectura y desarrollo para entregar productos completos. TypeScript, Python, Vue.js, FastAPI, Azure, Cursor. IA aplicada en productos reales.</div>
+      <div class="section-title"><span>▸</span> Experiencia</div>
+      <div class="exp-item">
+        <div class="exp-header"><span class="exp-role">Head of Systems</span><span class="exp-date">Oct 2021 — Presente</span></div>
+        <div class="exp-company">Agroideas S.A. · Agrotech</div>
+        <div class="exp-desc"><ul>
+          <li>Defino la arquitectura y lidero el desarrollo de la plataforma digital de la empresa: APIs REST, intranet, aplicación de agricultura de precisión y herramientas internas — cinco productos utilizados diariamente por distintas áreas.</li>
+          <li><strong style="color:#2ee8b8;">api-core</strong> (FastAPI, Python, Azure): API central que integra modelos de lenguaje (DeepSeek, Claude), datos satelitales, generación automatizada de contenido agronómico y métricas de negocio.</li>
+          <li><strong style="color:#2ee8b8;">Agroideas-In</strong> (Node, TypeScript, Vue 3, Socket.IO, PWA): Intranet en tiempo real con notificaciones push, WebSockets e integración con ERP legacy.</li>
+          <li><strong style="color:#2ee8b8;">APIX</strong> (FastAPI, GEE, YOLOv8): Plataforma de agricultura de precisión con índices de vegetación satelitales, mapas de rendimiento, prescripciones y análisis de margen bruto.</li>
+          <li><strong style="color:#2ee8b8;">sprint-it</strong> (Vue 3, Firebase, PWA): Herramienta de gestión ágil para el equipo — sprints, estimación de esfuerzo y notas colaborativas.</li>
+          <li>Code reviews en cada PR. Pipelines CI/CD multi-stage con Docker en Azure DevOps. Administración de servidores, bases de datos (SQL Server) y dominios. Interlocutor directo con áreas de negocio para definir productos.</li>
+        </ul></div>
+      </div>
+      <div class="exp-item">
+        <div class="exp-header"><span class="exp-role">Team Leader · Full Stack Developer</span><span class="exp-date">Jul 2014 — Jun 2021</span></div>
+        <div class="exp-company">Megatone · Retail</div>
+        <div class="exp-desc"><ul><li>Lideré el equipo de desarrollo del e-commerce durante 7 años. .NET Framework, SQL Server, Vue.js. Responsable de requerimientos, arquitectura, performance y SEO del sitio.</li></ul></div>
+      </div>
+      <div class="exp-item">
+        <div class="exp-header"><span class="exp-role">Software Developer · Profesor · Freelance</span></div>
+        <div class="exp-company">SBI Technology · CoderHouse · Proyectos personales</div>
+        <div class="exp-desc"><ul>
+          <li><strong>SBI Technology</strong> — APIs REST .NET Core + Akka.NET, Azure Functions, CI/CD (Jun 2021 — Oct 2022).</li>
+          <li><strong>CoderHouse</strong> — Profesor de Vue.js: 30 alumnos, Composition API, TypeScript (Abr 2022 — Jul 2022).</li>
+          <li><strong>Proyectos personales</strong> — Automatización con agentes de IA (Hermes Agent), detección de objetos con YOLOv8 y OpenCV (cams/onvix), desarrollo de videojuegos multiplayer (Nova RPG, VB.NET/C#, MonoGame +10 años).</li>
+        </ul></div>
+      </div>
+      <div class="section-title" style="margin-top:7px;"><span>▸</span> Proyectos Representativos</div>
+      <div class="proj-grid">
+        <div class="proj-item"><strong>APIX</strong><span class="proj-desc">Agricultura de precisión. FastAPI + GEE + YOLOv8. NDVI, mapas de rendimiento, prescripciones.</span></div>
+        <div class="proj-item"><strong>api-core</strong><span class="proj-desc">API central con IA. FastAPI + LLMs + datos satelitales + jobs asíncronos.</span></div>
+        <div class="proj-item"><strong>Agroideas-In</strong><span class="proj-desc">Intranet en tiempo real. Node/TS + Vue 3 + Socket.IO + PWA + Web Push.</span></div>
+        <div class="proj-item"><strong>Hermes Agent</strong><span class="proj-desc">Automatización con agentes de IA. Cronjobs, skills, gateways multi-modelo.</span></div>
+      </div>
+      <div class="section-title" style="margin-top:7px;"><span>▸</span> IA Aplicada</div>
+      <div class="ia-text">Integración de modelos de lenguaje en APIs productivas (DeepSeek Flash/Pro, Claude vía OrcaRouter). Automatización de contenido agronómico con LLMs y jobs asíncronos. Visión por computadora con YOLOv8 + OpenCV para detección en tiempo real. Procesamiento de imágenes satelitales con Google Earth Engine. Automatización de tareas con agentes de IA (cronjobs, subagentes en paralelo).</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

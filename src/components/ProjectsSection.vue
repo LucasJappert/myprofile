@@ -147,7 +147,7 @@ function hasMedia(project: (typeof projects)[number]) {
 }
 
 @media (min-width: 960px) {
-  /* Fila 1: 21+9; fila 2: 15+15 (Moo 50% | compactos apilados 50%) */
+  /* Fila 1: 21+9; fila 2–4: Moo 50% | 3 compactos apilados 50%; fila 5: wide */
   .bento {
     grid-template-columns: repeat(30, 1fr);
     /* auto: altura según contenido (evita hueco enorme antes del overlay) */
@@ -167,7 +167,7 @@ function hasMedia(project: (typeof projects)[number]) {
 
   .bento__item--row2-primary {
     grid-column: 1 / span 15;
-    grid-row: 2 / span 2;
+    grid-row: 2 / span 3;
   }
 
   .bento__item--row2-compact:nth-child(4) {
@@ -180,9 +180,14 @@ function hasMedia(project: (typeof projects)[number]) {
     grid-row: 3;
   }
 
+  .bento__item--row2-compact:nth-child(6) {
+    grid-column: 16 / -1;
+    grid-row: 4;
+  }
+
   .bento__item--wide {
     grid-column: 1 / -1;
-    grid-row: 4;
+    grid-row: 5;
   }
 }
 

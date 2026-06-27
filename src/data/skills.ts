@@ -28,7 +28,7 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     title: 'IA y automatización',
-    items: ['OpenRouter', 'OrcaRouter', 'DeepSeek', 'Gemini', 'YOLOv8', 'OpenCV', 'TTS', 'Puppeteer'],
+    items: ['LLMs', 'OpenRouter', 'OrcaRouter', 'DeepSeek', 'Claude', 'YOLOv8', 'OpenCV', 'TTS', 'Puppeteer'],
     highlight: true,
   },
   {
@@ -39,5 +39,9 @@ export const skillGroups: SkillGroup[] = [
     title: 'Gestión y liderazgo',
     items: ['Scrum Master', 'Backlog', 'Daily', 'Sprint planning', 'Retros', 'Equipos ágiles'],
     highlight: true,
+  },
+  {
+    title: 'Idiomas',
+    items: ['Español (nativo)', 'Inglés: lectura y escritura técnicas'],
   },
 ]

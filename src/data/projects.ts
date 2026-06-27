@@ -33,7 +33,7 @@ export const projects: Project[] = [
 		name: 'sprint-it',
 		period: 'Producción',
 		stack: ['Vue 3', 'TypeScript', 'Vite', 'Firebase', 'PWA'],
-		description: 'Gestión ágil del equipo Agroideas: sprints, esfuerzo, notas TipTap, adjuntos.',
+		description: 'Gestión ágil del equipo Agroideas: sprints, esfuerzo, notas colaborativas y adjuntos.',
 		href: 'https://github.com/LucasJappert/sprint-it',
 		image: 'projects/sprint-it.png',
 		badge: 'production',
@@ -54,19 +54,30 @@ export const projects: Project[] = [
 		layout: 'row2-primary',
 	},
 	{
-		name: 'online-notes',
-		period: 'PWA',
-		stack: ['Vue 3', 'Netlify'],
-		description: 'Notas rápidas en la nube.',
-		href: 'https://speedy-notes.netlify.app',
+		name: 'Hermes Agent',
+		period: 'Open source',
+		stack: ['Python', 'LLMs', 'Cronjobs'],
+		description:
+			'Automatización con agentes de IA. Cronjobs, skills personalizados y gateways multi-modelo.',
+		badge: 'opensource',
+		layout: 'row2-compact',
+	},
+	{
+		name: 'api-core',
+		period: 'Producción',
+		stack: ['FastAPI', 'Python', 'Azure', 'LLMs'],
+		description:
+			'API central con IA. Integración de modelos de lenguaje, datos satelitales, contenido agronómico y jobs asíncronos.',
 		badge: 'production',
 		layout: 'row2-compact',
 	},
 	{
-		name: 'cams / onvix',
-		period: 'Visión',
-		stack: ['FastAPI', 'OpenCV', 'YOLOv8', 'Vue 3'],
-		description: 'Monitoreo IP/ONVIF, detección de personas, notificaciones.',
+		name: 'APIX',
+		period: 'Producción',
+		stack: ['FastAPI', 'Google Earth Engine', 'YOLOv8'],
+		description:
+			'Agricultura de precisión. NDVI, mapas de rendimiento, prescripciones y análisis de margen bruto.',
+		badge: 'production',
 		layout: 'row2-compact',
 	},
 	{
