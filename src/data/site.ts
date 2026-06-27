@@ -2,9 +2,9 @@
 export const site = {
   origin: 'https://lucasjappert.github.io',
   basePath: '/myprofile/',
-  title: 'Lucas Jappert | Responsable de Sistemas · Full Stack',
+  title: 'Lucas Jappert | Full Stack Engineering Lead',
   description:
-    'Responsable de Sistemas y desarrollador full stack en Agroideas S.A. (agrotech). TypeScript, Python, Vue, IA aplicada, Azure y 15+ años llevando productos a producción.',
+    'Engineering Lead en Agroideas S.A. (agrotech). TypeScript, Python, Vue, FastAPI, Azure e IA aplicada. 15+ años construyendo software de punta a punta.',
   ogImagePath: 'assets/og-profile.png',
   ogImageWidth: 1596,
   ogImageHeight: 829,

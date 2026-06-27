@@ -18,7 +18,7 @@ function buildSeoHead(buildId: string): string {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: 'Lucas Jappert',
-    jobTitle: 'Responsable de Sistemas',
+    jobTitle: 'Full Stack Engineering Lead',
     url,
     image: ogImage,
     email: `mailto:${site.email}`,

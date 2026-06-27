@@ -11,55 +11,43 @@ export interface ExperienceItem {
 }
 
 export const experienceIntro =
-  'Liderazgo de sistemas en agrotech: plataforma multi-producto, equipo ágil, Azure y IA aplicada en producción desde Rafaela.';
+  'Engineering Lead con 15+ años construyendo software de punta a punta. Dirijo la plataforma digital de Agroideas S.A. — APIs, aplicaciones web, tiempo real y automatización.';
 
 /** Roles recientes — siempre visibles */
 export const experiencePrimary: ExperienceItem[] = [
   {
-    company: 'Agroideas S.A.',
-    role: 'Responsable de Sistemas',
+    company: 'Agroideas S.A. · Agrotech',
+    role: 'Head of Systems',
     period: 'Oct 2021 – Presente',
-    location: 'Rafaela, Santa Fe',
+    location: 'Rafaela, Argentina',
     current: true,
     summary:
-      'Liderazgo del ecosistema digital: APIs, frontends, integraciones ERP, IA y despliegue en Azure/Docker.',
+      'Defino la arquitectura y lidero el desarrollo de la plataforma digital de la empresa: APIs REST, intranet, aplicación de agricultura de precisión y herramientas internas — cinco productos utilizados diariamente por distintas áreas.',
     highlights: [
-      'Scrum Master del equipo; sprint-it en producción para gestión ágil.',
-      'api-core (FastAPI): IA con OpenRouter/OrcaRouter, clima, noticias agro, métricas.',
-      'Intranet Agroideas-In: Node/TS, Socket.IO, Vue 3, PWA, Web Push.',
-      'APIX: agricultura de precisión, mapas, reportes agronómicos.',
-      'Azure DevOps: PRs, Pipelines CI/CD, Docker multi-stage.',
-      'Flujo diario con Cursor, OpenCode y documentación para agentes.',
+      'api-core (FastAPI, Python, Azure): API central que integra modelos de lenguaje (DeepSeek, Claude), datos satelitales, generación automatizada de contenido agronómico y métricas de negocio.',
+      'Agroideas-In (Node, TypeScript, Vue 3, Socket.IO, PWA): Intranet en tiempo real con notificaciones push, WebSockets e integración con ERP legacy.',
+      'APIX (FastAPI, GEE, YOLOv8): agricultura de precisión con índices de vegetación satelitales, mapas de rendimiento, prescripciones y análisis de margen bruto.',
+      'sprint-it (Vue 3, Firebase, PWA): gestión ágil del equipo — sprints, estimación de esfuerzo y notas colaborativas.',
+      'Code reviews en cada PR. Pipelines CI/CD multi-stage con Docker en Azure DevOps. Administración de servidores, bases de datos (SQL Server) y dominios. Interlocutor directo con áreas de negocio para definir productos.',
     ],
   },
   {
-    company: 'SBI Technology',
-    role: 'Full Stack Developer',
-    period: 'Jun 2021 – Oct 2022',
-    location: 'Rafaela, Santa Fe',
-    summary: 'Desarrollo full stack en proyectos para clientes locales (TS/JS y Vue).',
-  },
-  {
-    company: 'Coderhouse',
-    role: 'Profesor Vue.js',
-    period: 'Abr 2022 – Jul 2022',
-    summary: 'Curso de Vue.js: componentes, Composition API, estado y buenas prácticas.',
-  },
-  {
-    company: 'Megatone (Bazar Avenida S.A.)',
-    role: 'Team Leader / Full Stack Developer',
+    company: 'Megatone · Retail',
+    role: 'Team Leader · Full Stack Developer',
     period: 'Jul 2014 – Jun 2021',
     location: 'Santa Fe',
-    summary: 'Liderazgo de equipo y desarrollo full stack en retail a escala (~7 años).',
+    summary:
+      'Lideré el equipo de desarrollo del e-commerce durante 7 años. .NET Framework, SQL Server, Vue.js. Responsable de requerimientos, arquitectura, performance y SEO del sitio.',
   },
   {
-    company: 'Freelancer',
-    role: 'Dueño de producto / Full Stack',
-    period: '2015 – 2021',
-    summary: 'Sistemas PC + PWA (stock/ventas), kioscos, encuestas dinámicas, Foro Club Benelli.',
+    company: 'SBI Technology · CoderHouse · Proyectos personales',
+    role: 'Software Developer · Profesor · Freelance',
+    period: 'Consultoría, docencia y proyectos personales',
+    summary: 'Roles complementarios en consultoría, docencia y proyectos propios.',
     highlights: [
-      'PWA publicada: Sistema de control de stock y ventas PC-APP.',
-      'PWA publicada: Foro Club Benelli Argentina.',
+      'SBI Technology — APIs REST .NET Core + Akka.NET, Azure Functions, CI/CD (Jun 2021 – Oct 2022).',
+      'CoderHouse — Profesor de Vue.js: 30 alumnos, Composition API, TypeScript (Abr 2022 – Jul 2022).',
+      'Proyectos personales — Automatización con agentes de IA (Hermes Agent), detección de objetos con YOLOv8 y OpenCV (cams/onvix), desarrollo de videojuegos multijugador (Nova RPG, VB.NET/C#, MonoGame +10 años).',
     ],
   },
 ]

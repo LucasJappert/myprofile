@@ -21,22 +21,8 @@ export const complementary: EducationItem[] = [
     featured: true,
   },
   {
-    institution: 'Google Argentina',
-    title: 'AMP Hackathon — Accelerated Mobile Pages',
-    period: '2018',
-    note: '2.º puesto',
-    provider: 'google',
-    rank: 2,
-  },
-  {
-    institution: 'Punto Net, Córdoba',
-    title: 'OWASP Top Ten 2017',
-    period: '2021',
-    note: 'Seguridad web',
-  },
-  {
-    institution: 'UTN, Resistencia',
-    title: 'Scrum Master — Agile Technologies',
+    institution: 'UTN FRRE',
+    title: 'Scrum Master',
     period: '2019',
   },
 ]
@@ -55,26 +41,8 @@ export const formalEducation: FormalEducationItem[] = [
   {
     institution: 'UTN',
     title: 'Tecnicatura Superior en Programación',
-    period: '2011 – 2013',
+    period: '2014',
     category: 'university',
-  },
-  {
-    institution: 'UTN',
-    title: 'Ingeniería Electromecánica (incompleta)',
-    period: '2015',
-    category: 'university',
-  },
-  {
-    institution: 'Udemy',
-    title: 'Desarrollo con Node.js — aplicación, testing y seguridad',
-    period: '2023 – 2024',
-    category: 'courses',
-  },
-  {
-    institution: 'Escuela San José de Calasanz',
-    title: 'Teoría y Gestión de Organizaciones, Economía',
-    period: '2002 – 2006',
-    category: 'secondary',
   },
 ]
 
@@ -84,10 +52,10 @@ const formalLabels: Record<FormalCategory, string> = {
   secondary: 'Educación secundaria',
 }
 
-export const formalEducationGroups = (['university', 'courses', 'secondary'] as const).map(
-  (category) => ({
+export const formalEducationGroups = (['university', 'courses', 'secondary'] as const)
+  .map((category) => ({
     category,
     label: formalLabels[category],
     items: formalEducation.filter((item) => item.category === category),
-  }),
-)
+  }))
+  .filter((group) => group.items.length > 0)
