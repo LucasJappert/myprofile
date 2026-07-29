@@ -6,6 +6,8 @@ export interface Project {
 	href?: string;
 	/** Ruta bajo public/, ej. projects/nova-rpg.jpg */
 	image?: string;
+	/** Varias capturas (galería); tiene prioridad sobre image */
+	images?: string[];
 	badge?: 'production' | 'opensource' | 'youtube' | 'itchio';
 	/** Enlace del chip (ej. canal de YouTube) */
 	badgeHref?: string;
@@ -17,6 +19,47 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+	{
+		name: 'Memorable Summaries',
+		period: 'Producto personal',
+		stack: ['Vue 3', 'TypeScript', 'Vite', 'TTS', 'LLMs'],
+		description:
+			'Que lo leído no se olvide: repasar y memorizar con sentido. Resúmenes interactivos de libros — biblioteca, capítulos y cola de audio. Pipeline con IA: libro → markdown → vista → narración TTS (OmniVoice).',
+		href: 'https://lucasjappert.github.io/memorable-summaries/',
+		images: [
+			'assets/memorable-summaries/biblioteca.webp',
+			'assets/memorable-summaries/libro.webp',
+			'assets/memorable-summaries/reproductor.webp',
+		],
+		badge: 'opensource',
+		featured: true,
+		layout: 'wide',
+	},
+	{
+		name: 'GanasDeSaber',
+		period: 'Canal YouTube',
+		stack: ['FastAPI', 'Vue 3', 'DeepSeek', 'OmniVoice', 'FFmpeg'],
+		description:
+			'Buscamos incentivar la curiosidad con ciencia clara y cercana. Canal de divulgación con fábrica propia de videos (yt-video-factory): origen → guion LLM → escenas → TTS → render FFmpeg → miniaturas → YouTube.',
+		href: 'https://www.youtube.com/@GanasDeSaber',
+		image: 'assets/ganas-de-saber/image.webp',
+		badge: 'youtube',
+		badgeHref: 'https://www.youtube.com/@GanasDeSaber',
+		featured: true,
+		layout: 'wide',
+	},
+	{
+		name: 'DayLog',
+		period: 'Producto personal',
+		stack: ['Vue 3', 'FastAPI', 'lucas-ai-api', 'Chart.js', 'SQLite'],
+		description:
+			'Ver el día con claridad: métricas personales en un solo lugar. Dashboard de hábitos, PC, recordatorios, costos Orca y salud de servicios — backend unificado en lucas-ai-api (FastAPI + SQLite; OrcaRouter, Hermes, OmniVoice/Whisper).',
+		href: 'https://daylog-lucas.netlify.app',
+		image: 'assets/daylog/home.webp',
+		badge: 'production',
+		featured: true,
+		layout: 'wide',
+	},
 	{
 		name: 'Nova RPG',
 		period: '2015 – Presente',
@@ -32,8 +75,9 @@ export const projects: Project[] = [
 	{
 		name: 'sprint-it',
 		period: 'Producción',
-		stack: ['Vue 3', 'TypeScript', 'Vite', 'Firebase', 'PWA'],
-		description: 'Gestión ágil del equipo Agroideas: sprints, esfuerzo, notas colaborativas y adjuntos.',
+		stack: ['Vue 3', 'TypeScript', 'Socket.IO', 'PWA'],
+		description:
+			'Gestión ágil del equipo Agroideas (en Agroideas-In): sprints, esfuerzo, notas y resúmenes con IA.',
 		href: 'https://github.com/LucasJappert/sprint-it',
 		image: 'projects/sprint-it.png',
 		badge: 'production',
@@ -67,16 +111,16 @@ export const projects: Project[] = [
 		period: 'Producción',
 		stack: ['FastAPI', 'Python', 'Azure', 'LLMs'],
 		description:
-			'API central con IA. Integración de modelos de lenguaje, datos satelitales, contenido agronómico y jobs asíncronos.',
+			'Plataforma compartida: gateway LLM, clima, noticias agro, métricas y servicios transversales.',
 		badge: 'production',
 		layout: 'row2-compact',
 	},
 	{
 		name: 'APIX',
 		period: 'Producción',
-		stack: ['FastAPI', 'Google Earth Engine', 'YOLOv8'],
+		stack: ['Vue 3', 'FastAPI', 'GEE', 'YOLOv8'],
 		description:
-			'Agricultura de precisión. NDVI, mapas de rendimiento, prescripciones y análisis de margen bruto.',
+			'Agricultura de precisión: ambientaciones, satélite, penetrometría, drone/CV y mapas de productividad.',
 		badge: 'production',
 		layout: 'row2-compact',
 	},

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import ImageLightbox from '@/components/ImageLightbox.vue'
 import ProjectVideoMedia from '@/components/ProjectVideoMedia.vue'
 import { projects } from '@/data/projects'
 import { assetUrl } from '@/utils/assetUrl'
@@ -10,6 +12,12 @@ const badgeLabels = {
   itchio: 'itch.io',
 } as const
 
+const lightbox = ref<{
+  images: string[]
+  alts: string[]
+  index: number
+} | null>(null)
+
 function layoutClass(layout?: string) {
   if (layout === 'lead') return 'bento__item--lead'
   if (layout === 'support') return 'bento__item--support'
@@ -20,7 +28,24 @@ function layoutClass(layout?: string) {
 }
 
 function hasMedia(project: (typeof projects)[number]) {
-  return Boolean(project.youtubeId || project.image)
+  return Boolean(project.youtubeId || project.images?.length || project.image)
+}
+
+function hasGallery(project: (typeof projects)[number]) {
+  return Boolean(project.images && project.images.length > 1)
+}
+
+function openGallery(project: (typeof projects)[number], index: number) {
+  if (!project.images?.length) return
+  lightbox.value = {
+    images: project.images.map((src) => assetUrl(src)),
+    alts: project.images.map((_, i) => `Captura ${i + 1} de ${project.name}`),
+    index,
+  }
+}
+
+function closeLightbox() {
+  lightbox.value = null
 }
 </script>
 
@@ -35,6 +60,7 @@ function hasMedia(project: (typeof projects)[number]) {
           class="card card--hover bento__item"
           :class="[
             { 'bento__item--featured': project.featured },
+            { 'bento__item--gallery': hasGallery(project) },
             layoutClass(project.layout),
           ]"
         >
@@ -50,6 +76,26 @@ function hasMedia(project: (typeof projects)[number]) {
               :video-id="project.youtubeId"
               :project-name="project.name"
             />
+            <div
+              v-else-if="hasGallery(project)"
+              class="bento__media bento__media--gallery"
+            >
+              <button
+                v-for="(src, imgIndex) in project.images"
+                :key="src"
+                type="button"
+                class="bento__gallery-btn"
+                :aria-label="`Ampliar captura ${imgIndex + 1} de ${project.name}`"
+                @click.stop="openGallery(project, imgIndex)"
+              >
+                <img
+                  :src="assetUrl(src)"
+                  :alt="`Captura ${imgIndex + 1} de ${project.name}`"
+                  loading="lazy"
+                  :fetchpriority="index < 2 && imgIndex === 0 ? 'high' : 'auto'"
+                />
+              </button>
+            </div>
             <div v-else-if="project.image" class="bento__media">
               <img
                 :src="assetUrl(project.image)"
@@ -101,6 +147,15 @@ function hasMedia(project: (typeof projects)[number]) {
         </article>
       </div>
     </div>
+
+    <ImageLightbox
+      v-if="lightbox"
+      :images="lightbox.images"
+      :alts="lightbox.alts"
+      :index="lightbox.index"
+      @close="closeLightbox"
+      @update:index="lightbox.index = $event"
+    />
   </section>
 </template>
 
@@ -147,47 +202,32 @@ function hasMedia(project: (typeof projects)[number]) {
 }
 
 @media (min-width: 960px) {
-  /* Fila 1: 21+9; fila 2–4: Moo 50% | 3 compactos apilados 50%; fila 5: wide */
+  /* Wide primero (auto); luego lead+support; Moo + 3 compactos; wide final */
   .bento {
     grid-template-columns: repeat(30, 1fr);
-    /* auto: altura según contenido (evita hueco enorme antes del overlay) */
     grid-template-rows: auto;
     align-items: stretch;
   }
 
+  .bento__item--wide {
+    grid-column: 1 / -1;
+  }
+
   .bento__item--lead {
     grid-column: span 21;
-    grid-row: 1;
   }
 
   .bento__item--support {
     grid-column: span 9;
-    grid-row: 1;
   }
 
   .bento__item--row2-primary {
     grid-column: 1 / span 15;
-    grid-row: 2 / span 3;
+    grid-row: span 3;
   }
 
-  .bento__item--row2-compact:nth-child(4) {
+  .bento__item--row2-compact {
     grid-column: 16 / -1;
-    grid-row: 2;
-  }
-
-  .bento__item--row2-compact:nth-child(5) {
-    grid-column: 16 / -1;
-    grid-row: 3;
-  }
-
-  .bento__item--row2-compact:nth-child(6) {
-    grid-column: 16 / -1;
-    grid-row: 4;
-  }
-
-  .bento__item--wide {
-    grid-column: 1 / -1;
-    grid-row: 5;
   }
 }
 
@@ -351,12 +391,82 @@ function hasMedia(project: (typeof projects)[number]) {
   object-position: center center;
 }
 
+.bento__media--gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  height: auto;
+  max-height: none;
+  padding: 0;
+  background: var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.bento__gallery-btn {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: #05060d;
+  cursor: zoom-in;
+  line-height: 0;
+}
+
+.bento__gallery-btn:focus-visible {
+  outline: 2px solid var(--celeste);
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+.bento__media--gallery img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 0;
+  border: none;
+  background: #05060d;
+  transition: opacity 0.15s ease;
+}
+
+.bento__gallery-btn:hover img {
+  opacity: 0.88;
+}
+
+@media (max-width: 639px) {
+  .bento__media--gallery {
+    grid-template-columns: 1fr;
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  .bento__media--gallery img {
+    height: 400px;
+  }
+}
+
 @media (min-width: 960px) {
   .bento__item--wide .bento__wide-inner {
     display: grid;
-    /* Imagen más ancha; panel de texto angosto (~30%) */
+    /* Media ancha + panel de texto (~30%) — GanasDeSaber / aoe: imagen izq */
     grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
     align-items: stretch;
+  }
+
+  /* Memorable: texto izq, galería der (espejo) */
+  .bento__item--wide.bento__item--gallery .bento__wide-inner {
+    grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
+  }
+
+  .bento__item--wide.bento__item--gallery .bento__body {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .bento__item--wide.bento__item--gallery .bento__media {
+    grid-column: 2;
+    grid-row: 1;
   }
 
   .bento__item--wide .bento__media {
@@ -370,7 +480,12 @@ function hasMedia(project: (typeof projects)[number]) {
     border-right: 1px solid var(--border);
   }
 
-  .bento__item--wide .bento__media img {
+  .bento__item--wide.bento__item--gallery .bento__media {
+    border-right: none;
+    border-left: 1px solid var(--border);
+  }
+
+  .bento__item--wide .bento__media:not(.bento__media--gallery) img {
     width: auto;
     height: auto;
     max-width: 100%;
@@ -390,6 +505,22 @@ function hasMedia(project: (typeof projects)[number]) {
   .bento__item--wide .bento__stack .chip {
     font-size: var(--text-xs);
     padding: 0.25rem 0.55rem;
+  }
+
+  .bento__item--gallery .bento__media--gallery {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-content: stretch;
+    gap: 1px;
+    padding: 0;
+    height: 100%;
+  }
+
+  .bento__item--gallery .bento__media--gallery img {
+    height: 400px;
+    width: 100%;
+    object-fit: cover;
+    object-position: top center;
   }
 }
 

@@ -28,7 +28,7 @@ export const profile = {
   ],
   about: [
     'Engineering Lead con 15+ años construyendo software de punta a punta. Dirijo la plataforma digital de Agroideas S.A. — APIs, aplicaciones web, tiempo real y automatización. Conecto requerimientos de negocio, decisiones de arquitectura y desarrollo para entregar productos completos. TypeScript, Python, Vue.js, FastAPI, Azure, Cursor. IA aplicada en productos reales.',
-    'Integración de modelos de lenguaje en APIs productivas (DeepSeek Flash/Pro, Claude vía OrcaRouter). Automatización de contenido agronómico con LLMs y jobs asíncronos. Visión por computadora con YOLOv8 + OpenCV para detección en tiempo real. Procesamiento de imágenes satelitales con Google Earth Engine. Automatización de tareas con agentes de IA (cronjobs, subagentes en paralelo).',
+    'Además construyo productos personales punta a punta: Memorable Summaries (resúmenes + TTS), GanasDeSaber (fábrica de videos con LLM/FFmpeg) y DayLog sobre lucas-ai-api (métricas, OrcaRouter, Hermes). En el trabajo: LLMs en APIs productivas (DeepSeek, Claude), contenido agronómico automatizado, visión con YOLOv8 + OpenCV y satélite con Google Earth Engine.',
   ],
   interests: [
     { label: 'Programación', icon: 'code' },

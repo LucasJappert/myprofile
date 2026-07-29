@@ -96,7 +96,6 @@ function periodBeforePresent(period: string) {
 <style scoped>
 .experience__intro {
   margin: -1rem 0 1.75rem;
-  max-width: 58ch;
   font-size: var(--text-base);
   line-height: 1.65;
   color: var(--text-muted);
