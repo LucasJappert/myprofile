@@ -22,12 +22,12 @@ export const experiencePrimary: ExperienceItem[] = [
     location: 'Rafaela, Argentina',
     current: true,
     summary:
-      'Defino la arquitectura y lidero el desarrollo de la plataforma digital de la empresa: APIs REST, intranet, aplicación de agricultura de precisión y herramientas internas — cinco productos utilizados diariamente por distintas áreas.',
+      'Defino la arquitectura y lidero el desarrollo de la plataforma digital: API compartida, intranet operativa, agricultura de precisión (APIX) y herramientas internas — productos usados a diario por operaciones, técnicos y negocio.',
     highlights: [
-      'api-core (FastAPI, Python, Azure): API central que integra modelos de lenguaje (DeepSeek, Claude), datos satelitales, generación automatizada de contenido agronómico y métricas de negocio.',
-      'Agroideas-In (Node, TypeScript, Vue 3, Socket.IO, PWA): Intranet en tiempo real con notificaciones push, WebSockets e integración con ERP legacy.',
-      'APIX (FastAPI, GEE, YOLOv8): agricultura de precisión con índices de vegetación satelitales, mapas de rendimiento, prescripciones y análisis de margen bruto.',
-      'sprint-it (Vue 3, Firebase, PWA): gestión ágil del equipo — sprints, estimación de esfuerzo y notas colaborativas.',
+      'api-core (FastAPI, Python, Azure): plataforma compartida — gateway multi-modelo (DeepSeek, Claude vía OpenRouter/Orca), clima, pipeline de noticias agro, métricas de uso y servicios transversales.',
+      'Agroideas-In (Node, TypeScript, Vue 3, Socket.IO, PWA): intranet ops (stock, granos, pedidos) en tiempo real, notificaciones push, Sprint-IT e integración con ERP legacy (SQL Server dual).',
+      'APIX (Vue 3, Capacitor, Node BFF, FastAPI, GEE/Sentinel, YOLOv8): agricultura de precisión — lotes y mapas, ambientaciones, penetrometría, índices satelitales, mapas de productividad, drone/CV y PDFs server-side (Playwright).',
+      'sprint-it (integrado en Agroideas-In): gestión ágil del equipo — sprints, estimación de esfuerzo, notas colaborativas y resúmenes con IA.',
       'Code reviews en cada PR. Pipelines CI/CD multi-stage con Docker en Azure DevOps. Administración de servidores, bases de datos (SQL Server) y dominios. Interlocutor directo con áreas de negocio para definir productos.',
     ],
   },
@@ -47,7 +47,7 @@ export const experiencePrimary: ExperienceItem[] = [
     highlights: [
       'SBI Technology — APIs REST .NET Core + Akka.NET, Azure Functions, CI/CD (Jun 2021 – Oct 2022).',
       'CoderHouse — Profesor de Vue.js: 30 alumnos, Composition API, TypeScript (Abr 2022 – Jul 2022).',
-      'Proyectos personales — Automatización con agentes de IA (Hermes Agent), detección de objetos con YOLOv8 y OpenCV (cams/onvix), desarrollo de videojuegos multijugador (Nova RPG, VB.NET/C#, MonoGame +10 años).',
+      'Proyectos personales — Memorable Summaries, GanasDeSaber (yt-video-factory), DayLog + lucas-ai-api, Hermes Agent, detección con YOLOv8/OpenCV (cams/onvix), videojuegos multijugador (Nova RPG, VB.NET/C#, MonoGame +10 años).',
     ],
   },
 ]

@@ -7,5 +7,7 @@
     </linearGradient>
   </defs>
   <rect width="32" height="32" rx="8" fill="#05060d"/>
-  <text x="16" y="22" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" font-weight="700" fill="url(#g)">LJ</text>
+  <!-- LJ ligado: L + L espejada, gap del mock -->
+  <path fill="url(#g)" d="M19.580,8.820 H25.470 V22.833 A5.697,5.697 0 0 1 19.773,28.531 H11.111 V23.526 H19.580 Z"/>
+  <path fill="url(#g)" d="M6.530,3.585 H12.420 V17.290 H18.849 V22.525 H12.227 A5.697,5.697 0 0 1 6.530,16.828 Z"/>
 </svg>

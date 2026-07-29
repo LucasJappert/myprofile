@@ -14,6 +14,7 @@ export const site = {
   sameAs: [
     'https://www.linkedin.com/in/lucasjappert/',
     'https://github.com/LucasJappert',
+    'https://www.youtube.com/@GanasDeSaber',
   ],
 } as const
 

@@ -12,7 +12,7 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     title: 'Frontend',
-    items: ['Vue 2/3', 'Pinia', 'Vuetify', 'Vite', 'PWA', 'Workbox', 'Capacitor', 'SCSS'],
+    items: ['Vue 2/3', 'Pinia', 'Vuetify', 'Vite', 'Chart.js', 'PWA', 'Workbox', 'Capacitor', 'SCSS'],
   },
   {
     title: 'Backend',
@@ -20,7 +20,7 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     title: 'Datos e infra',
-    items: ['SQL Server', 'Azure SQL', 'Firebase', 'Supabase', 'Docker', 'PM2', 'Gunicorn'],
+    items: ['SQL Server', 'Azure SQL', 'SQLite', 'Firebase', 'Supabase', 'Docker', 'Podman', 'Netlify', 'PM2', 'Gunicorn'],
   },
   {
     title: 'DevOps (Azure)',
@@ -28,12 +28,24 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     title: 'IA y automatización',
-    items: ['LLMs', 'OpenRouter', 'OrcaRouter', 'DeepSeek', 'Claude', 'YOLOv8', 'OpenCV', 'TTS', 'Puppeteer'],
+    items: [
+      'LLMs',
+      'OrcaRouter',
+      'DeepSeek',
+      'Claude',
+      'OmniVoice',
+      'Whisper',
+      'TTS',
+      'FFmpeg',
+      'YOLOv8',
+      'OpenCV',
+      'Puppeteer',
+    ],
     highlight: true,
   },
   {
     title: 'Herramientas IA',
-    items: ['Cursor', 'OpenCode', 'AGENTS.md', 'docs/', '.cursor/rules/'],
+    items: ['Cursor', 'OpenCode', 'lucas-ai-api', 'AGENTS.md', 'docs/', '.cursor/rules/'],
   },
   {
     title: 'Gestión y liderazgo',
