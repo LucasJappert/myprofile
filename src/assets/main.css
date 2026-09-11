@@ -124,6 +124,7 @@ img {
 
 .section {
   padding: 4.5rem 0;
+  scroll-margin-top: var(--nav-h);
 }
 
 /* Menos aire muerto entre Experiencia (colapsada) y Proyectos */

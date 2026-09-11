@@ -1,5 +1,8 @@
 # Plan de mejoras UI/UX — myprofile
 
+> Plan histórico de mayo de 2026. Sus estados no describen la versión actual.
+> El contenido y el flujo vigente de generación del CV están documentados en `README.md`.
+
 Sitio: [lucasjappert.github.io/myprofile](https://lucasjappert.github.io/myprofile/)  
 Stack: Vue 3 + Vite + TypeScript  
 Última revisión del plan: **2026-05-25** · **Sprint UX-3 implementado (pendiente commit / revisión)**  

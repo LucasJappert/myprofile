@@ -11,24 +11,25 @@ export interface ExperienceItem {
 }
 
 export const experienceIntro =
-  'Engineering Lead con 15+ años construyendo software de punta a punta. Dirijo la plataforma digital de Agroideas S.A. — APIs, aplicaciones web, tiempo real y automatización.';
+  'Liderazgo de equipos, desarrollo de producto y operación de sistemas. De e-commerce e integraciones empresariales a agricultura de precisión e IA aplicada.';
 
 /** Roles recientes — siempre visibles */
 export const experiencePrimary: ExperienceItem[] = [
   {
     company: 'Agroideas S.A. · Agrotech',
-    role: 'Head of Systems',
+    role: 'Responsable de Sistemas · Engineering Lead',
     period: 'Oct 2021 – Presente',
     location: 'Rafaela, Argentina',
     current: true,
     summary:
-      'Defino la arquitectura y lidero el desarrollo de la plataforma digital: API compartida, intranet operativa, agricultura de precisión (APIX) y herramientas internas — productos usados a diario por operaciones, técnicos y negocio.',
+      'Lidero el desarrollo de APIX, Agroideas-In y sus servicios compartidos. Conecto las necesidades de agrónomos, operaciones y negocio con decisiones de producto, arquitectura y entrega.',
     highlights: [
-      'api-core (FastAPI, Python, Azure): plataforma compartida — gateway multi-modelo (DeepSeek, Claude vía OpenRouter/Orca), clima, pipeline de noticias agro, métricas de uso y servicios transversales.',
-      'Agroideas-In (Node, TypeScript, Vue 3, Socket.IO, PWA): intranet ops (stock, granos, pedidos) en tiempo real, notificaciones push, Sprint-IT e integración con ERP legacy (SQL Server dual).',
-      'APIX (Vue 3, Capacitor, Node BFF, FastAPI, GEE/Sentinel, YOLOv8): agricultura de precisión — lotes y mapas, ambientaciones, penetrometría, índices satelitales, mapas de productividad, drone/CV y PDFs server-side (Playwright).',
-      'sprint-it (integrado en Agroideas-In): gestión ágil del equipo — sprints, estimación de esfuerzo, notas colaborativas y resúmenes con IA.',
-      'Code reviews en cada PR. Pipelines CI/CD multi-stage con Docker en Azure DevOps. Administración de servidores, bases de datos (SQL Server) y dominios. Interlocutor directo con áreas de negocio para definir productos.',
+      'APIX: mapas de productividad y ambientes, series Sentinel, altimetría, informes agronómicos y análisis de implantación con visión por computadora.',
+      'Pía, asistente de APIX: consultas en lenguaje natural sobre datos y documentación, contexto de conversación, entrada por voz y respuestas con fuentes; herramientas de lectura y ejecución aislada.',
+      'Migración de servicios y bases de SQL Server a PostgreSQL: adaptación de consultas, integridad de datos, respaldos, validación y monitoreo. Integración con el ERP existente.',
+      'Sprint IT: planificación, esfuerzo, colaboración en tiempo real e integración con pull requests. Flujo de tareas para agentes de IA con asignación, seguimiento y registro de resultados.',
+      'Agroideas-In y API Core: operaciones, stock, granos, notificaciones, clima, noticias y servicios de IA compartidos; analítica de uso y monitoreo de APIs y bases de datos.',
+      'Priorización con negocio, revisión de código y entrega continua con Azure DevOps. Operación de servicios en Linux y contenedores; reglas y documentación compartidas para el equipo y sus agentes de desarrollo.',
     ],
   },
   {
@@ -47,7 +48,7 @@ export const experiencePrimary: ExperienceItem[] = [
     highlights: [
       'SBI Technology — APIs REST .NET Core + Akka.NET, Azure Functions, CI/CD (Jun 2021 – Oct 2022).',
       'CoderHouse — Profesor de Vue.js: 30 alumnos, Composition API, TypeScript (Abr 2022 – Jul 2022).',
-      'Proyectos personales — Memorable Summaries, GanasDeSaber (yt-video-factory), DayLog + lucas-ai-api, Hermes Agent, detección con YOLOv8/OpenCV (cams/onvix), videojuegos multijugador (Nova RPG, VB.NET/C#, MonoGame +10 años).',
+      'Productos propios — DayLog y Lucas AI, Memorable Summaries, GanasDeSaber, herramientas de transcripción y automatización. Desarrollo de videojuegos multijugador: Nova RPG y Moo Raiders.',
     ],
   },
 ]

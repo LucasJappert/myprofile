@@ -1,7 +1,7 @@
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, type Plugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import { site, siteUrl } from './src/data/site'
+import { site, siteUrl } from './src/data/site.ts'
 
 function escapeHtml(value: string): string {
   return value
@@ -40,6 +40,10 @@ function buildSeoHead(buildId: string): string {
       'Agrotech',
       'Inteligencia artificial',
       'Azure',
+      'PostgreSQL',
+      'Liderazgo técnico',
+      'Asistentes de IA',
+      'Automatización',
     ],
   }
 

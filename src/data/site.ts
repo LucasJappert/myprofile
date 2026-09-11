@@ -4,7 +4,7 @@ export const site = {
   basePath: '/myprofile/',
   title: 'Lucas Jappert | Full Stack Engineering Lead',
   description:
-    'Engineering Lead en Agroideas S.A. (agrotech). TypeScript, Python, Vue, FastAPI, Azure e IA aplicada. 15+ años construyendo software de punta a punta.',
+    'Liderazgo técnico e IA aplicada. Responsable de Sistemas en Agroideas: APIX, asistentes de IA, PostgreSQL y productos propios. Más de 15 años creando software.',
   ogImagePath: 'assets/og-profile.png',
   ogImageWidth: 1596,
   ogImageHeight: 829,

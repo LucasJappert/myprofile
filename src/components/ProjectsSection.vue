@@ -10,6 +10,9 @@ const badgeLabels = {
   opensource: 'Open source',
   youtube: 'Canal YouTube',
   itchio: 'itch.io',
+  personal: 'Proyecto propio',
+  prototype: 'En desarrollo',
+  integration: 'Integración propia',
 } as const
 
 const lightbox = ref<{
@@ -19,10 +22,6 @@ const lightbox = ref<{
 } | null>(null)
 
 function layoutClass(layout?: string) {
-  if (layout === 'lead') return 'bento__item--lead'
-  if (layout === 'support') return 'bento__item--support'
-  if (layout === 'row2-primary') return 'bento__item--row2-primary'
-  if (layout === 'row2-compact') return 'bento__item--row2-compact'
   if (layout === 'wide') return 'bento__item--wide'
   return ''
 }
@@ -53,6 +52,7 @@ function closeLightbox() {
   <section id="proyectos" class="section reveal">
     <div class="container">
       <h2 class="section-title"><span>Proyectos</span></h2>
+      <p class="projects__intro">Productos que construyo y herramientas que uso: del trabajo con datos y equipos a la creación de contenido y videojuegos.</p>
       <div class="bento">
         <article
           v-for="(project, index) in projects"
@@ -68,7 +68,7 @@ function closeLightbox() {
             class="bento__wide-inner"
             :class="{
               'bento__wide-inner--stack': project.layout !== 'wide',
-              'bento__wide-inner--text-only': project.layout === 'row2-compact',
+              'bento__wide-inner--text-only': !hasMedia(project),
             }"
           >
             <ProjectVideoMedia
@@ -130,17 +130,21 @@ function closeLightbox() {
                 <time>{{ project.period }}</time>
               </header>
               <p>{{ project.description }}</p>
+              <ul v-if="project.highlights?.length" class="bento__highlights">
+                <li v-for="highlight in project.highlights" :key="highlight">{{ highlight }}</li>
+              </ul>
               <div class="bento__stack">
                 <span v-for="tech in project.stack" :key="tech" class="chip chip--agua">{{ tech }}</span>
               </div>
               <a
                 v-if="project.href"
                 :href="project.href"
+                :aria-label="`Ver proyecto: ${project.name}`"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="bento__link"
               >
-                Ver proyecto →
+                {{ project.name === 'DayLog' ? 'Abrir DayLog (requiere acceso)' : 'Ver proyecto →' }}
               </a>
             </div>
           </div>
@@ -160,6 +164,24 @@ function closeLightbox() {
 </template>
 
 <style scoped>
+.projects__intro {
+  color: var(--text-muted);
+  margin: -1rem 0 1.75rem;
+  max-width: 48rem;
+}
+
+.bento__highlights {
+  margin: 1rem 0 0.5rem;
+  padding-left: 1.2rem;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.65;
+}
+
+.bento__highlights li + li { margin-top: 0.5rem; }
+.bento__highlights li::marker { color: var(--agua); }
+.bento__item--featured { border-top: 2px solid var(--agua); }
+
 .bento {
   display: grid;
   gap: 1.25rem;
@@ -169,7 +191,7 @@ function closeLightbox() {
 
 @media (min-width: 640px) {
   .bento {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: stretch;
   }
 
@@ -204,7 +226,7 @@ function closeLightbox() {
 @media (min-width: 960px) {
   /* Wide primero (auto); luego lead+support; Moo + 3 compactos; wide final */
   .bento {
-    grid-template-columns: repeat(30, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: auto;
     align-items: stretch;
   }
@@ -436,13 +458,14 @@ function closeLightbox() {
 
 @media (max-width: 639px) {
   .bento__media--gallery {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     max-height: none;
     overflow-y: visible;
   }
 
   .bento__media--gallery img {
-    height: 400px;
+    height: 180px;
+    object-fit: cover;
   }
 }
 
@@ -569,6 +592,14 @@ function closeLightbox() {
   color: var(--agua);
   background: rgba(46, 232, 184, 0.1);
   border: 1px solid rgba(46, 232, 184, 0.28);
+}
+
+.bento__badge--personal,
+.bento__badge--prototype,
+.bento__badge--integration {
+  color: var(--text-muted);
+  background: rgba(196, 208, 228, 0.08);
+  border: 1px solid rgba(196, 208, 228, 0.22);
 }
 
 .bento__badge--youtube {
