@@ -20,20 +20,20 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     title: 'Datos e infra',
-    items: ['SQL Server', 'Azure SQL', 'SQLite', 'Firebase', 'Supabase', 'Docker', 'Podman', 'Netlify', 'PM2', 'Gunicorn'],
+    items: ['PostgreSQL', 'SQL Server', 'SQLite', 'SQLAlchemy', 'Linux', 'Docker', 'Podman', 'DigitalOcean', 'Azure', 'Netlify'],
   },
   {
-    title: 'DevOps (Azure)',
-    items: ['Azure DevOps', 'Pull Requests', 'Azure Pipelines', 'CI/CD', 'Docker multi-stage'],
+    title: 'Entrega y calidad',
+    items: ['Azure DevOps', 'GitHub Actions', 'CI/CD', 'Revisión de código', 'Pytest', 'Playwright', 'Observabilidad', 'Migraciones de datos'],
   },
   {
     title: 'IA y automatización',
     items: [
       'LLMs',
-      'OrcaRouter',
-      'DeepSeek',
-      'Claude',
-      'OmniVoice',
+      'Asistentes con herramientas',
+      'MCP',
+      'Evaluación de respuestas',
+      'OpenRouter / OrcaRouter',
       'Whisper',
       'TTS',
       'FFmpeg',
@@ -44,12 +44,17 @@ export const skillGroups: SkillGroup[] = [
     highlight: true,
   },
   {
-    title: 'Herramientas IA',
-    items: ['Cursor', 'OpenCode', 'lucas-ai-api', 'AGENTS.md', 'docs/', '.cursor/rules/'],
+    title: 'Desarrollo con agentes',
+    items: ['Codex', 'Cursor', 'Hermes', 'Skills', 'AGENTS.md', 'Worktrees', 'Trazabilidad de tareas'],
   },
   {
     title: 'Gestión y liderazgo',
-    items: ['Scrum Master', 'Backlog', 'Daily', 'Sprint planning', 'Retros', 'Equipos ágiles'],
+    items: ['Liderazgo técnico', 'Arquitectura', 'Producto', 'Scrum', 'Priorización', 'Planificación de sprints', 'Equipos ágiles'],
+    highlight: true,
+  },
+  {
+    title: 'Geoespacial',
+    items: ['Google Earth Engine', 'Sentinel', 'NDVI', 'GeoPandas', 'Rasterio', 'Mapas de productividad'],
     highlight: true,
   },
   {
