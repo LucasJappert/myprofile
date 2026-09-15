@@ -1,6 +1,6 @@
 /** Visitas y eventos → mismo Apps Script que la landing (pestaña MyProfile). Ver docs/ANALYTICS-GAS.md */
 
-import { getClientContext, getClientContextForGet } from '@/utils/clientContext'
+import { getClientContext } from '@/utils/clientContext'
 
 const SESSION_KEY = 'myprofile_session_id'
 const UTM_STORAGE_KEY = 'myprofile_utms'
@@ -44,8 +44,8 @@ export type AnalyticsEventPayload = {
 }
 
 export type TrackOptions = {
-  /** visit = beacon + POST (+ GET fuera de in-app browsers) */
-  mode?: 'visit' | 'post' | 'get'
+  /** visit difiere el envío inicial hasta que el navegador queda libre */
+  mode?: 'visit' | 'post'
   /** Si false, permite el mismo evento+section en la misma carga */
   dedupe?: boolean
 }
@@ -149,34 +149,6 @@ function buildPayload(event: string, section: string): AnalyticsEventPayload {
   }
 }
 
-function payloadForGet(payload: AnalyticsEventPayload): Record<string, string> {
-  const compact = getClientContextForGet()
-  const out: Record<string, string> = {}
-  for (const [key, value] of Object.entries({ ...payload, ...compact })) {
-    if (key === 'user_agent') continue
-    if (value !== undefined && value !== null) out[key] = String(value)
-  }
-  return out
-}
-
-function isInAppBrowser(): boolean {
-  const ua = navigator.userAgent || ''
-  return /Instagram|FBAN|FBAV|FB_IAB|FBIOS|MetaIAB/i.test(ua)
-}
-
-function sendBeacon(payload: AnalyticsEventPayload): boolean {
-  const url = endpoint()
-  if (!url || !navigator.sendBeacon) return false
-  try {
-    const blob = new Blob([JSON.stringify(payload)], {
-      type: 'text/plain;charset=utf-8',
-    })
-    return navigator.sendBeacon(url, blob)
-  } catch {
-    return false
-  }
-}
-
 function sendPost(payload: AnalyticsEventPayload): void {
   const url = endpoint()
   if (!url) return
@@ -192,35 +164,18 @@ function sendPost(payload: AnalyticsEventPayload): void {
   })
 }
 
-function sendGet(payload: AnalyticsEventPayload): void {
-  const url = endpoint()
-  if (!url) return
-
-  const base = url.includes('?') ? url.split('?')[0]! : url
-  const params = new URLSearchParams(payloadForGet(payload))
-
-  const img = new Image()
-  img.src = `${base}?${params.toString()}`
-}
-
 function deliver(payload: AnalyticsEventPayload, mode: TrackOptions['mode']): void {
   if (mode === 'visit') {
-    const beaconOk = sendBeacon(payload)
-    if (!beaconOk) sendPost(payload)
-    if (!isInAppBrowser()) {
-      sendGet(payload)
-    } else if (!beaconOk) {
-      window.setTimeout(() => sendPost(payload), 2500)
+    const send = () => sendPost(payload)
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(send, { timeout: 1500 })
+    } else {
+      setTimeout(send, 0)
     }
     return
   }
 
-  if (mode === 'get') {
-    sendGet(payload)
-    return
-  }
-
-  if (!sendBeacon(payload)) sendPost(payload)
+  sendPost(payload)
 }
 
 /** Registra un evento en la Sheet (si hay URL configurada y no es dev). */
