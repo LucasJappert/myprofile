@@ -1,10 +1,8 @@
 import { onMounted, onUnmounted, ref, type Ref } from 'vue'
 
 function getScrollOffset(): number {
-  const navH = parseFloat(
-    getComputedStyle(document.documentElement).getPropertyValue('--nav-h'),
-  )
-  return (Number.isFinite(navH) ? navH : 64) + 20
+  const navHeight = document.querySelector<HTMLElement>('.nav')?.getBoundingClientRect().height
+  return (navHeight && Number.isFinite(navHeight) ? navHeight : 64) + 20
 }
 
 /** Marca la sección cuyo top ya pasó el offset del nav (más fiable que solo intersection ratio). */
@@ -13,6 +11,11 @@ export function useScrollSpy(sectionIds: string[]): Ref<string> {
 
   onMounted(() => {
     let ticking = false
+
+    const updateFromHash = () => {
+      const hashId = decodeURIComponent(window.location.hash.slice(1))
+      if (sectionIds.includes(hashId)) activeId.value = hashId
+    }
 
     const update = () => {
       ticking = false
@@ -50,10 +53,14 @@ export function useScrollSpy(sectionIds: string[]): Ref<string> {
     update()
     window.addEventListener('scroll', scheduleUpdate, { passive: true })
     window.addEventListener('resize', scheduleUpdate, { passive: true })
+    window.addEventListener('hashchange', updateFromHash)
+    window.addEventListener('scrollend', scheduleUpdate)
 
     onUnmounted(() => {
       window.removeEventListener('scroll', scheduleUpdate)
       window.removeEventListener('resize', scheduleUpdate)
+      window.removeEventListener('hashchange', updateFromHash)
+      window.removeEventListener('scrollend', scheduleUpdate)
     })
   })
 

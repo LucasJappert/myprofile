@@ -9,7 +9,11 @@ export function useScrollReveal() {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const elements = document.querySelectorAll<HTMLElement>(REVEAL_SELECTOR)
 
-    if (prefersReduced || elements.length === 0) {
+    if (
+      prefersReduced ||
+      elements.length === 0 ||
+      typeof IntersectionObserver === 'undefined'
+    ) {
       elements.forEach((el) => el.classList.add('is-visible'))
       return
     }

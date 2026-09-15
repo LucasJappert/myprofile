@@ -5,6 +5,70 @@ export interface SkillGroup {
   highlight?: boolean
 }
 
+export interface SkillDomain {
+  id: 'product' | 'ai' | 'data' | 'infra' | 'geo'
+  title: string
+  label: string
+  description: string
+  items: string[]
+  projects: string[]
+  x: number
+  y: number
+}
+
+export const skillDomains: SkillDomain[] = [
+  {
+    id: 'product',
+    title: 'Producto y frontend',
+    label: 'Producto',
+    description: 'Interfaces y flujos pensados desde el problema hasta la operación cotidiana.',
+    items: ['Vue 3', 'TypeScript', 'Pinia', 'Vite', 'PWA'],
+    projects: ['APIX', 'Sprint IT', 'DayLog'],
+    x: 50,
+    y: 8,
+  },
+  {
+    id: 'ai',
+    title: 'IA aplicada',
+    label: 'IA',
+    description: 'Asistentes con herramientas, voz, evaluación y modelos integrados a productos reales.',
+    items: ['LLMs', 'MCP', 'Codex', 'Whisper', 'TTS', 'YOLOv8'],
+    projects: ['Pía', 'Lucas AI', 'GanasDeSaber'],
+    x: 88,
+    y: 37,
+  },
+  {
+    id: 'data',
+    title: 'Datos y servicios',
+    label: 'Datos',
+    description: 'APIs, bases de datos y migraciones con trazabilidad y foco en la integridad.',
+    items: ['FastAPI', 'PostgreSQL', 'SQL Server', 'SQLite', 'SQLAlchemy'],
+    projects: ['APIX', 'API Core', 'Sprint IT'],
+    x: 74,
+    y: 84,
+  },
+  {
+    id: 'infra',
+    title: 'Infraestructura',
+    label: 'Infra',
+    description: 'Entrega y operación en Linux, contenedores y servicios de nube observables.',
+    items: ['Linux', 'Docker', 'Podman', 'DigitalOcean', 'Azure', 'Netlify'],
+    projects: ['API Core', 'Lucas AI', 'DayLog'],
+    x: 26,
+    y: 84,
+  },
+  {
+    id: 'geo',
+    title: 'Tecnología geoespacial',
+    label: 'Geo',
+    description: 'Procesamiento satelital y agronómico para convertir capas complejas en decisiones.',
+    items: ['Earth Engine', 'Sentinel', 'NDVI', 'GeoPandas', 'Rasterio'],
+    projects: ['APIX'],
+    x: 12,
+    y: 37,
+  },
+]
+
 export const skillGroups: SkillGroup[] = [
   {
     title: 'Lenguajes',

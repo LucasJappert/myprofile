@@ -1,337 +1,98 @@
 <script setup lang="ts">
-import type { ExperienceItem } from '@/data/experience'
-import { experienceEarlier, experienceIntro, experiencePrimary } from '@/data/experience'
+import { experience, experienceIntro, type ExperienceItem } from '@/data/experience'
 
 function jobKey(job: ExperienceItem) {
   return `${job.company}-${job.period}`
 }
 
-function periodBeforePresent(period: string) {
-  const marker = 'Presente'
-  if (!period.endsWith(marker)) return period
-  return period.slice(0, -marker.length).trimEnd()
+function jobImpact(job: ExperienceItem) {
+  return job.highlights?.[0] ?? job.summary
 }
 </script>
 
 <template>
   <section id="experiencia" class="section reveal">
     <div class="container">
-      <h2 class="section-title"><span>Experiencia</span></h2>
-      <p class="experience__intro">{{ experienceIntro }}</p>
+      <div class="experience__heading">
+        <div>
+          <p class="experience__eyebrow">Trayectoria</p>
+          <h2 class="section-title"><span>Experiencia</span></h2>
+        </div>
+        <p>{{ experienceIntro }}</p>
+      </div>
+
       <ol class="timeline">
         <li
-          v-for="(job, index) in experiencePrimary"
+          v-for="(job, index) in experience"
           :key="jobKey(job)"
           class="timeline__item"
           :class="{ 'timeline__item--current': job.current }"
         >
-          <article class="timeline__card surface--muted" :class="{ 'timeline__card--current': job.current }">
-            <div class="timeline__marker" aria-hidden="true">
-              <span>{{ index + 1 }}</span>
+          <span class="timeline__node" aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</span>
+          <details class="timeline__card">
+            <summary>
+              <div class="timeline__summary-top">
+                <span v-if="job.current" class="timeline__current">Rol actual</span>
+                <time>{{ job.period }}</time>
+              </div>
+              <h3>{{ job.role }}</h3>
+              <p class="timeline__company">{{ job.company }}</p>
+              <p class="timeline__impact">{{ jobImpact(job) }}</p>
+              <span class="timeline__toggle" aria-hidden="true" />
+            </summary>
+            <div class="timeline__content">
+              <p>{{ job.summary }}</p>
+              <ul v-if="job.highlights && job.highlights.length > 1">
+                <li v-for="highlight in job.highlights.slice(1)" :key="highlight">{{ highlight }}</li>
+              </ul>
+              <span v-if="job.location" class="timeline__location">{{ job.location }}</span>
             </div>
-            <header class="timeline__header">
-              <div>
-                <div class="timeline__title-row">
-                  <h3>{{ job.role }}</h3>
-                  <span v-if="job.current" class="chip chip--verde timeline__current-badge">Rol actual</span>
-                </div>
-                <p class="timeline__company">{{ job.company }}</p>
-              </div>
-              <div class="timeline__meta">
-                <time v-if="job.current && job.period.endsWith('Presente')">
-                  {{ periodBeforePresent(job.period) }}
-                  <span class="timeline__present">Presente</span>
-                </time>
-                <time v-else>{{ job.period }}</time>
-                <span v-if="job.location">{{ job.location }}</span>
-              </div>
-            </header>
-            <p>{{ job.summary }}</p>
-            <ul v-if="job.highlights?.length" class="timeline__highlights">
-              <li v-for="h in job.highlights" :key="h">{{ h }}</li>
-            </ul>
-          </article>
+          </details>
         </li>
       </ol>
-
-      <details v-if="experienceEarlier.length" class="timeline__earlier">
-        <summary class="timeline__earlier-summary">
-          <span class="timeline__earlier-icon" aria-hidden="true" />
-          <span class="timeline__earlier-label">
-            Experiencia anterior ({{ experienceEarlier.length }} roles)
-          </span>
-        </summary>
-        <ol class="timeline timeline--nested">
-          <li
-            v-for="(job, index) in experienceEarlier"
-            :key="jobKey(job)"
-            class="timeline__item"
-          >
-            <article class="timeline__card surface--muted">
-              <div class="timeline__marker timeline__marker--muted" aria-hidden="true">
-                <span>{{ index + 1 }}</span>
-              </div>
-              <header class="timeline__header">
-                <div>
-                  <h3>{{ job.role }}</h3>
-                  <p class="timeline__company">{{ job.company }}</p>
-                </div>
-                <div class="timeline__meta">
-                  <time>{{ job.period }}</time>
-                  <span v-if="job.location">{{ job.location }}</span>
-                </div>
-              </header>
-              <p>{{ job.summary }}</p>
-              <ul v-if="job.highlights?.length" class="timeline__highlights">
-                <li v-for="h in job.highlights" :key="h">{{ h }}</li>
-              </ul>
-            </article>
-          </li>
-        </ol>
-      </details>
     </div>
   </section>
 </template>
 
 <style scoped>
-.experience__intro {
-  margin: -1rem 0 1.75rem;
-  font-size: var(--text-base);
-  line-height: 1.65;
-  color: var(--text-muted);
-}
+.experience__heading { display: grid; gap: 1rem; margin-bottom: 2.5rem; }
+.experience__heading .section-title { margin: 0; }
+.experience__heading > p { max-width: 44rem; margin: 0; color: var(--text-muted); }
+.experience__eyebrow { margin: 0 0 .35rem; color: var(--agua); font: 600 var(--text-xs)/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
 
-.timeline {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
+.timeline { position: relative; display: grid; gap: 1.2rem; margin: 0; padding: 0; list-style: none; }
+.timeline::before { content: ''; position: absolute; top: 0; bottom: 0; left: 1.35rem; width: 1px; background: linear-gradient(180deg, transparent, var(--celeste) 8%, var(--agua) 55%, rgba(152,110,255,.55) 92%, transparent); box-shadow: 0 0 14px rgba(0,232,255,.28); }
+.timeline__item { position: relative; padding-left: 3.8rem; }
+.timeline__node { position: absolute; z-index: 2; top: 1.2rem; left: 0; display: grid; place-items: center; width: 2.7rem; height: 2.7rem; border: 1px solid rgba(0,232,255,.35); border-radius: 50%; color: var(--celeste); background: #080a14; box-shadow: 0 0 0 .4rem var(--bg-deep), 0 0 24px rgba(0,232,255,.12); font: 600 var(--text-xs) var(--font-mono); }
+.timeline__item--current .timeline__node { color: var(--bg-deep); border-color: transparent; background: var(--gradient-brand); }
+.timeline__card { position: relative; overflow: hidden; border: 1px solid rgba(0,232,255,.14); border-radius: var(--radius-lg); background: rgba(8,10,20,.72); backdrop-filter: blur(14px); transition: border-color .25s ease, background .25s ease, transform .25s ease; }
+.timeline__card:hover, .timeline__card[open] { border-color: rgba(46,232,184,.34); background: rgba(10,14,25,.9); }
+.timeline__card summary { position: relative; padding: 1.25rem 3.8rem 1.25rem 1.35rem; cursor: pointer; list-style: none; }
+.timeline__card summary::-webkit-details-marker { display: none; }
+.timeline__summary-top { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-bottom: .5rem; color: var(--text-muted); font: 500 var(--text-xs) var(--font-mono); }
+.timeline__current { padding: .25rem .55rem; border: 1px solid rgba(34,232,132,.35); border-radius: 999px; color: var(--verde); background: rgba(34,232,132,.08); }
+.timeline h3 { margin: 0; font-size: clamp(1.12rem, 2.6vw, 1.5rem); line-height: 1.2; }
+.timeline__company { margin: .25rem 0 0; color: var(--celeste); font-size: var(--text-sm); line-height: 1.4; }
+.timeline__impact { display: -webkit-box; max-width: 52ch; margin: .75rem 0 0; overflow: hidden; color: var(--text-muted); font-size: var(--text-sm); line-height: 1.5; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.timeline__toggle { position: absolute; top: 50%; right: 1.3rem; width: 1.6rem; height: 1.6rem; border: 1px solid var(--border); border-radius: 50%; transform: translateY(-50%); }
+.timeline__toggle::before, .timeline__toggle::after { content: ''; position: absolute; inset: 50% auto auto 50%; width: .62rem; height: 1px; background: var(--agua); transform: translate(-50%,-50%); transition: transform .2s ease; }
+.timeline__toggle::after { transform: translate(-50%,-50%) rotate(90deg); }
+.timeline__card[open] .timeline__toggle::after { transform: translate(-50%,-50%) rotate(0); }
+.timeline__content { padding: 0 1.35rem 1.35rem; border-top: 1px solid rgba(0,232,255,.09); }
+.timeline__content > p { margin: 1.1rem 0 0; color: var(--text-muted); line-height: 1.65; }
+.timeline__content ul { margin: 1rem 0 0; padding-left: 1.2rem; color: var(--text-muted); font-size: var(--text-sm); line-height: 1.65; }
+.timeline__content li + li { margin-top: .55rem; }
+.timeline__content li::marker { color: var(--agua); }
+.timeline__location { display: block; margin-top: 1rem; color: var(--text-muted); font: var(--text-xs) var(--font-mono); }
 
-.timeline--nested {
-  margin-top: 1rem;
-}
-
-.timeline__item {
-  display: block;
-}
-
-.timeline__card {
-  position: relative;
-}
-
-.timeline__marker {
-  position: absolute;
-  top: 0.85rem;
-  right: 0.85rem;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.timeline__marker span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  border-radius: 50%;
-  background: var(--gradient-brand);
-  color: var(--bg-deep);
-}
-
-.timeline__marker--muted span {
-  background: rgba(46, 232, 184, 0.2);
-  color: var(--agua);
-  border: 1px solid rgba(46, 232, 184, 0.35);
-}
-
-.timeline__card--current {
-  border-color: rgba(46, 232, 184, 0.38);
-  box-shadow: var(--shadow-glow);
-}
-
-.timeline__card--current::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.75rem;
-  bottom: 0.75rem;
-  width: 3px;
-  border-radius: 0 3px 3px 0;
-  background: var(--gradient-brand);
-}
-
-.timeline__title-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem 0.65rem;
-}
-
-.timeline__title-row h3 {
-  margin: 0;
-}
-
-.timeline__current-badge {
-  flex-shrink: 0;
-}
-
-.timeline__present {
-  font-weight: 600;
-  color: var(--verde);
-}
-
-.timeline__header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.5rem 1rem;
-  margin-bottom: 0.75rem;
-  padding-right: 2.75rem;
-}
-
-.timeline__header h3 {
-  margin: 0;
-  font-size: 1.2rem;
-}
-.timeline__company {
-  margin: 0.2rem 0 0;
-  font-weight: 600;
-  font-size: var(--text-sm);
-  color: var(--celeste);
-}
-
-.timeline__meta {
-  text-align: right;
-  font-size: var(--text-sm);
-  color: var(--text-muted);
-}
-
-.timeline__meta time {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  font-weight: 500;
-  color: var(--agua);
-}
-
-.timeline__card > p {
-  margin: 0;
-  color: var(--text-muted);
-  font-size: var(--text-base);
-  line-height: 1.75;
-}
-
-.timeline__highlights {
-  margin: 1rem 0 0;
-  padding-left: 1.2rem;
-  color: var(--text-muted);
-  font-size: var(--text-base);
-  line-height: 1.75;
-}
-
-.timeline__highlights li {
-  margin-bottom: 0.4rem;
-}
-
-.timeline__earlier {
-  margin-top: 1.25rem;
-}
-
-.timeline__earlier-summary {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  cursor: pointer;
-  list-style: none;
-  user-select: none;
-  padding: 0.85rem 1rem;
-  font-size: var(--text-base);
-  font-weight: 600;
-  color: var(--agua);
-  border-radius: var(--radius-md);
-  border: 1px solid rgba(46, 232, 184, 0.28);
-  background: rgba(46, 232, 184, 0.06);
-  transition:
-    color 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease;
-}
-
-.timeline__earlier-summary::-webkit-details-marker {
-  display: none;
-}
-
-.timeline__earlier-icon {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 50%;
-  background: rgba(46, 232, 184, 0.14);
-  color: var(--verde);
-  transition: transform 0.2s ease, background 0.2s ease;
-}
-
-.timeline__earlier-icon::before {
-  content: '';
-  width: 0.45rem;
-  height: 0.45rem;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: rotate(-45deg) translate(-1px, 1px);
-  transition: transform 0.2s ease;
-}
-
-.timeline__earlier[open] .timeline__earlier-icon {
-  background: rgba(0, 232, 255, 0.12);
-  color: var(--celeste);
-}
-
-.timeline__earlier[open] .timeline__earlier-icon::before {
-  transform: rotate(45deg) translate(0, -1px);
-}
-
-.timeline__earlier-label {
-  line-height: 1.35;
-}
-
-.timeline__earlier-summary:hover {
-  color: var(--verde);
-  border-color: rgba(34, 232, 132, 0.4);
-  background: rgba(34, 232, 132, 0.1);
-}
-
-.timeline__earlier-summary:focus-visible {
-  outline: 2px solid var(--celeste);
-  outline-offset: 2px;
-}
-
-.timeline__earlier[open] .timeline__earlier-summary {
-  margin-bottom: 0.25rem;
-  border-color: rgba(0, 232, 255, 0.35);
-  background: rgba(0, 232, 255, 0.06);
-}
-
-@media (max-width: 600px) {
-  .timeline__meta {
-    text-align: left;
-    width: 100%;
-    padding-right: 0;
-  }
-
-  .timeline__header {
-    padding-right: 2.5rem;
-  }
+@media (min-width: 800px) {
+  .experience__heading { grid-template-columns: .75fr 1.25fr; align-items: end; }
+  .timeline { gap: 0; }
+  .timeline::before { left: 50%; }
+  .timeline__item { display: grid; grid-template-columns: 1fr 1fr; min-height: 9.5rem; padding: 0; }
+  .timeline__item:nth-child(odd) .timeline__card { grid-column: 1; margin: 0 3rem 1.4rem 0; }
+  .timeline__item:nth-child(even) .timeline__card { grid-column: 2; margin: 0 0 1.4rem 3rem; }
+  .timeline__node { top: 1.1rem; left: 50%; transform: translateX(-50%); }
+  .timeline__item:nth-child(even) .timeline__card { grid-row: 1; }
 }
 </style>

@@ -7,6 +7,10 @@ defineProps<{
   activeId: string
 }>()
 
+const emit = defineEmits<{
+  navigate: [id: string]
+}>()
+
 const { menuOpen, toggleMenu, closeMenu } = useMobileMenu()
 
 const panelRef = ref<HTMLElement | null>(null)
@@ -41,6 +45,11 @@ function onKeydown(e: KeyboardEvent) {
   }
 }
 
+function navigateTo(id: string) {
+  emit('navigate', id)
+  closeMenu()
+}
+
 watch(menuOpen, async (open) => {
   if (open) {
     document.addEventListener('keydown', onKeydown)
@@ -65,7 +74,7 @@ onUnmounted(() => {
         class="nav__brand"
         :class="{ 'is-active': activeId === 'inicio' }"
         aria-label="Inicio"
-        @click="closeMenu"
+        @click="navigateTo('inicio')"
       >
         LJ
       </a>
@@ -78,7 +87,7 @@ onUnmounted(() => {
           class="nav__tab"
           :class="{ 'is-active': activeId === link.id }"
           :aria-label="link.label"
-          @click="closeMenu"
+          @click="navigateTo(link.id)"
         >
           <span class="nav__tab-icon" aria-hidden="true">{{ link.icon }}</span>
           <span class="nav__tab-label">{{ link.shortLabel }}</span>
@@ -91,6 +100,7 @@ onUnmounted(() => {
           :key="link.id"
           :href="`#${link.id}`"
           :class="{ 'is-active': activeId === link.id }"
+          @click="navigateTo(link.id)"
         >
           {{ link.label }}
         </a>
@@ -136,7 +146,7 @@ onUnmounted(() => {
           :href="`#${link.id}`"
           class="nav-drawer__link"
           :class="{ 'is-active': activeId === link.id }"
-          @click="closeMenu"
+          @click="navigateTo(link.id)"
         >
           <span class="nav-drawer__icon" aria-hidden="true">{{ link.icon }}</span>
           {{ link.label }}
@@ -145,7 +155,7 @@ onUnmounted(() => {
           :href="navHighlightLink.href"
           class="nav-drawer__link nav-drawer__link--highlight"
           :class="{ 'is-active': activeId === navHighlightLink.activeSectionId }"
-          @click="closeMenu"
+          @click="navigateTo(navHighlightLink.activeSectionId)"
         >
           <span class="nav-drawer__icon" aria-hidden="true">{{ navHighlightLink.icon }}</span>
           {{ navHighlightLink.label }}
@@ -229,8 +239,8 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   gap: 0.1rem;
-  min-width: 2.35rem;
-  min-height: 2.5rem;
+  min-width: 2.5rem;
+  min-height: 2.75rem;
   padding: 0.2rem 0.15rem;
   font-size: var(--text-xs);
   font-weight: 500;
@@ -397,13 +407,17 @@ onUnmounted(() => {
 
 @media (max-width: 360px) {
   .nav__tab-label {
-    display: none;
+    display: inline;
+    font-size: 0.56rem;
   }
 
   .nav__tab,
   .nav__more {
-    min-width: 2.1rem;
+    min-width: 2.35rem;
+    padding-inline: 0;
   }
+
+  .nav__brand { min-width: 2rem; }
 }
 
 @media (min-width: 768px) {
@@ -423,6 +437,7 @@ onUnmounted(() => {
   z-index: 1;
   pointer-events: none;
   visibility: hidden;
+  overflow: hidden;
 }
 
 .nav-drawer--open {

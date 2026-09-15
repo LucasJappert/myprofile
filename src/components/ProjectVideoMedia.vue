@@ -22,10 +22,17 @@ const { isPlaying, motionAllowed } = useInViewPlayback(rootRef)
       referrerpolicy="strict-origin-when-cross-origin"
       allowfullscreen
     />
-    <div v-else class="bento__video-poster" aria-hidden="true">
+    <a
+      v-else
+      class="bento__video-poster"
+      :href="`https://www.youtube.com/watch?v=${videoId}`"
+      target="_blank"
+      rel="noopener noreferrer"
+      :aria-label="`Ver video de ${projectName} en YouTube`"
+    >
       <img :src="youtubePosterSrc(videoId)" alt="" loading="lazy" decoding="async" />
       <span class="bento__video-play">▶</span>
-    </div>
+    </a>
     <span v-if="!motionAllowed" class="sr-only">
       Vista previa en pausa (preferencia de movimiento reducido del sistema)
     </span>
@@ -46,7 +53,7 @@ const { isPlaying, motionAllowed } = useInViewPlayback(rootRef)
   width: 100%;
   height: 100%;
   border: 0;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .bento__video-poster {

@@ -1,9 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import ImageLightbox from '@/components/ImageLightbox.vue'
 import ProjectVideoMedia from '@/components/ProjectVideoMedia.vue'
-import { projects } from '@/data/projects'
+import { projects, type Project, type ProjectCategory } from '@/data/projects'
 import { assetUrl } from '@/utils/assetUrl'
+
+type FilterId = 'all' | ProjectCategory
+
+const filters: { id: FilterId; label: string }[] = [
+  { id: 'all', label: 'Todos' },
+  { id: 'agroideas', label: 'Agroideas' },
+  { id: 'ai', label: 'IA' },
+  { id: 'products', label: 'Productos' },
+  { id: 'games', label: 'Juegos' },
+  { id: 'opensource', label: 'Open source' },
+]
 
 const badgeLabels = {
   production: 'En producción',
@@ -15,26 +26,47 @@ const badgeLabels = {
   integration: 'Integración propia',
 } as const
 
-const lightbox = ref<{
-  images: string[]
-  alts: string[]
-  index: number
-} | null>(null)
+const activeFilter = ref<FilterId>('all')
+const activeIndex = ref(0)
+const showAll = ref(false)
+const lightbox = ref<{ images: string[]; alts: string[]; index: number } | null>(null)
 
-function layoutClass(layout?: string) {
-  if (layout === 'wide') return 'bento__item--wide'
-  return ''
+function categories(project: Project): FilterId[] {
+  return ['all', ...project.categories]
 }
 
-function hasMedia(project: (typeof projects)[number]) {
-  return Boolean(project.youtubeId || project.images?.length || project.image)
+const filteredProjects = computed(() =>
+  projects.filter((project) => categories(project).includes(activeFilter.value)),
+)
+
+const showcaseProjects = computed(() => {
+  const featured = filteredProjects.value.filter((project) => project.featured)
+  return featured.length ? featured : filteredProjects.value
+})
+
+const activeProject = computed(() => showcaseProjects.value[activeIndex.value] ?? projects[0])
+const indexProjects = computed(() =>
+  filteredProjects.value.filter((project) => project.name !== activeProject.value.name),
+)
+const visibleProjects = computed(() =>
+  indexProjects.value.slice(0, showAll.value ? indexProjects.value.length : 4),
+)
+
+watch(activeFilter, () => {
+  activeIndex.value = 0
+  showAll.value = false
+})
+
+function go(delta: number) {
+  const total = showcaseProjects.value.length
+  if (total > 1) activeIndex.value = (activeIndex.value + delta + total) % total
 }
 
-function hasGallery(project: (typeof projects)[number]) {
+function hasGallery(project: Project) {
   return Boolean(project.images && project.images.length > 1)
 }
 
-function openGallery(project: (typeof projects)[number], index: number) {
+function openGallery(project: Project, index: number) {
   if (!project.images?.length) return
   lightbox.value = {
     images: project.images.map((src) => assetUrl(src)),
@@ -42,114 +74,154 @@ function openGallery(project: (typeof projects)[number], index: number) {
     index,
   }
 }
-
-function closeLightbox() {
-  lightbox.value = null
-}
 </script>
 
 <template>
   <section id="proyectos" class="section reveal">
     <div class="container">
-      <h2 class="section-title"><span>Proyectos</span></h2>
-      <p class="projects__intro">Productos que construyo y herramientas que uso: del trabajo con datos y equipos a la creación de contenido y videojuegos.</p>
-      <div class="bento">
-        <article
-          v-for="(project, index) in projects"
-          :key="project.name"
-          class="card card--hover bento__item"
-          :class="[
-            { 'bento__item--featured': project.featured },
-            { 'bento__item--gallery': hasGallery(project) },
-            layoutClass(project.layout),
-          ]"
+      <div class="projects__heading">
+        <div>
+          <p class="projects__eyebrow">Trabajo seleccionado</p>
+          <h2 class="section-title"><span>Proyectos</span></h2>
+        </div>
+        <p>Productos reales, IA aplicada y experimentos que terminaron convertidos en herramientas.</p>
+      </div>
+
+      <div class="projects__filters" role="group" aria-label="Filtrar proyectos">
+        <button
+          v-for="filter in filters"
+          :key="filter.id"
+          type="button"
+          class="projects__filter"
+          :class="{ 'is-active': activeFilter === filter.id }"
+          :aria-pressed="activeFilter === filter.id"
+          @click="activeFilter = filter.id"
         >
-          <div
-            class="bento__wide-inner"
-            :class="{
-              'bento__wide-inner--stack': project.layout !== 'wide',
-              'bento__wide-inner--text-only': !hasMedia(project),
-            }"
-          >
-            <ProjectVideoMedia
-              v-if="project.youtubeId"
-              :video-id="project.youtubeId"
-              :project-name="project.name"
-            />
-            <div
-              v-else-if="hasGallery(project)"
-              class="bento__media bento__media--gallery"
-            >
-              <button
-                v-for="(src, imgIndex) in project.images"
-                :key="src"
-                type="button"
-                class="bento__gallery-btn"
-                :aria-label="`Ampliar captura ${imgIndex + 1} de ${project.name}`"
-                @click.stop="openGallery(project, imgIndex)"
-              >
-                <img
-                  :src="assetUrl(src)"
-                  :alt="`Captura ${imgIndex + 1} de ${project.name}`"
-                  loading="lazy"
-                  :fetchpriority="index < 2 && imgIndex === 0 ? 'high' : 'auto'"
-                />
-              </button>
-            </div>
-            <div v-else-if="project.image" class="bento__media">
-              <img
-                :src="assetUrl(project.image)"
-                :alt="`Captura de ${project.name}`"
-                loading="lazy"
-                :fetchpriority="index < 2 ? 'high' : 'auto'"
+          {{ filter.label }}
+        </button>
+      </div>
+
+      <div class="showcase" @keydown.left="go(-1)" @keydown.right="go(1)">
+        <Transition name="project-swap" mode="out-in">
+          <article :key="activeProject.name" class="showcase__card" data-tilt tabindex="0">
+            <div class="showcase__media">
+              <ProjectVideoMedia
+                v-if="activeProject.youtubeId"
+                :video-id="activeProject.youtubeId"
+                :project-name="activeProject.name"
               />
-            </div>
-            <div class="bento__body" :class="{ 'bento__body--solo': !hasMedia(project) }">
-              <header class="bento__header">
-                <div class="bento__title-row">
-                  <h3>{{ project.name }}</h3>
-                  <a
-                    v-if="project.badge && project.badgeHref"
-                    :href="project.badgeHref"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="bento__badge"
-                    :class="`bento__badge--${project.badge}`"
-                    @click.stop
-                  >
-                    {{ badgeLabels[project.badge] }}
-                  </a>
-                  <span
-                    v-else-if="project.badge"
-                    class="bento__badge"
-                    :class="`bento__badge--${project.badge}`"
-                  >
-                    {{ badgeLabels[project.badge] }}
-                  </span>
+              <button
+                v-else-if="hasGallery(activeProject)"
+                type="button"
+                class="showcase__image-button"
+                :aria-label="`Ampliar capturas de ${activeProject.name}`"
+                @click="openGallery(activeProject, 0)"
+              >
+                <img :src="assetUrl(activeProject.images![0])" :alt="`Captura de ${activeProject.name}`" />
+              </button>
+              <img
+                v-else-if="activeProject.image"
+                :src="assetUrl(activeProject.image)"
+                :alt="`Ilustración conceptual de ${activeProject.name}`"
+              />
+              <div v-else class="showcase__fallback" aria-hidden="true">
+                <span class="showcase__orbit" />
+                <span class="showcase__monogram">{{ activeProject.name.slice(0, 2) }}</span>
+                <div class="showcase__signal">
+                  <i v-for="index in 8" :key="index" :style="{ '--i': index }" />
                 </div>
-                <time>{{ project.period }}</time>
-              </header>
-              <p>{{ project.description }}</p>
-              <ul v-if="project.highlights?.length" class="bento__highlights">
-                <li v-for="highlight in project.highlights" :key="highlight">{{ highlight }}</li>
+              </div>
+              <div v-if="activeProject.images?.length" class="showcase__thumbs">
+                <button
+                  v-for="(image, index) in activeProject.images"
+                  :key="image"
+                  type="button"
+                  :aria-label="`Ver captura ${index + 1}`"
+                  @click="openGallery(activeProject, index)"
+                >
+                  <img :src="assetUrl(image)" alt="" loading="lazy" />
+                </button>
+              </div>
+            </div>
+
+            <div class="showcase__body">
+              <div class="showcase__topline">
+                <span v-if="activeProject.badge" class="project-badge">
+                  {{ badgeLabels[activeProject.badge] }}
+                </span>
+                <span>{{ activeProject.period }}</span>
+              </div>
+              <h3>{{ activeProject.name }}</h3>
+              <p>{{ activeProject.description }}</p>
+              <ul v-if="activeProject.highlights?.length">
+                <li v-for="highlight in activeProject.highlights" :key="highlight">{{ highlight }}</li>
               </ul>
-              <div class="bento__stack">
-                <span v-for="tech in project.stack" :key="tech" class="chip chip--agua">{{ tech }}</span>
+              <div class="showcase__stack">
+                <span v-for="tech in activeProject.stack" :key="tech">{{ tech }}</span>
               </div>
               <a
-                v-if="project.href"
-                :href="project.href"
-                :aria-label="`Ver proyecto: ${project.name}`"
+                v-if="activeProject.href"
+                :href="activeProject.href"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="bento__link"
+                class="btn btn-primary"
+                data-magnetic
               >
-                {{ project.name === 'DayLog' ? 'Abrir DayLog (requiere acceso)' : 'Ver proyecto →' }}
+                Ver proyecto <span aria-hidden="true">↗</span>
               </a>
             </div>
+          </article>
+        </Transition>
+
+        <div class="showcase__controls">
+          <span class="showcase__counter">
+            {{ String(activeIndex + 1).padStart(2, '0') }} / {{ String(showcaseProjects.length).padStart(2, '0') }}
+          </span>
+          <div class="showcase__progress" aria-hidden="true">
+            <span :style="{ width: `${((activeIndex + 1) / showcaseProjects.length) * 100}%` }" />
           </div>
-        </article>
+          <button type="button" aria-label="Proyecto anterior" :disabled="showcaseProjects.length < 2" @click="go(-1)">←</button>
+          <button type="button" aria-label="Proyecto siguiente" :disabled="showcaseProjects.length < 2" @click="go(1)">→</button>
+        </div>
       </div>
+
+      <div class="projects__index-heading">
+        <h3>Más proyectos</h3>
+        <span>{{ indexProjects.length }} adicionales</span>
+      </div>
+      <div class="projects__index">
+        <details v-for="project in visibleProjects" :key="project.name" class="project-row">
+          <summary>
+            <span class="project-row__number">{{ String(projects.indexOf(project) + 1).padStart(2, '0') }}</span>
+            <img
+              v-if="project.image"
+              class="project-row__thumb"
+              :src="assetUrl(project.image)"
+              alt=""
+              width="96"
+              height="54"
+              loading="lazy"
+            />
+            <span class="project-row__name">{{ project.name }}</span>
+            <span class="project-row__period">{{ project.period }}</span>
+          </summary>
+          <div class="project-row__detail">
+            <p>{{ project.description }}</p>
+            <div>
+              <span v-for="tech in project.stack" :key="tech">{{ tech }}</span>
+            </div>
+            <a v-if="project.href" :href="project.href" target="_blank" rel="noopener noreferrer">Abrir proyecto ↗</a>
+          </div>
+        </details>
+      </div>
+      <button
+        v-if="indexProjects.length > 4"
+        type="button"
+        class="projects__more btn btn-ghost"
+        @click="showAll = !showAll"
+      >
+        {{ showAll ? 'Mostrar menos' : `Ver índice completo (${indexProjects.length})` }}
+      </button>
     </div>
 
     <ImageLightbox
@@ -157,508 +229,116 @@ function closeLightbox() {
       :images="lightbox.images"
       :alts="lightbox.alts"
       :index="lightbox.index"
-      @close="closeLightbox"
+      @close="lightbox = null"
       @update:index="lightbox.index = $event"
     />
   </section>
 </template>
 
 <style scoped>
-.projects__intro {
-  color: var(--text-muted);
-  margin: -1rem 0 1.75rem;
-  max-width: 48rem;
+.projects__heading { display: grid; gap: 1rem; margin-bottom: 1.5rem; }
+.projects__heading .section-title { margin-bottom: 0; }
+.projects__heading > p { max-width: 40rem; margin: 0; color: var(--text-muted); }
+.projects__eyebrow { margin: 0 0 .35rem; font: 600 var(--text-xs)/1 var(--font-mono); color: var(--agua); letter-spacing: .12em; text-transform: uppercase; }
+
+.projects__filters { display: flex; flex-wrap: wrap; gap: .55rem; padding-bottom: 1.25rem; }
+.projects__filter { flex: 0 0 auto; min-height: 2.75rem; padding: .55rem .95rem; border: 1px solid var(--border); border-radius: 999px; background: rgba(8,10,18,.6); color: var(--text-muted); font: 600 var(--text-xs) var(--font-sans); cursor: pointer; transition: .2s ease; }
+.projects__filter:hover, .projects__filter.is-active { color: var(--bg-deep); border-color: transparent; background: var(--gradient-brand); box-shadow: 0 0 20px rgba(0,232,255,.14); }
+
+.showcase { position: relative; }
+.showcase__card { --rotate-x: 0deg; --rotate-y: 0deg; position: relative; display: grid; min-width: 0; overflow: hidden; border: 1px solid rgba(0,232,255,.2); border-radius: 1.5rem; background: rgba(7,9,18,.86); box-shadow: 0 30px 80px rgba(0,0,0,.32); }
+.showcase__card::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(25rem circle at var(--spot-x, 50%) var(--spot-y, 50%), rgba(0,232,255,.1), transparent 65%); }
+.showcase__media { position: relative; min-width: 0; aspect-ratio: 16 / 9; overflow: hidden; background: linear-gradient(135deg, #071927, #07100f 58%, #171028); }
+.showcase__media > img, .showcase__image-button, .showcase__image-button img, .showcase__media :deep(.bento__media--video) { display: block; width: 100%; height: 100%; min-height: 0; object-fit: cover; }
+.showcase__image-button { padding: 0; border: 0; cursor: zoom-in; }
+.showcase__fallback { position: absolute; inset: 0; display: grid; place-items: center; overflow: hidden; }
+.showcase__fallback::before { content: ''; position: absolute; width: 25rem; height: 25rem; border-radius: 50%; background: radial-gradient(circle, rgba(0,232,255,.13), transparent 64%); }
+.showcase__orbit { position: absolute; width: 17rem; height: 17rem; border: 1px solid rgba(46,232,184,.25); border-radius: 50%; box-shadow: 0 0 60px rgba(0,232,255,.08), inset 0 0 40px rgba(46,232,184,.05); }
+.showcase__orbit::before, .showcase__orbit::after { content: ''; position: absolute; inset: 2rem; border: 1px dashed rgba(152,110,255,.34); border-radius: 50%; transform: rotate(33deg); }
+.showcase__orbit::after { inset: 4.2rem; border-color: rgba(0,232,255,.28); }
+.showcase__monogram { z-index: 1; font: 700 clamp(3.5rem, 9vw, 7rem)/1 var(--font-mono); letter-spacing: -.12em; color: transparent; -webkit-text-stroke: 1px rgba(238,242,255,.72); filter: drop-shadow(0 0 25px rgba(0,232,255,.38)); }
+.showcase__signal { position: absolute; inset: auto 1.5rem 1.4rem; display: flex; align-items: end; gap: .35rem; height: 3rem; opacity: .55; }
+.showcase__signal i { width: .3rem; height: calc(.45rem + var(--i) * .25rem); border-radius: 1rem; background: var(--gradient-brand); }
+.showcase__thumbs { position: absolute; right: 1rem; bottom: 1rem; display: flex; gap: .4rem; }
+.showcase__thumbs button { width: 3.4rem; height: 2.4rem; padding: .12rem; border: 1px solid rgba(255,255,255,.28); border-radius: .4rem; background: #05060d; cursor: zoom-in; }
+.showcase__thumbs img { width: 100%; height: 100%; object-fit: cover; }
+
+.showcase__body { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: flex-start; padding: clamp(1.4rem, 4vw, 3rem); }
+.showcase__topline { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem; color: var(--text-muted); font: 500 var(--text-xs) var(--font-mono); }
+.project-badge { padding: .28rem .58rem; border: 1px solid rgba(46,232,184,.32); border-radius: 999px; color: var(--agua); background: rgba(46,232,184,.08); }
+.showcase h3 { margin: 1rem 0 .85rem; font-size: clamp(1.8rem, 4vw, 3.2rem); line-height: 1.03; letter-spacing: -.035em; }
+.showcase__body > p { margin: 0; color: var(--text-muted); line-height: 1.65; }
+.showcase__body ul { margin: 1rem 0 0; padding-left: 1.1rem; color: var(--text-muted); font-size: var(--text-sm); line-height: 1.55; }
+.showcase__body li::marker { color: var(--agua); }
+.showcase__stack { display: flex; flex-wrap: wrap; gap: .42rem; margin: auto 0 1.3rem; padding-top: 1.4rem; }
+.showcase__stack span, .project-row__detail span { padding: .27rem .55rem; border: 1px solid rgba(0,232,255,.18); border-radius: 999px; color: #9debf4; background: rgba(0,232,255,.06); font-size: var(--text-xs); }
+
+.showcase__controls { display: grid; grid-template-columns: auto minmax(5rem, 1fr) auto auto; align-items: center; gap: .65rem; margin-top: .9rem; }
+.showcase__counter { font: 500 var(--text-xs) var(--font-mono); color: var(--text-muted); }
+.showcase__progress { height: 2px; background: rgba(255,255,255,.08); }
+.showcase__progress span { display: block; height: 100%; background: var(--gradient-brand); transition: width .35s ease; }
+.showcase__controls button { display: grid; place-items: center; width: 2.8rem; height: 2.8rem; border: 1px solid var(--border); border-radius: 50%; background: rgba(8,10,18,.7); color: var(--text); cursor: pointer; font-size: 1.15rem; }
+.showcase__controls button:hover:not(:disabled) { color: var(--celeste); border-color: var(--celeste); }
+.showcase__controls button:disabled { opacity: .3; cursor: default; }
+
+.projects__index-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin: 3rem 0 .8rem; }
+.projects__index-heading h3 { margin: 0; font-size: 1.25rem; }
+.projects__index-heading span { color: var(--text-muted); font: var(--text-xs) var(--font-mono); }
+.projects__index { border-top: 1px solid var(--border); }
+.project-row { min-width: 0; overflow: clip; border-bottom: 1px solid var(--border); }
+.project-row:not([open]) .project-row__detail { display: none; }
+.project-row summary { display: grid; grid-template-columns: 2.4rem 5rem minmax(0,1fr) auto 1.1rem; gap: .8rem; align-items: center; min-height: 4.5rem; padding: .55rem .25rem; cursor: pointer; list-style: none; }
+.project-row summary::-webkit-details-marker { display: none; }
+.project-row summary::after { content: '+'; margin-left: .35rem; color: var(--agua); }
+.project-row[open] summary::after { content: '−'; }
+.project-row__number { color: var(--agua); font: var(--text-xs) var(--font-mono); }
+.project-row__thumb { display: block; width: 5rem; aspect-ratio: 16 / 9; border: 1px solid rgba(0,232,255,.18); border-radius: .45rem; object-fit: cover; background: #07111c; }
+.project-row__name { font-weight: 600; line-height: 1.3; }
+.project-row__period { color: var(--text-muted); font-size: var(--text-xs); }
+.project-row__detail { width: 100%; max-width: 100%; min-width: 0; padding: 0 2.5rem 1.25rem 3.45rem; }
+.project-row__detail p { max-width: 46rem; margin: 0 0 .8rem; color: var(--text-muted); font-size: var(--text-sm); line-height: 1.55; }
+.project-row__detail div { display: flex; flex-wrap: wrap; gap: .35rem; }
+.project-row__detail a { display: inline-block; margin-top: .8rem; font-size: var(--text-sm); }
+.projects__more { display: flex; margin: 1.25rem auto 0; }
+
+.project-swap-enter-active, .project-swap-leave-active { transition: opacity .24s ease, transform .24s ease; }
+.project-swap-enter-from { opacity: 0; transform: translateX(1rem); }
+.project-swap-leave-to { opacity: 0; transform: translateX(-1rem); }
+
+@media (min-width: 820px) {
+  .projects__heading { grid-template-columns: 1fr 1fr; align-items: end; }
+  .showcase__card { min-height: 32rem; grid-template-columns: minmax(0, 1.12fr) minmax(22rem, .88fr); }
+  .showcase__media { min-height: 32rem; aspect-ratio: auto; }
 }
 
-.bento__highlights {
-  margin: 1rem 0 0.5rem;
-  padding-left: 1.2rem;
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-  line-height: 1.65;
+@media (max-width: 420px) {
+  .projects__filters { gap: .4rem; }
+  .projects__filter { flex: 1 0 auto; padding-inline: .7rem; }
+  .showcase h3 { font-size: 1.65rem; }
+  .showcase__body { padding: 1.2rem; }
+  .showcase__body > p { font-size: .9rem; line-height: 1.55; }
+  .project-row summary { grid-template-columns: 1.5rem 3.5rem minmax(0,1fr) 1rem; gap: .5rem; }
+  .project-row__thumb { width: 3.5rem; }
+  .project-row__period { display: none; }
 }
 
-.bento__highlights li + li { margin-top: 0.5rem; }
-.bento__highlights li::marker { color: var(--agua); }
-.bento__item--featured { border-top: 2px solid var(--agua); }
-
-.bento {
-  display: grid;
-  gap: 1.25rem;
-  grid-template-columns: 1fr;
-  align-items: start;
+@media (max-width: 619px) {
+  .project-row summary { grid-template-columns: 1.75rem 4rem minmax(0,1fr) 1.1rem; gap: .6rem; }
+  .project-row__thumb { width: 4rem; }
+  .project-row__period { display: none; }
+  .project-row__detail { padding-left: 2.25rem; padding-right: .5rem; }
+  .showcase__body ul { display: none; }
+  .showcase__body { padding: 1.35rem; }
+  .showcase__stack { margin-bottom: 1rem; }
 }
 
-@media (min-width: 640px) {
-  .bento {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: stretch;
-  }
-
-  .bento__item--wide {
-    grid-column: 1 / -1;
-  }
-
-  .bento__item--lead,
-  .bento__item--support {
-    grid-column: span 1;
-  }
+@media (max-width: 420px) {
+  .project-row summary { grid-template-columns: 1.5rem 3.5rem minmax(0,1fr) 1rem; gap: .5rem; }
+  .project-row__thumb { width: 3.5rem; }
+  .showcase__body { padding: 1.2rem; }
 }
 
-@media (min-width: 640px) and (max-width: 959px) {
-  .bento__item--lead {
-    grid-column: 1 / -1;
-  }
-
-  .bento__item--support {
-    grid-column: 1 / -1;
-  }
-
-  .bento__item--row2-primary {
-    grid-column: 1 / -1;
-  }
-
-  .bento__item--row2-compact {
-    grid-column: span 1;
-  }
-}
-
-@media (min-width: 960px) {
-  /* Wide primero (auto); luego lead+support; Moo + 3 compactos; wide final */
-  .bento {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: auto;
-    align-items: stretch;
-  }
-
-  .bento__item--wide {
-    grid-column: 1 / -1;
-  }
-
-  .bento__item--lead {
-    grid-column: span 21;
-  }
-
-  .bento__item--support {
-    grid-column: span 9;
-  }
-
-  .bento__item--row2-primary {
-    grid-column: 1 / span 15;
-    grid-row: span 3;
-  }
-
-  .bento__item--row2-compact {
-    grid-column: 16 / -1;
-  }
-}
-
-.bento__item {
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  overflow: hidden;
-  height: 100%;
-}
-
-/* Altura según contenido; el tope lo ponemos en el bloque media, no en el texto */
-.bento__item--lead,
-.bento__item--support {
-  max-height: none;
-}
-
-.bento__media {
-  position: relative;
-  flex-shrink: 0;
-  height: 200px;
-  max-height: 280px;
-  background: var(--bg-deep);
-  border-bottom: 1px solid var(--border);
-}
-
-@media (min-width: 960px) {
-  .bento__item--lead .bento__wide-inner--stack,
-  .bento__item--support .bento__wide-inner--stack {
-    flex: 0 1 auto;
-    height: auto;
-  }
-
-  .bento__item--lead .bento__body,
-  .bento__item--support .bento__body {
-    flex: 0 0 auto;
-    overflow: visible;
-  }
-
-  .bento__item--lead .bento__media {
-    height: min(280px, 42vh);
-    max-height: 280px;
-  }
-
-  .bento__item--support .bento__media {
-    height: min(220px, 36vh);
-    max-height: 220px;
-  }
-
-  .bento__item--lead :deep(.bento__media--video),
-  .bento__item--row2-primary :deep(.bento__media--video) {
-    flex-shrink: 0;
-    height: min(300px, 36vh);
-    min-height: 200px;
-    max-height: 300px;
-  }
-
-  .bento__item--row2-primary .bento__wide-inner--stack {
-    flex: 1;
-    min-height: 0;
-  }
-
-  .bento__item--row2-compact .bento__body,
-  .bento__item--row2-primary .bento__body {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .bento__item--row2-compact .bento__stack,
-  .bento__item--row2-primary .bento__stack {
-    margin-top: auto;
-  }
-
-  .bento__item--row2-compact .bento__link,
-  .bento__item--row2-primary .bento__link {
-    margin-top: 0.65rem;
-  }
-}
-
-@media (min-width: 640px) and (max-width: 959px) {
-  .bento__item--row2-primary :deep(.bento__media--video) {
-    height: 200px;
-    min-height: 200px;
-    max-height: 200px;
-  }
-
-  .bento__item--row2-compact .bento__body {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .bento__item--row2-compact .bento__stack {
-    margin-top: auto;
-  }
-}
-
-.bento__wide-inner--stack {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 0;
-  height: 100%;
-}
-
-.bento__wide-inner--text-only {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 0;
-  height: 100%;
-}
-
-.bento__body--solo {
-  padding: 1rem 1.1rem 1.15rem;
-  border-top: none;
-}
-
-.bento__item--row2-compact h3 {
-  font-size: 1rem;
-}
-
-.bento__item--row2-compact p {
-  font-size: var(--text-sm);
-  line-height: 1.55;
-}
-
-.bento__item--row2-compact .chip {
-  font-size: var(--text-xs);
-  padding: 0.2rem 0.5rem;
-}
-
-.bento__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top center;
-  display: block;
-}
-
-.bento__item--support .bento__media img {
-  object-position: left top;
-}
-
-.bento__item--wide .bento__wide-inner {
-  display: flex;
-  flex-direction: column;
-}
-
-.bento__item--wide .bento__media {
-  height: auto;
-  max-height: none;
-}
-
-.bento__item--wide .bento__media img {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  object-position: center center;
-}
-
-.bento__media--gallery {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1px;
-  height: auto;
-  max-height: none;
-  padding: 0;
-  background: var(--border);
-  border-bottom: 1px solid var(--border);
-}
-
-.bento__gallery-btn {
-  display: block;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  border: none;
-  background: #05060d;
-  cursor: zoom-in;
-  line-height: 0;
-}
-
-.bento__gallery-btn:focus-visible {
-  outline: 2px solid var(--celeste);
-  outline-offset: -2px;
-  z-index: 1;
-}
-
-.bento__media--gallery img {
-  width: 100%;
-  height: 400px;
-  object-fit: cover;
-  object-position: top center;
-  border-radius: 0;
-  border: none;
-  background: #05060d;
-  transition: opacity 0.15s ease;
-}
-
-.bento__gallery-btn:hover img {
-  opacity: 0.88;
-}
-
-@media (max-width: 639px) {
-  .bento__media--gallery {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    max-height: none;
-    overflow-y: visible;
-  }
-
-  .bento__media--gallery img {
-    height: 180px;
-    object-fit: cover;
-  }
-}
-
-@media (min-width: 960px) {
-  .bento__item--wide .bento__wide-inner {
-    display: grid;
-    /* Media ancha + panel de texto (~30%) — GanasDeSaber / aoe: imagen izq */
-    grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
-    align-items: stretch;
-  }
-
-  /* Memorable: texto izq, galería der (espejo) */
-  .bento__item--wide.bento__item--gallery .bento__wide-inner {
-    grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
-  }
-
-  .bento__item--wide.bento__item--gallery .bento__body {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .bento__item--wide.bento__item--gallery .bento__media {
-    grid-column: 2;
-    grid-row: 1;
-  }
-
-  .bento__item--wide .bento__media {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 12rem;
-    height: auto;
-    max-height: none;
-    border-bottom: none;
-    border-right: 1px solid var(--border);
-  }
-
-  .bento__item--wide.bento__item--gallery .bento__media {
-    border-right: none;
-    border-left: 1px solid var(--border);
-  }
-
-  .bento__item--wide .bento__media:not(.bento__media--gallery) img {
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-  }
-
-  .bento__item--wide .bento__body {
-    justify-content: center;
-    padding: 1rem 1.15rem;
-  }
-
-  .bento__item--wide .bento__stack {
-    gap: 0.3rem;
-  }
-
-  .bento__item--wide .bento__stack .chip {
-    font-size: var(--text-xs);
-    padding: 0.25rem 0.55rem;
-  }
-
-  .bento__item--gallery .bento__media--gallery {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    align-content: stretch;
-    gap: 1px;
-    padding: 0;
-    height: 100%;
-  }
-
-  .bento__item--gallery .bento__media--gallery img {
-    height: 400px;
-    width: 100%;
-    object-fit: cover;
-    object-position: top center;
-  }
-}
-
-.bento__body {
-  padding: 1.1rem 1.35rem 1.35rem;
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow: visible;
-}
-
-.bento__header {
-  margin-bottom: 0.5rem;
-}
-
-.bento__title-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.25rem;
-}
-
-.bento__item h3 {
-  margin: 0;
-  font-size: 1.125rem;
-}
-
-.bento__badge {
-  font-size: var(--text-xs);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 0.2rem 0.5rem;
-  border-radius: 999px;
-}
-
-.bento__badge--production {
-  color: var(--verde);
-  background: rgba(34, 232, 132, 0.12);
-  border: 1px solid rgba(34, 232, 132, 0.3);
-}
-
-.bento__badge--opensource {
-  color: var(--agua);
-  background: rgba(46, 232, 184, 0.1);
-  border: 1px solid rgba(46, 232, 184, 0.28);
-}
-
-.bento__badge--personal,
-.bento__badge--prototype,
-.bento__badge--integration {
-  color: var(--text-muted);
-  background: rgba(196, 208, 228, 0.08);
-  border: 1px solid rgba(196, 208, 228, 0.22);
-}
-
-.bento__badge--youtube {
-  color: #ff8a8a;
-  background: rgba(255, 60, 60, 0.12);
-  border: 1px solid rgba(255, 80, 80, 0.35);
-  text-decoration: none;
-  transition: background 0.2s ease, border-color 0.2s ease;
-}
-
-a.bento__badge--youtube:hover {
-  color: #ffb4b4;
-  background: rgba(255, 60, 60, 0.2);
-  border-color: rgba(255, 120, 120, 0.5);
-}
-
-.bento__badge--itchio {
-  color: #f0a8ff;
-  background: rgba(250, 92, 255, 0.12);
-  border: 1px solid rgba(250, 92, 255, 0.35);
-  text-decoration: none;
-  transition: background 0.2s ease, border-color 0.2s ease;
-}
-
-a.bento__badge--itchio:hover {
-  color: #f5c8ff;
-  background: rgba(250, 92, 255, 0.22);
-  border-color: rgba(250, 140, 255, 0.5);
-}
-
-.bento__item time {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--agua);
-}
-
-.bento__item p {
-  margin: 0;
-  font-size: var(--text-base);
-  line-height: 1.6;
-  color: var(--text-muted);
-}
-
-.bento__stack {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-top: 0.75rem;
-}
-
-.bento__link {
-  display: inline-block;
-  margin-top: 0.75rem;
-  font-size: var(--text-sm);
-  font-weight: 600;
-}
-
-.bento__item--featured {
-  border-color: rgba(0, 232, 255, 0.35);
+@media (prefers-reduced-motion: reduce) {
+  .project-swap-enter-active, .project-swap-leave-active { transition: none; }
 }
 </style>

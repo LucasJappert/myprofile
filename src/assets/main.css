@@ -5,6 +5,7 @@
   --agua-dim: #1bc99a;
   --verde: #22e884;
   --verde-dim: #0d9f6e;
+  --ultravioleta: #986eff;
 
   /* Alias legacy (componentes que aún referencien nombres viejos) */
   --rosa: var(--verde);
@@ -58,6 +59,8 @@
 
 html {
   scroll-behavior: smooth;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -80,11 +83,15 @@ body {
   line-height: 1.75;
   color: var(--text);
   background: var(--bg-deep);
+  max-width: 100%;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
 }
 
 #app {
+  width: 100%;
   min-height: 100dvh;
+  overflow-x: clip;
 }
 
 a {
@@ -123,8 +130,43 @@ img {
 }
 
 .section {
-  padding: 4.5rem 0;
+  position: relative;
+  max-width: 100%;
+  padding: 4rem 0;
   scroll-margin-top: var(--nav-h);
+  overflow-x: clip;
+}
+
+#experiencia::before,
+#proyectos::before,
+#stack::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  width: min(48rem, 85vw);
+  height: min(48rem, 85vw);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(90px);
+  opacity: 0.075;
+}
+
+#experiencia::before {
+  top: 18%;
+  right: -20%;
+  background: var(--verde);
+}
+
+#proyectos::before {
+  top: 7%;
+  left: -25%;
+  background: var(--celeste);
+}
+
+#stack::before {
+  top: 12%;
+  right: -24%;
+  background: var(--ultravioleta);
 }
 
 /* Menos aire muerto entre Experiencia (colapsada) y Proyectos */
@@ -147,21 +189,18 @@ img {
 }
 
 .reveal {
-  opacity: 0;
+  opacity: 1;
   transform: translateY(1.35rem);
   transition:
-    opacity 0.55s ease,
     transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .reveal.is-visible {
-  opacity: 1;
   transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal {
-    opacity: 1;
     transform: none;
   }
 }
@@ -240,6 +279,8 @@ img {
   cursor: pointer;
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  transform: translate3d(var(--magnetic-x, 0), var(--magnetic-y, 0), 0);
+  will-change: transform;
 }
 
 .btn:focus-visible {
@@ -248,7 +289,21 @@ img {
 }
 
 .btn:active {
-  transform: scale(0.98);
+  transform: translate3d(var(--magnetic-x, 0), var(--magnetic-y, 0), 0) scale(0.98);
+}
+
+[data-tilt] {
+  transform: perspective(1100px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transform-style: preserve-3d;
+  transition: transform 0.16s ease-out;
+  will-change: transform;
+}
+
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  [data-magnetic],
+  [data-tilt] {
+    transform: none !important;
+  }
 }
 
 .btn-primary {

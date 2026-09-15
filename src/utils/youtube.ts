@@ -9,7 +9,7 @@ export function youtubeEmbedSrc(videoId: string) {
     mute: '1',
     loop: '1',
     playlist: videoId,
-    controls: '0',
+    controls: '1',
     modestbranding: '1',
     playsinline: '1',
     rel: '0',
