@@ -27,7 +27,7 @@ Lidero el desarrollo de APIX, Agroideas-In y sus servicios compartidos. Conecto 
 - Migración de servicios y bases de SQL Server a PostgreSQL: adaptación de consultas, integridad de datos, respaldos, validación y monitoreo. Integración con el ERP existente.
 - Sprint IT: planificación, esfuerzo, colaboración en tiempo real e integración con pull requests. Flujo de tareas para agentes de IA con asignación, seguimiento y registro de resultados.
 - Agroideas-In y API Core: operaciones, stock, granos, notificaciones, clima, noticias y servicios de IA compartidos; analítica de uso y monitoreo de APIs y bases de datos.
-- Priorización con negocio, revisión de código y entrega continua con Azure DevOps. Operación de servicios en Linux y contenedores; reglas y documentación compartidas para el equipo y sus agentes de desarrollo.
+- Entrega y operación: priorización con negocio, revisión de código y entrega continua con Azure DevOps. Operación de servicios en Linux y contenedores; reglas y documentación compartidas para el equipo y sus agentes de desarrollo.
 
 ### Megatone · Retail
 
@@ -235,4 +235,4 @@ Español (nativo) · Inglés: lectura y escritura técnicas
 
 - Scrum Master · UTN FRRE · 2019
 
-*Contenido sincronizado con src/data/ de myprofile. Actualización editorial: septiembre de 2026.*
+*Contenido sincronizado con src/data/ de myprofile. Actualización editorial: octubre de 2026.*

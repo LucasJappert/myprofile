@@ -10,10 +10,7 @@ import ContactSection from '@/components/ContactSection.vue'
 import SiteFooter from '@/components/SiteFooter.vue'
 import ScrollProgressBar from '@/components/ScrollProgressBar.vue'
 import ScrollToTopButton from '@/components/ScrollToTopButton.vue'
-import AmbientCanvas from '@/components/AmbientCanvas.vue'
-import CursorGlow from '@/components/CursorGlow.vue'
 import CatCritters from '@/components/CatCritters.vue'
-import KineticMarquee from '@/components/KineticMarquee.vue'
 import { navLinks } from '@/data/nav'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useScrollSpy } from '@/composables/useScrollSpy'
@@ -33,8 +30,6 @@ useInteractiveMotion()
 <template>
   <div class="app">
     <div class="app__bg" aria-hidden="true" />
-    <AmbientCanvas />
-    <CursorGlow />
     <ScrollProgressBar />
     <ScrollToTopButton />
     <CatCritters />
@@ -45,7 +40,6 @@ useInteractiveMotion()
       <ExperienceSection />
       <ProjectsSection />
       <SkillsSection />
-      <KineticMarquee />
       <EducationSection />
       <ContactSection />
     </main>
@@ -74,7 +68,6 @@ useInteractiveMotion()
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--gradient-soft);
-  opacity: 0.6;
+  background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0, 232, 255, 0.05), transparent 70%);
 }
 </style>

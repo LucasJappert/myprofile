@@ -5,9 +5,9 @@ export const site = {
   title: 'Lucas Jappert | Full Stack Engineering Lead',
   description:
     'Liderazgo técnico e IA aplicada. Responsable de Sistemas en Agroideas: APIX, asistentes de IA, PostgreSQL y productos propios. Más de 15 años creando software.',
-  ogImagePath: 'assets/og-profile.png',
-  ogImageWidth: 1596,
-  ogImageHeight: 829,
+  ogImagePath: 'assets/og-profile.jpg',
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
   locale: 'es_AR',
   language: 'es-AR',
   email: 'lucasnicolasjappert@gmail.com',

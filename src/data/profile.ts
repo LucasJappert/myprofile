@@ -11,14 +11,20 @@ export const profile = {
   location: 'Rafaela, Argentina',
   tagline:
     'Lidero equipos y construyo productos de punta a punta: plataformas agrotech, asistentes de IA y automatización. Más de 15 años conectando negocio, arquitectura y software.',
-  /** Enlace breve al logro Google (sección Formación) */
-  credentialHighlight: {
-    label: '1.er puesto · Google PWA Hackathon',
-    shortLabel: 'Google PWA · 1.º',
-    href: '#educacion-google',
-  },
+  /** Tesis del hero; la palabra destacada va aparte */
+  thesis: { lead: 'Construyo software que vale la pena', highlight: 'operar' },
+  heroIntro:
+    'Lidero Sistemas en Agroideas: del dato del lote a la decisión agronómica, con asistentes de IA que citan sus fuentes y herramientas que el equipo usa todos los días. Más de 15 años entre negocio, arquitectura y software.',
+  /** Capas del mapa del hero: productos que resumen el trabajo actual */
+  heroLayers: [
+    { name: 'APIX', detail: 'Agricultura de precisión', color: '#22e884' },
+    { name: 'Pía', detail: 'IA con fuentes verificables', color: '#00e8ff' },
+    { name: 'DayLog', detail: 'Telemetría personal', color: '#e9cf4a' },
+  ],
   email: 'lucasnicolasjappert@gmail.com',
-  avatar: 'profile-image.jpeg',
+  /** Recortes livianos: rostro para el pin del mapa e ilustración 4:5 para su tarjeta */
+  avatarPin: 'avatar-pin.webp',
+  avatarCard: 'avatar-card.webp',
   avatarAlt:
     'Ilustración caricaturesca de Lucas con su pareja y tres gatos, bajo un cielo nocturno con cometa, luna y estrellas',
   cvUrl: assetUrl('Lucas-Jappert-CV.pdf'),
