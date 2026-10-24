@@ -113,7 +113,7 @@ onUnmounted(() => {
         :class="{ 'nav__more--open': menuOpen }"
         :aria-expanded="menuOpen"
         aria-controls="nav-drawer"
-        :aria-label="menuOpen ? 'Cerrar menú' : 'Más secciones: Perfil, Educación y Logros Google'"
+        :aria-label="menuOpen ? 'Cerrar menú' : 'Más secciones: Perfil, Formación y Logros Google'"
         @click="toggleMenu"
       >
         <span class="nav__more-icon" aria-hidden="true" />
@@ -173,8 +173,17 @@ onUnmounted(() => {
   right: 0;
   z-index: 110;
   height: var(--nav-h);
-  background: rgba(5, 6, 13, 0.88);
   border-bottom: 1px solid var(--border);
+}
+
+/* El desenfoque va en un pseudo-elemento: en .nav crearía un bloque contenedor
+   y el drawer `fixed` quedaría recortado a la altura del header */
+.nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: rgba(5, 6, 13, 0.88);
   backdrop-filter: blur(14px);
 }
 

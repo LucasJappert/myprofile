@@ -44,7 +44,7 @@ Para sincronizar también la copia local del CV en el repo hermano:
 npm run cv -- --markdown-output ../my-cv/my-cv.md
 ```
 
-Actualización editorial: septiembre de 2026. Los proyectos en desarrollo y las
+Actualización editorial: octubre de 2026. Los proyectos en desarrollo y las
 integraciones de herramientas de terceros se identifican como tales; no se
 publican métricas de impacto sin evidencia.
 
@@ -74,3 +74,4 @@ Tracking vía el **mismo** Google Apps Script y Sheet que la landing; eventos de
 - Celeste `#00e8ff`
 - Agua `#2ee8b8`
 - Verde `#22e884` (gradiente marca: celeste → agua → verde)
+- Escala de ambientes `--ramp-1…5` (rojo → verde): firma visual del mapa del inicio y de los acentos de sección

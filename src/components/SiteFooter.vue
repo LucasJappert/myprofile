@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { profile } from '@/data/profile'
+import { summonCat } from '@/utils/cats'
 
 const year = new Date().getFullYear()
 </script>
@@ -7,96 +8,57 @@ const year = new Date().getFullYear()
 <template>
   <footer class="footer">
     <div class="container footer__inner">
-      <nav class="footer__links" aria-label="Enlaces rápidos">
-        <a
-          v-for="link in profile.links"
-          :key="link.href"
-          :href="link.href"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {{ link.label }}
-        </a>
-        <a :href="profile.cvUrl" target="_blank" rel="noopener">CV (PDF)</a>
-        <a href="#educacion-google">Logros Google</a>
-      </nav>
-      <p class="footer__interests" aria-label="Intereses personales">
-        <span
-          v-for="item in profile.interests"
-          :key="item.label"
-          class="chip"
-          :class="{ 'chip--verde': item.icon === 'game', 'chip--agua': item.icon === 'learn' }"
-        >
-          {{ item.label }}
-        </span>
+      <p class="footer__id">
+        <strong>{{ profile.name }}</strong>
+        <span>© {{ year }} · {{ profile.location }}</span>
       </p>
-      <p class="footer__copy">© {{ year }} Lucas Jappert · Vue 3 + Vite + TypeScript</p>
-      <p class="footer__gradient" aria-hidden="true" />
+      <p class="footer__interests" aria-label="Intereses personales">
+        {{ profile.interests.map((item) => item.label).join(' · ') }}
+      </p>
+      <button type="button" class="footer__cat" @click="summonCat">
+        <span aria-hidden="true">🐾</span> Invocar un gato
+      </button>
     </div>
   </footer>
 </template>
 
 <style scoped>
 .footer {
-  padding: 2rem 0 calc(2rem + env(safe-area-inset-bottom));
-  border-top: 1px solid var(--border);
-  position: relative;
-  overflow: hidden;
+  padding: 1.75rem 0 calc(1.75rem + env(safe-area-inset-bottom));
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .footer__inner {
-  position: relative;
-  text-align: center;
-  font-size: var(--text-sm);
+  display: grid;
+  gap: 0.9rem;
+  align-items: center;
   color: var(--text-muted);
+  font-size: var(--text-xs);
 }
 
-.footer__links {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.65rem 1.25rem;
-  margin-bottom: 1rem;
-}
+.footer__id { display: flex; flex-wrap: wrap; gap: 0.35rem 0.75rem; margin: 0; }
+.footer__id strong { color: var(--text); font-weight: 600; }
+.footer__interests { margin: 0; font-family: var(--font-mono); font-size: 0.75rem; }
 
-.footer__links a {
-  font-weight: 600;
-  font-size: var(--text-sm);
+.footer__cat {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.5rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font: 600 var(--text-xs) var(--font-sans);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
 }
+.footer__cat:hover { border-color: var(--agua); color: var(--agua); }
 
-.footer__interests {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.4rem;
-  margin: 0 0 1rem;
-}
-
-.footer__interests .chip {
-  font-size: 0.75rem;
-  padding: 0.28rem 0.55rem;
-}
-
-.footer__copy {
-  margin: 0;
-}
-
-.footer__gradient {
-  position: absolute;
-  bottom: -80px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80%;
-  height: 120px;
-  background: var(--gradient-brand);
-  filter: blur(80px);
-  opacity: 0.35;
-  pointer-events: none;
-}
-
-@media (min-width: 768px) {
-  .footer {
-    padding-bottom: 2.5rem;
-  }
+@media (min-width: 840px) {
+  .footer__inner { grid-template-columns: auto 1fr auto; gap: 2rem; }
+  .footer__interests { text-align: center; }
 }
 </style>

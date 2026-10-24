@@ -67,7 +67,7 @@ const md = [
   '## Proyectos', ...projects.map((p) => `### ${p.name}\n\n${p.period}\n\n${p.description}\n\n${p.stack.join(' · ')}${p.href ? '\n\n[Ver proyecto](' + p.href + ')' : ''}`),
   '## Competencias', ...skillGroups.map((g) => `### ${g.title}\n\n${g.items.join(' · ')}`),
   '## Formación', ...[...formalEducation, ...complementary].map((e) => `- ${e.title} · ${e.institution} · ${e.period}${e.note ? ' · ' + e.note : ''}`),
-  '*Contenido sincronizado con src/data/ de myprofile. Actualización editorial: septiembre de 2026.*',
+  '*Contenido sincronizado con src/data/ de myprofile. Actualización editorial: octubre de 2026.*',
 ].join('\n\n') + '\n'
 await writeFile(path.join(root, 'docs/cv.md'), md)
 const markdownOutput = process.argv.indexOf('--markdown-output')

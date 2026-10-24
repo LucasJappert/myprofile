@@ -10,8 +10,8 @@ export const navLinks: NavLink[] = [
   { id: 'perfil', label: 'Perfil', shortLabel: 'Perfil', icon: '◎' },
   { id: 'experiencia', label: 'Experiencia', shortLabel: 'Exp.', icon: '◆' },
   { id: 'proyectos', label: 'Proyectos', shortLabel: 'Proy.', icon: '▣' },
-  { id: 'stack', label: 'Stack técnico', shortLabel: 'Stack', icon: '◇' },
-  { id: 'educacion', label: 'Educación', shortLabel: 'Educ.', icon: '▤' },
+  { id: 'stack', label: 'Capacidades', shortLabel: 'Stack', icon: '◇' },
+  { id: 'educacion', label: 'Formación', shortLabel: 'Educ.', icon: '▤' },
   { id: 'contacto', label: 'Contacto', shortLabel: 'Contacto', icon: '✉' },
 ]
 
